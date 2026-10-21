@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Better product UX copy with AI: prompt, review, and refine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #f5f5f5;
+    --ink: #232323;
+    --muted: #5f5f5f;
+    --subtle: #8a8a8a;
+    --line: #ececec;
+    --accent: #009cde;
+    --accent-soft: #e5f5fc;
+    --good: #1e8a4c;
+    --good-soft: #e8f5ee;
+    --bad: #e42626;
+    --bad-soft: #fdeaea;
+    --warn: #232323;
+    --warn-soft: #f5f5f5;
+    --dark: #000000;
+    --dark-2: #232323;
+    --radius: 6px;
+    --mono: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+    --sans: Arimo, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; background: #000; overflow: hidden; font-family: var(--sans); color: var(--ink); }
+
+  #stage {
+    position: absolute; top: 50%; left: 50%;
+    width: 1280px; height: 720px;
+    transform-origin: center center;
+  }
+  .slide {
+    position: absolute; inset: 0;
+    background: var(--bg);
+    padding: 64px 80px 72px;
+    display: none; flex-direction: column;
+    overflow: hidden;
+  }
+  .slide.active { display: flex; }
+  .slide .notes { display: none; }
+
+  /* Chrome */
+  .slide-footer {
+    position: absolute; left: 80px; right: 80px; bottom: 26px;
+    display: flex; justify-content: space-between;
+    font-size: 14px; color: var(--subtle);
+  }
+  .slide.dark .slide-footer, .slide.title .slide-footer { color: #b3b3b3; }
+
+  /* Typography */
+  .eyebrow { font-size: 20px; font-weight: 700; color: var(--accent); margin-bottom: 12px; }
+  h1 { font-size: 60px; line-height: 1.2; font-weight: 700; }
+  h2 { font-size: 42px; line-height: 1.25; font-weight: 700; margin-bottom: 28px; }
+  h3 { font-size: 24px; line-height: 1.25; font-weight: 700; margin-bottom: 8px; }
+  p, li { font-size: 24px; line-height: 1.45; }
+  .lead { font-size: 28px; line-height: 1.4; color: var(--muted); max-width: 980px; }
+  .small, .small li, .small p { font-size: 19px; }
+  .muted { color: var(--muted); }
+  ul.clean { list-style: none; }
+  ul.clean li { padding-left: 28px; position: relative; margin-bottom: 12px; }
+  ul.clean li::before { content: ""; position: absolute; left: 6px; top: .6em; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+  strong { font-weight: 700; }
+  code { font-family: var(--mono); font-size: .88em; background: var(--surface); padding: 2px 7px; border-radius: 4px; }
+  a { color: var(--accent); }
+
+  /* Title & dividers */
+  .slide.title, .slide.dark { background: var(--dark); color: #fff; }
+  .slide.title { justify-content: center; }
+  .slide.title .brand {
+    position: absolute; right: 80px; top: 50%; transform: translateY(-50%);
+    width: 420px; filter: brightness(0) invert(1);
+  }
+  .slide.title h1 { max-width: 640px; font-size: 52px; }
+  .slide.title .subtitle { font-size: 24px; color: #fff; margin-top: 24px; max-width: 620px; line-height: 1.4; }
+  .slide.title .speaker { margin-top: 40px; font-size: 20px; color: #fff; display: flex; align-items: center; gap: 16px; max-width: 620px; line-height: 1.35; }
+  .slide.title .speaker img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; flex: 0 0 80px; }
+  .slide.title .speaker p { font-size: 20px; line-height: 1.35; }
+  .slide.title .speaker span { display: block; color: #b3b3b3; font-size: 18px; margin-top: 2px; }
+  .slide.title .date { margin-top: 18px; font-size: 18px; color: #b3b3b3; }
+  .slide.divider { justify-content: center; }
+  .slide.divider .num { font-size: 96px; font-weight: 700; color: var(--accent); line-height: 1; margin-bottom: 20px; }
+  .slide.divider h1 { color: #fff; max-width: 1000px; }
+  .slide.divider .lead { color: #b3b3b3; margin-top: 20px; }
+  .slide.statement { justify-content: center; }
+  .slide.statement h1 { max-width: 1050px; }
+
+  /* Layout helpers */
+  .grow { flex: 1; min-height: 0; }
+  .cols { display: grid; gap: 28px; align-content: start; }
+  .cols-2 { grid-template-columns: 1fr 1fr; }
+  .cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .cols-4 { grid-template-columns: repeat(4, 1fr); }
+  .cols-5 { grid-template-columns: repeat(5, 1fr); }
+  .center { align-items: center; }
+
+  .card {
+    background: var(--surface); border: none; border-radius: var(--radius);
+    padding: 24px 26px;
+  }
+  .card p, .card li { font-size: 19px; line-height: 1.45; }
+  .card .tag { display: inline-block; font-size: 15px; font-weight: 700; padding: 4px 10px; border-radius: 4px; margin-bottom: 12px; }
+  .card.good { border-top: 4px solid var(--good); }
+  .card.bad { border-top: 4px solid var(--bad); }
+  .card.accent { border-top: 4px solid var(--accent); }
+  .card.warn { border-top: 4px solid var(--warn); }
+  .tag.good { background: var(--good); color: #fff; }
+  .tag.bad { background: var(--bad); color: #fff; }
+  .tag.accent { background: var(--accent); color: #fff; }
+  .tag.warn { background: var(--warn); color: #fff; }
+
+  .callout {
+    margin-top: 24px; padding: 18px 24px; border-radius: var(--radius);
+    background: var(--accent-soft); color: var(--ink); font-size: 21px; line-height: 1.45;
+    border-left: 4px solid var(--accent);
+  }
+  .callout.warn { background: var(--bad-soft); border-color: var(--bad); }
+
+  /* Copy examples */
+  .ui-copy {
+    font-family: var(--sans); background: #fff; border: 1px solid #d9d9d9; border-radius: var(--radius);
+    padding: 14px 18px; font-size: 20px; line-height: 1.4; margin-top: 8px;
+  }
+  .ui-copy.good { border-left: 4px solid var(--good); }
+  .ui-copy.bad { border-left: 4px solid var(--bad); }
+  .label { font-size: 16px; font-weight: 700; color: var(--muted); margin-top: 14px; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; background: #fff; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); }
+  th, td { text-align: left; padding: 12px 16px; font-size: 18px; line-height: 1.35; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { background: var(--dark-2); font-weight: 700; font-size: 17px; color: #fff; }
+  tr:last-child td { border-bottom: none; }
+  .yes { color: var(--good); font-weight: 700; }
+  .no { color: var(--bad); font-weight: 700; }
+
+  /* Code */
+  pre {
+    font-family: var(--mono); font-size: 15px; line-height: 1.5;
+    background: var(--dark-2); color: #f5f5f5; border-radius: var(--radius); padding: 22px 26px;
+    overflow: hidden; white-space: pre;
+  }
+  pre .c { color: #8a8a8a; }
+  pre .h { color: #4fc3f2; font-weight: 700; }
+  pre .k { color: #4fc3f2; }
+
+  /* Flow */
+  .flow { display: flex; align-items: stretch; gap: 0; }
+  .flow .step { flex: 1; background: var(--surface); border: none; border-radius: var(--radius); padding: 24px; }
+  .flow .step .n { font-size: 17px; font-weight: 700; color: var(--accent); margin-bottom: 8px; }
+  .flow .step p { font-size: 19px; }
+  .flow .arrow { display: flex; align-items: center; padding: 0 12px; font-size: 30px; color: var(--accent); }
+
+  /* Poll */
+  .slide.poll { background: var(--dark-2); color: #fff; }
+  .slide.poll .eyebrow { color: #4fc3f2; }
+  .slide.poll .slide-footer { color: #b3b3b3; }
+  .poll-options { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 12px; }
+  .poll-option { background: #333; border: 1px solid #4b4b4b; border-radius: var(--radius); padding: 22px 26px; font-size: 24px; line-height: 1.35; display: flex; gap: 18px; align-items: center; }
+  .poll-option b { display: inline-flex; width: 44px; height: 44px; flex: 0 0 44px; border-radius: var(--radius); background: var(--accent); color: #fff; align-items: center; justify-content: center; font-size: 22px; }
+  .chat-box { margin-top: 20px; background: #333; border: 1px solid #4b4b4b; border-left: 4px solid var(--accent); border-radius: var(--radius); padding: 30px 34px; font-size: 30px; line-height: 1.4; }
+
+  /* Demo */
+  .slide.demo { background: var(--dark); color: #fff; }
+  .slide.demo .eyebrow { color: #4fc3f2; }
+  .slide.demo .slide-footer { color: #b3b3b3; }
+  .slide.demo .step { background: var(--dark-2); color: #fff; }
+  .slide.demo .step .n { color: #4fc3f2; }
+  .slide.demo .arrow { color: #4fc3f2; }
+  .slide.demo .callout { background: var(--dark-2); border-color: var(--accent); color: #fff; }
+  .placeholder { border: 1px dashed #8a8a8a; border-radius: var(--radius); padding: 12px 18px; font-size: 18px; color: #b3b3b3; display: inline-block; margin-bottom: 22px; }
+
+  /* Agenda */
+  .agenda { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 48px; }
+  .agenda .row { display: flex; align-items: baseline; gap: 18px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .agenda .row .n { font-weight: 700; color: var(--accent); font-size: 22px; width: 36px; }
+  .agenda .row .t { font-size: 23px; flex: 1; }
+  .agenda .row .m { font-size: 18px; color: var(--muted); }
+
+  /* Notes overlay */
+  #notes {
+    position: fixed; left: 0; right: 0; bottom: 0; max-height: 40vh; overflow: auto;
+    background: rgba(35,35,35,.97); color: #fff; padding: 18px 28px 22px;
+    font-size: 17px; line-height: 1.5; display: none; z-index: 10; border-top: 3px solid var(--accent);
+  }
+  #notes.open { display: block; }
+  #notes .time { color: #4fc3f2; font-weight: 700; margin-bottom: 6px; font-size: 15px; }
+  #notes ul { padding-left: 20px; }
+  #notes li { font-size: 17px; margin-bottom: 4px; }
+
+  #progress { position: fixed; left: 0; top: 0; height: 4px; background: var(--accent); z-index: 11; transition: width .2s; }
+  #help { position: fixed; right: 14px; top: 10px; color: #777; font-size: 12px; z-index: 11; }
+
+  @media print {
+    html, body { background: #fff; overflow: visible; height: auto; }
+    #stage { position: static; transform: none !important; width: auto; height: auto; }
+    .slide { display: flex !important; position: relative; width: 1280px; height: 720px; page-break-after: always; break-after: page; }
+    #notes, #progress, #help { display: none !important; }
+    @page { size: 1280px 720px; margin: 0; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div id="help">← → navigate · N notes · F fullscreen</div>
+
+<div id="stage">
+
+<!-- ============ INTRO ============ -->
+
+<section class="slide title" data-section="Intro">
+  <img class="brand" src="https://assets.interaction-design.org/build/assets/img/ixdf-brand/ixdf-logo-full-expanded-D5i9mshk.svg" alt="Interaction Design Foundation">
+  <div class="eyebrow">IxDF Master Class</div>
+  <h1>Better product UX copy with AI: prompt, review, and refine</h1>
+  <div class="speaker">
+    <img src="https://public-images.interaction-design.org/masterclasses/speakers/mc-XXX-speaker-image%20(3)-1791832520.jpg?tr=w-332,h-332" alt="Kalina Tyrkiel-Szymańska">
+    <p>Kalina Tyrkiel-Szymańska<span>Senior Content Designer at Zendesk</span></p>
+  </div>
+  <p class="date">November 5, 2026</p>
+  <aside class="notes" data-time="0:00">
+    <ul>
+      <li>Welcome everyone, thank you for joining live or watching the recording.</li>
+      <li>40 minutes of content, then Q&amp;A. Drop questions in the chat anytime.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide" data-section="Intro">
+  <div class="eyebrow">Hi, I'm Kalina</div>
+  <h2>UX writer by trade, psychologist by training</h2>
+  <div class="cols cols-2 grow">
+    <ul class="clean">
+      <li>Senior Content Designer at Zendesk, designing AI-powered experiences</li>
+      <li>10+ years in content design, UX writing, and strategic communication</li>
+      <li>Created Poland's first course on AI in UX writing</li>
+      <li>Trainer, university lecturer, and consultant, based in Kraków</li>
+    </ul>
+    <div class="card accent" style="align-self:start">
+      <span class="tag accent">Today's promise</span>
+      <p style="font-size:24px">You'll leave with a way to <strong>guide</strong> AI instead of fighting it, and to <strong>review</strong> copy so quality doesn't depend on who wrote it.</p>
+    </div>
+  </div>
+  <aside class="notes" data-time="0:30">
+    <ul>
+      <li>Keep this under a minute.</li>
+      <li>Mention the psychology angle: how people read and understand interfaces is what we're protecting when we use AI.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide poll" data-section="Intro">
+  <div class="eyebrow">Poll</div>
+  <h2>Which best describes you?</h2>
+  <div class="poll-options" style="grid-template-columns:1fr">
+    <div class="poll-option"><b>A</b>I'm a content designer or UX writer</div>
+    <div class="poll-option"><b>B</b>I'm not a content designer, but we have content designers in our organization</div>
+    <div class="poll-option"><b>C</b>I don't work with a content designer</div>
+  </div>
+  <aside class="notes" data-time="0:50">
+    <ul>
+      <li>Give 20 seconds. Read out the split.</li>
+      <li>Remember the result: it decides which workflow gets the most time in section 7.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide poll" data-section="Intro">
+  <div class="eyebrow">Poll</div>
+  <h2>How do you use AI for UX copy today?</h2>
+  <div class="poll-options">
+    <div class="poll-option"><b>A</b>I don't use it yet</div>
+    <div class="poll-option"><b>B</b>Occasionally, to get a few options</div>
+    <div class="poll-option"><b>C</b>Regularly, in my everyday design work</div>
+    <div class="poll-option"><b>D</b>My team shares prompts, skills, or plugins</div>
+  </div>
+  <aside class="notes" data-time="1:15">
+    <ul>
+      <li>Give 20 seconds. Read out the split.</li>
+      <li>If most are A/B: "Great, today is about getting from occasional to repeatable." If C/D: "Today is about making it consistent across the team."</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide" data-section="Intro">
+  <h2>What you'll learn</h2>
+  <div class="cols cols-3 grow">
+    <div class="card accent">
+      <h3>Guide and evaluate AI copy</h3>
+      <p>Use prompts and structured instructions to get clear interface copy, instead of writing every string yourself.</p>
+    </div>
+    <div class="card accent">
+      <h3>Keep copy consistent as a team</h3>
+      <p>Set up a review process with designers and writers, so quality doesn't depend on who wrote the copy.</p>
+    </div>
+    <div class="card accent">
+      <h3>Use AI responsibly</h3>
+      <p>Follow clear principles and your own judgment, and keep copy accurate and accessible.</p>
+    </div>
+  </div>
+  <aside class="notes" data-time="1:40">
+    <ul>
+      <li>These map to the three promises on the landing page.</li>
+      <li>We'll come back to each at the end.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide" data-section="Intro">
+  <h2>Agenda</h2>
+  <div class="agenda">
+    <div class="row"><span class="n">1</span><span class="t">The shift: from writing to guiding</span><span class="m">3 min</span></div>
+    <div class="row"><span class="n">5</span><span class="t">Evals: how to test</span><span class="m">5 min</span></div>
+    <div class="row"><span class="n">2</span><span class="t">What LLMs are good and bad at</span><span class="m">7 min</span></div>
+    <div class="row"><span class="n">6</span><span class="t">Common issues</span><span class="m">3 min</span></div>
+    <div class="row"><span class="n">3</span><span class="t">Generative vs evaluative tools</span><span class="m">4 min</span></div>
+    <div class="row"><span class="n">7</span><span class="t">Workflows for your team</span><span class="m">6 min</span></div>
+    <div class="row"><span class="n">4</span><span class="t">Structuring instructions</span><span class="m">7 min</span></div>
+    <div class="row"><span class="n">8</span><span class="t">Principles and next steps</span><span class="m">3 min</span></div>
+  </div>
+  <p class="muted small" style="margin-top:28px">Then Q&amp;A. Includes 2 live demos.</p>
+  <aside class="notes" data-time="2:00">
+    <ul>
+      <li>Quick walk through. Don't read every line.</li>
+    </ul>
+  </aside>
+</section>
+
+<!-- ============ 01 THE SHIFT ============ -->
+
+<section class="slide dark divider" data-section="01 The shift">
+  <div class="num">1</div>
+  <h1>The shift: from writing to guiding</h1>
+  <aside class="notes" data-time="2:00 · section: 3 min"><ul><li>Transition: "Let's start with the mindset."</li></ul></aside>
+</section>
+
+<section class="slide" data-section="01 The shift">
+  <h2>From writer to editor</h2>
+  <div class="cols cols-2 grow">
+    <div class="card bad">
+      <span class="tag bad">Before</span>
+      <ul class="clean small">
+        <li>You write every string from scratch</li>
+        <li>Quality depends on who wrote it</li>
+        <li>Guidelines live in a separate doc</li>
+      </ul>
+    </div>
+    <div class="card good">
+      <span class="tag good">After</span>
+      <ul class="clean small">
+        <li>You set the context and constraints</li>
+        <li>AI drafts, reviews, or offers options</li>
+        <li>Guidelines are built into the tools your team uses</li>
+        <li><strong>You make the final call</strong></li>
+      </ul>
+    </div>
+  </div>
+  <aside class="notes" data-time="2:30">
+    <ul>
+      <li>This isn't about replacing writing skills. Editing well requires knowing what good copy is.</li>
+      <li>"Guidelines become tools" is the key idea for the whole session.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide" data-section="01 The shift">
+  <h2>Prompt, review, refine</h2>
+  <div class="flow">
+    <div class="step"><div class="n">1 · Prompt</div><h3>Give context</h3><p>Share the context, constraints, and a rough first draft.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">2 · Review</div><h3>Check the output</h3><p>Compare it with your guidelines.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">3 · Refine</div><h3>Fix the instructions</h3><p>Update the prompt or tool, so the next output is better too.</p></div>
+  </div>
+  <div class="callout">When the output is wrong, check what was missing from your instructions and add it. Everyone who uses them gets the fix.</div>
+  <aside class="notes" data-time="3:30">
+    <ul>
+      <li>This loop is the title of the masterclass. Everything else hangs on it.</li>
+      <li>Refining the instructions is what makes AI use scale beyond you.</li>
+    </ul>
+  </aside>
+</section>
+
+<!-- ============ 02 GOOD AND BAD ============ -->
+
+<section class="slide dark divider" data-section="02 Strengths and limits">
+  <div class="num">2</div>
+  <h1>What LLMs are good and bad at in UX writing</h1>
+  <aside class="notes" data-time="5:00 · section: 7 min"><ul><li>Transition: "To guide AI well, you need to know its strengths and limits."</li></ul></aside>
+</section>
+
+<section class="slide" data-section="02 Strengths and limits">
+  <h2>What LLMs do well</h2>
+  <div class="cols cols-5 grow" style="gap:18px">
+    <div class="card good"><h3>Following clear constraints</h3><p>Voice guide, terminology, character limits, product facts</p></div>
+    <div class="card good"><h3>Keeping terms and format consistent</h3><p>Select vs Choose, sentence case, date formats</p></div>
+    <div class="card good"><h3>Finding patterns across lots of copy</h3><p>Inconsistent tone, structure, or formatting</p></div>
+    <div class="card good"><h3>Changing tone or complexity</h3><p>Shorter, clearer, warmer, more formal, easier to translate</p></div>
+    <div class="card good"><h3>Critiquing and comparing options</h3><p>Many options fast, plus feedback on your work</p></div>
+  </div>
+  <aside class="notes" data-time="5:30">
+    <ul>
+      <li>Overview only. Next slides go deeper on each.</li>
+      <li>The common thread: they're great when <em>you</em> provide the source of truth.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide" data-section="02 Strengths and limits">
+  <h2>Following constraints and keeping copy consistent</h2>
+  <div class="cols cols-2 grow">
+    <div>
+      <table>
+        <tr><th>Use</th><th>Avoid</th></tr>
+        <tr><td class="yes">Select</td><td class="no">Choose, Pick</td></tr>
+        <tr><td class="yes">Sign in</td><td class="no">Log in, Login</td></tr>
+        <tr><td class="yes">Save changes</td><td class="no">Save Changes</td></tr>
+        <tr><td class="yes">Delete</td><td class="no">Remove (when data is gone)</td></tr>
+      </table>
+      <p class="small muted" style="margin-top:12px">Example terminology list you can paste into instructions</p>
+    </div>
+    <div>
+      <ul class="clean small">
+        <li>LLMs follow a voice guide, glossary, or character limit <strong>when you provide it</strong></li>
+        <li>Many default to <strong>Title Case</strong>. You can teach sentence case with a rule and examples</li>
+        <li>One tool can't catch everything. Focus on your <strong>key inconsistencies</strong></li>
+        <li>Build <strong>specialized tools</strong> for UI elements your team writes again and again: error messages, empty states, notifications</li>
+      </ul>
+    </div>
+  </div>
+  <aside class="notes" data-time="6:15">
+    <ul>
+      <li>Title case is the classic default. Show how a single rule plus two examples fixes it.</li>
+      <li>Don't try to build one mega-prompt for all copy. Specialized tools work better.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide" data-section="02 Strengths and limits">
+  <h2>Finding patterns and changing tone</h2>
+  <div class="cols cols-2 grow">
+    <div class="card good">
+      <span class="tag good">Find patterns</span>
+      <p>Paste 50 strings from one flow and ask:</p>
+      <div class="ui-copy" style="font-family:var(--mono);font-size:16px">List inconsistent terms, capitalization, tone, and sentence structure. Group them by type and show where each one appears.</div>
+      <p class="small muted" style="margin-top:12px">Useful before a release or a design system audit.</p>
+    </div>
+    <div class="card good">
+      <span class="tag good">Change tone or complexity</span>
+      <div class="label">Original</div>
+      <div class="ui-copy bad">Your request could not be processed due to an unexpected error.</div>
+      <div class="label">Shorter and clearer</div>
+      <div class="ui-copy good">We couldn't save your changes. Try again.</div>
+      <div class="label">Easier to translate</div>
+      <div class="ui-copy good">Your changes were not saved. Try again.</div>
+    </div>
+  </div>
+  <aside class="notes" data-time="7:15">
+    <ul>
+      <li>Pattern finding is where LLMs beat humans: they don't get tired at string 200.</li>
+      <li>Point out that the meaning stayed the same across versions. That's what you check.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide" data-section="02 Strengths and limits">
+  <h2>Critiquing your work and comparing options</h2>
+  <div class="flow" style="margin-bottom:8px">
+    <div class="step"><div class="n">Input</div><p>Screenshot of the design with the copy, plus the stakeholder's comment</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">Ask</div><p>"Give me 3 options that address this feedback and explain the trade-offs."</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">You</div><p>Pick one, adapt it, and explain your choice in the reply</p></div>
+  </div>
+  <div class="cols cols-2" style="margin-top:20px">
+    <div class="callout warn" style="margin-top:0">Only paste designs into a <strong>safe, approved enterprise AI tool</strong>.</div>
+    <div class="callout" style="margin-top:0">It's <strong>you</strong> who makes the call.</div>
+  </div>
+  <aside class="notes" data-time="8:15">
+    <ul>
+      <li>Personal example: I use this to come up with options for addressing feedback.</li>
+      <li>Options give you something to react to. Reacting is faster than inventing.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide" data-section="02 Strengths and limits">
+  <h2>What LLMs don't do well</h2>
+  <div class="cols cols-4 grow" style="gap:20px">
+    <div class="card bad"><h3>Writing from scratch</h3><p>Especially without context. The copy comes out generic and often doesn't fit your product.</p></div>
+    <div class="card bad"><h3>Product context</h3><p>Copy can sound plausible but describe something the product doesn't do.</p></div>
+    <div class="card bad"><h3>Dependencies between products</h3><p>It won't know another feature already has the same name.</p></div>
+    <div class="card bad"><h3>Knowing what's clear to real users</h3><p>Copy that seems simple to the model can still confuse people in the actual flow.</p></div>
+  </div>
+  <aside class="notes" data-time="9:00">
+    <ul>
+      <li>All four have one root cause: the model doesn't know what you know.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide" data-section="02 Strengths and limits">
+  <h2>Always bring a rough first draft</h2>
+  <div class="cols cols-2 grow">
+    <div class="card bad">
+      <span class="tag bad">No context</span>
+      <div class="label">Prompt</div>
+      <div class="ui-copy" style="font-family:var(--mono);font-size:16px">Write an error message for a failed upload.</div>
+      <div class="label">Output</div>
+      <div class="ui-copy bad">Oops! Something went wrong. Please try again later.</div>
+    </div>
+    <div class="card good">
+      <span class="tag good">Draft and context</span>
+      <div class="label">Prompt</div>
+      <div class="ui-copy" style="font-family:var(--mono);font-size:16px">Draft: "upload failed, file too big". Limit is 25 MB. Inline, under the drop zone. Improve it.</div>
+      <div class="label">Output</div>
+      <div class="ui-copy good">report.pdf is larger than 25 MB. Upload a smaller file or compress it first.</div>
+    </div>
+  </div>
+  <aside class="notes" data-time="9:45">
+    <ul>
+      <li>Even a bad draft carries the facts: what happened, the limit, where it appears.</li>
+      <li>"Try again later" is wrong here: trying again won't help. The model can't know that.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide" data-section="02 Strengths and limits">
+  <h2>LLMs don't know your product or the products around it</h2>
+  <div class="cols cols-2 grow">
+    <div class="card bad">
+      <span class="tag bad">Plausible but wrong</span>
+      <div class="ui-copy bad">Don't worry, your changes are saved automatically.</div>
+      <p style="margin-top:12px">This is wrong if the product doesn't autosave.</p>
+    </div>
+    <div class="card bad">
+      <span class="tag bad">Hidden conflict</span>
+      <div class="ui-copy bad">Introducing Workflows: automate your daily tasks.</div>
+      <p style="margin-top:12px">Another product in your suite already has a feature called Workflows.</p>
+    </div>
+  </div>
+  <div class="callout"><strong>What helps:</strong> give product facts and system behavior, keep a glossary across products, and check facts with your PM and engineers.</div>
+  <aside class="notes" data-time="10:30">
+    <ul>
+      <li>The bigger the product, the more these matter.</li>
+      <li>A shared glossary is the cheapest fix for naming conflicts.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide statement" data-section="02 Strengths and limits">
+  <h1>Copy that seems clear to the model can still confuse your users</h1>
+  <p class="lead" style="margin-top:28px">LLMs can critique copy and generate options, but they can't replace usability testing. Test copy with real users in the actual flow.</p>
+  <aside class="notes" data-time="11:15">
+    <ul>
+      <li>Psychology angle: comprehension depends on context, expectations, and stress level, none of which the model sees.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide poll" data-section="02 Strengths and limits">
+  <div class="eyebrow">In the chat</div>
+  <h2>Share one piece of AI-written copy that sounded right but was wrong</h2>
+  <div class="chat-box">What did it get wrong? Product facts, tone, terminology, or something else?</div>
+  <aside class="notes" data-time="11:30">
+    <ul>
+      <li>Read out 2–3 answers. Connect them to the limits we just covered.</li>
+      <li>Keep moving after ~45 seconds.</li>
+    </ul>
+  </aside>
+</section>
+
+<!-- ============ 03 TOOLS ============ -->
+
+<section class="slide dark divider" data-section="03 Tools">
+  <div class="num">3</div>
+  <h1>Generative vs evaluative tools</h1>
+  <aside class="notes" data-time="12:00 · section: 4 min"><ul><li>Transition: "Now that we know what AI is good at, which tools should we use?"</li></ul></aside>
+</section>
+
+<section class="slide" data-section="03 Tools">
+  <h2>Tools that generate and tools that evaluate</h2>
+  <div class="cols cols-2">
+    <div class="card accent">
+      <span class="tag accent">Generative</span>
+      <h3>Creates copy</h3>
+      <p>Drafts, variants, tone shifts, shorter versions, options to address feedback.</p>
+    </div>
+    <div class="card warn">
+      <span class="tag warn">Evaluative</span>
+      <h3>Checks copy</h3>
+      <p>Compares copy against your rules: terms, case, length, tone, accessibility.</p>
+    </div>
+  </div>
+  <table style="margin-top:24px">
+    <tr><th>Tool type</th><th>Generate</th><th>Evaluate</th><th>Best for</th></tr>
+    <tr><td><strong>Figma plugins and tools</strong></td><td class="muted">Sometimes</td><td class="yes">Yes</td><td>In-place evaluation: copy in the context of the design and layout</td></tr>
+    <tr><td><strong>LLMs, such as Claude skills</strong></td><td class="yes">Yes</td><td class="yes">Yes</td><td>Generating and evaluating anywhere text lives: docs, strings, screenshots</td></tr>
+  </table>
+  <aside class="notes" data-time="12:30">
+    <ul>
+      <li>Figma tools see the layout: space, hierarchy, the screen around the string.</li>
+      <li>LLM skills are flexible: one instruction file can generate and review.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide" data-section="03 Tools">
+  <h2>Which tool to use when</h2>
+  <table>
+    <tr><th>Task</th><th>Type</th><th>Where</th></tr>
+    <tr><td>Reviewing a whole Figma file before handoff</td><td>Evaluative</td><td>Figma tool or plugin</td></tr>
+    <tr><td>Drafting options for an empty state</td><td>Generative</td><td>LLM with your voice guide</td></tr>
+    <tr><td>Checking an error message against guidelines</td><td>Evaluative</td><td>Claude skill or Figma tool</td></tr>
+    <tr><td>Auditing 200 strings exported from code</td><td>Evaluative</td><td>LLM with a specialized skill</td></tr>
+    <tr><td>Replying to stakeholder feedback</td><td>Generative</td><td>Approved enterprise LLM</td></tr>
+  </table>
+  <div class="callout">Evaluate copy where it lives, for example in Figma. Generate copy where you can give the most context.</div>
+  <aside class="notes" data-time="14:00">
+    <ul>
+      <li>Ask the audience to think of one task from their week and place it in this table.</li>
+    </ul>
+  </aside>
+</section>
+
+<!-- ============ 04 INSTRUCTIONS ============ -->
+
+<section class="slide dark divider" data-section="04 Instructions">
+  <div class="num">4</div>
+  <h1>Structuring instructions</h1>
+  <aside class="notes" data-time="16:00 · section: 7 min"><ul><li>Transition: "Tools are only as good as the instructions behind them."</li></ul></aside>
+</section>
+
+<section class="slide" data-section="04 Instructions">
+  <h2>Why structure your instructions</h2>
+  <div class="cols cols-3 grow">
+    <div class="card accent"><h3>For the model</h3><p>It follows rules in sections and lists more reliably than rules in one long paragraph.</p></div>
+    <div class="card accent"><h3>For your team</h3><p>Anyone can read, review, and improve the same instructions.</p></div>
+    <div class="card accent"><h3>For your tools</h3><p>Markdown is the shared format for prompts, Claude skills, custom GPTs, and project rules.</p></div>
+  </div>
+  <aside class="notes" data-time="16:30">
+    <ul>
+      <li>Markdown isn't code. If you can write a bulleted list, you can write markdown.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide" data-section="04 Instructions">
+  <h2>Markdown basics</h2>
+  <table>
+    <tr><th>You type</th><th>You get</th><th>Use it in prompts for</th></tr>
+    <tr><td><code># Heading</code></td><td>Main heading</td><td>Name of the tool or task</td></tr>
+    <tr><td><code>## Section</code></td><td>Subheading</td><td>Sections: Context, Rules, Examples, Output</td></tr>
+    <tr><td><code>- item</code></td><td>Bulleted list</td><td>Rules and constraints</td></tr>
+    <tr><td><code>1. step</code></td><td>Numbered list</td><td>Steps the model must follow in order</td></tr>
+    <tr><td><code>**bold**</code></td><td><strong>Bold</strong></td><td>Rules that must never be broken</td></tr>
+    <tr><td><code>| a | b |</code></td><td>Table</td><td>Terminology lists and output format</td></tr>
+  </table>
+  <aside class="notes" data-time="17:00">
+    <ul>
+      <li>Use bold sparingly. If everything is important, nothing is.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide" data-section="04 Instructions">
+  <h2>What to include in a copy instruction</h2>
+  <div class="cols cols-5 grow" style="gap:16px">
+    <div class="card accent"><span class="tag accent">1</span><h3>Task</h3><p>What to do and for which UI element</p></div>
+    <div class="card accent"><span class="tag accent">2</span><h3>Context</h3><p>Users, product facts, where the copy appears</p></div>
+    <div class="card accent"><span class="tag accent">3</span><h3>Rules</h3><p>Voice, terminology, case, character limits</p></div>
+    <div class="card accent"><span class="tag accent">4</span><h3>Examples</h3><p>Good and bad, with a reason for each</p></div>
+    <div class="card accent"><span class="tag accent">5</span><h3>Output</h3><p>Format you want back: options, table, rationale</p></div>
+  </div>
+  <aside class="notes" data-time="18:00">
+    <ul>
+      <li>Most bad outputs trace back to a missing block, usually Context or Examples.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide" data-section="04 Instructions" style="padding-top:44px">
+  <h2 style="margin-bottom:16px; font-size:38px">Example: an error message review skill</h2>
+<pre style="font-size:13.5px; line-height:1.42; padding:18px 24px; flex-shrink:0"><span class="c">---
+name: error-message-review
+description: Review and rewrite error messages. Use when someone shares an error, toast, or inline validation.
+---</span>
+
+<span class="h"># Error message reviewer</span>
+
+<span class="h">## Task</span>
+Review the error message. Then suggest up to 3 rewrites.
+
+<span class="h">## Context</span>
+Ask for these if they're missing:
+<span class="k">-</span> Where it appears (toast, inline, modal)
+<span class="k">-</span> What caused the error and what the user can do next
+
+<span class="h">## Rules</span>
+<span class="k">-</span> Say what happened and what to do next.
+<span class="k">-</span> Use sentence case. Use "select", not "choose". Use "sign in", not "log in".
+<span class="k">-</span> <span class="k">**</span>Never blame the user.<span class="k">**</span> Avoid "invalid", "illegal", and "failed to".
+<span class="k">-</span> Toasts: 90 characters max.
+
+<span class="h">## Examples</span>
+Bad: "Invalid input. Error 422."  Good: "Enter a date in the future, like 12/31/2026."
+
+<span class="h">## Output</span>
+A table with: Issue | Why it matters | Suggested fix</pre>
+  <aside class="notes" data-time="19:00">
+    <ul>
+      <li>Point to each of the five blocks in the file.</li>
+      <li>"Ask for these if missing" stops the model from guessing product facts.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide" data-section="04 Instructions">
+  <h2>Best practices for writing instructions</h2>
+  <div class="cols cols-2">
+    <ul class="clean small">
+      <li><strong>Be specific.</strong> Write "60 characters max", not "keep it short".</li>
+      <li><strong>Explain why.</strong> The model applies a rule better when it knows the reason.</li>
+      <li><strong>Show good and bad examples.</strong> Examples often work better than more rules.</li>
+      <li><strong>Say what to do,</strong> not only what to avoid.</li>
+    </ul>
+    <ul class="clean small">
+      <li><strong>Give each tool one job.</strong> Use separate tools for errors, empty states, and notifications.</li>
+      <li><strong>Ask for missing context.</strong> Tell the model to ask instead of guessing.</li>
+      <li><strong>Keep it short.</strong> Remove rules it already follows.</li>
+      <li><strong>Version and share it.</strong> Maintain it like any other design system asset.</li>
+    </ul>
+  </div>
+  <aside class="notes" data-time="20:00">
+    <ul>
+      <li>Highlight "one tool, one job". It ties back to building specialized tools.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide" data-section="04 Instructions">
+  <h2>Where to learn more</h2>
+  <div class="cols cols-2 grow">
+    <div class="card accent">
+      <h3>Markdown</h3>
+      <p>Markdown Guide: basic syntax and cheat sheet<br><span class="muted">markdownguide.org</span></p>
+    </div>
+    <div class="card accent">
+      <h3>Prompting and skills</h3>
+      <p>Anthropic docs: prompt engineering and Claude skills<br><span class="muted">docs.claude.com</span></p>
+      <p style="margin-top:10px">OpenAI docs: prompting guide<br><span class="muted">platform.openai.com/docs</span></p>
+    </div>
+    <div class="card good" style="grid-column: span 2">
+      <h3>Start with what you already have</h3>
+      <p>Most of your rules can come from your voice and tone guide, glossary, design system docs, and past review comments.</p>
+    </div>
+  </div>
+  <aside class="notes" data-time="20:45">
+    <ul>
+      <li>Share links in the chat after the session.</li>
+      <li>Past review comments are gold: each recurring comment is a rule waiting to be written.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide demo" data-section="04 Instructions">
+  <div class="eyebrow">Live demo 1 · about 2 min</div>
+  <h2>Generate and review copy with a Claude skill</h2>
+  <div class="placeholder">Placeholder: demo tool and file</div>
+  <div class="flow">
+    <div class="step"><div class="n">1</div><p>Open the error message review skill</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">2</div><p>Share a screenshot and a rough draft</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">3</div><p>Get a review table and 3 options</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">4</div><p>Pick, edit, and explain why</p></div>
+  </div>
+  <div class="callout">Watch for: does it ask for missing context? Does it follow the terminology rules?</div>
+  <aside class="notes" data-time="21:00">
+    <ul>
+      <li>Have screenshots ready as a fallback if the live demo fails.</li>
+      <li>Show one thing it gets wrong and how you'd fix the instructions.</li>
+    </ul>
+  </aside>
+</section>
+
+<!-- ============ 05 EVALS ============ -->
+
+<section class="slide dark divider" data-section="05 Evals">
+  <div class="num">5</div>
+  <h1>Evals: how to test</h1>
+  <aside class="notes" data-time="23:00 · section: 5 min"><ul><li>Transition: "How do you know your instructions actually work?"</li></ul></aside>
+</section>
+
+<section class="slide" data-section="05 Evals">
+  <h2>What's an eval?</h2>
+  <p class="lead">A repeatable test that checks whether your prompt or tool does what you expect across many examples.</p>
+  <div class="flow" style="margin-top:32px">
+    <div class="step"><div class="n">1 · Collect</div><p>10–20 real test cases, including edge cases: long names, plurals, legal copy, tricky terms</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">2 · Define</div><p>Clear pass or fail criteria, written as a checklist</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">3 · Run and score</div><p>Score by hand, or use an LLM as a judge and spot-check it</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">4 · Compare</div><p>Change one thing, rerun, compare results</p></div>
+  </div>
+  <aside class="notes" data-time="23:30">
+    <ul>
+      <li>Change one thing at a time, or you won't know what helped.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide" data-section="05 Evals">
+  <h2>Example: an eval sheet</h2>
+  <table>
+    <tr><th>Test case</th><th>Sentence case</th><th>Approved terms</th><th>Fits limit</th><th>Next step</th><th>No blame</th><th>Result</th></tr>
+    <tr><td>File too large</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">Pass</td></tr>
+    <tr><td>Session expired</td><td class="yes">✓</td><td class="no">✗ "Log in"</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">Fail</td></tr>
+    <tr><td>Wrong password</td><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">✗ "Invalid"</td><td class="no">Fail</td></tr>
+    <tr><td>No internet</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">✗ 112 chars</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">Fail</td></tr>
+  </table>
+  <div class="callout">For each failure, add a rule, an example, or more context. Then rerun the whole set.</div>
+  <aside class="notes" data-time="24:30">
+    <ul>
+      <li>A spreadsheet is enough. No special tools needed to start.</li>
+      <li>"Log in" slipped through: the glossary rule needs an example.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide" data-section="05 Evals">
+  <h2>Eval tips</h2>
+  <div class="cols cols-2 grow">
+    <ul class="clean small">
+      <li><strong>Keep a reference set:</strong> strings you know are right, to compare against</li>
+      <li><strong>Rerun after every change</strong> to instructions, and when the model updates</li>
+      <li><strong>Log failures</strong> and turn each one into a rule or example</li>
+    </ul>
+    <div class="cols" style="grid-template-columns:1fr; gap:16px; align-self:start">
+      <div class="card accent"><h3>AI can check rules</h3><p>Case, terms, length, words to avoid</p></div>
+      <div class="card good"><h3>People judge meaning</h3><p>Tone, empathy, clarity, fit for the situation</p></div>
+    </div>
+  </div>
+  <aside class="notes" data-time="25:30">
+    <ul>
+      <li>LLM-as-judge is useful but needs spot-checking. It shares the same blind spots.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide demo" data-section="05 Evals">
+  <div class="eyebrow">Live demo 2 · about 2 min</div>
+  <h2>Evaluate copy in place in Figma</h2>
+  <div class="placeholder">Placeholder: Figma file and plugin or tool</div>
+  <div class="flow">
+    <div class="step"><div class="n">1</div><p>Select a frame or flow</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">2</div><p>Run the evaluation tool</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">3</div><p>Review flagged issues in context</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">4</div><p>Fix and recheck</p></div>
+  </div>
+  <div class="callout">Watch for: what it catches in context that a text-only check would miss, like space, hierarchy, or repeated labels.</div>
+  <aside class="notes" data-time="26:00">
+    <ul>
+      <li>Contrast with demo 1: same goal, different place.</li>
+      <li>Fallback: screenshots of before and after.</li>
+    </ul>
+  </aside>
+</section>
+
+<!-- ============ 06 COMMON ISSUES ============ -->
+
+<section class="slide dark divider" data-section="06 Common issues">
+  <div class="num">6</div>
+  <h1>Common issues when generating copy with LLMs</h1>
+  <aside class="notes" data-time="28:00 · section: 3 min"><ul><li>Transition: "Here's what to look for when you review."</li></ul></aside>
+</section>
+
+<section class="slide" data-section="06 Common issues">
+  <h2 style="margin-bottom:20px">Common issues and what helps</h2>
+  <table>
+    <tr><th>Issue</th><th>What helps</th></tr>
+    <tr><td><strong>Title Case</strong> by default</td><td>A sentence case rule with examples</td></tr>
+    <tr><td><strong>Generic filler:</strong> "Oops!", "seamlessly", "unlock the power of"</td><td>A list of words to avoid, plus examples in your voice</td></tr>
+    <tr><td><strong>Too long:</strong> LLMs count characters poorly</td><td>Check length with a tool, ask for several lengths</td></tr>
+    <tr><td><strong>Invented features</strong> or system behavior</td><td>Product facts, and ask it to flag assumptions</td></tr>
+    <tr><td><strong>Terms change</strong> between runs</td><td>A glossary in the instructions</td></tr>
+    <tr><td><strong>Meaning lost</strong> when shortening</td><td>Ask it to list what it removed</td></tr>
+    <tr><td><strong>Over-friendly:</strong> exclamation marks and emoji in errors</td><td>Tone rules for each context</td></tr>
+    <tr><td><strong>Accessibility gaps:</strong> "Click here", "see the panel on the right"</td><td>Accessibility rules, plus human review</td></tr>
+  </table>
+  <aside class="notes" data-time="28:30">
+    <ul>
+      <li>Don't read the whole table. Pick 3: title case, invented features, accessibility.</li>
+      <li>Accessibility: descriptive link text, no directional or color-only cues.</li>
+    </ul>
+  </aside>
+</section>
+
+<!-- ============ 07 WORKFLOWS ============ -->
+
+<section class="slide dark divider" data-section="07 Workflows">
+  <div class="num">7</div>
+  <h1>AI-powered content design workflows</h1>
+  <aside class="notes" data-time="31:00 · section: 6 min"><ul><li>Transition: "Let's put it together for your team."</li><li>Refer back to the opening poll and spend more time on the workflow that matches the majority.</li></ul></aside>
+</section>
+
+<section class="slide" data-section="07 Workflows">
+  <h2>Workflow for content designers</h2>
+  <div class="flow">
+    <div class="step"><div class="n">Build</div><p>Turn guidelines into skills and evaluation tools</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">Draft</div><p>You and designers draft with the tools</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">Review</div><p>You review the copy that matters most</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">Improve</div><p>Run evals and update instructions</p></div>
+  </div>
+  <div class="callout">You build and maintain the tools, edit copy, and own its quality. Your guidelines get applied even when you're not reviewing.</div>
+  <aside class="notes" data-time="31:45">
+    <ul>
+      <li>This is how you become invaluable: you scale your expertise.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide" data-section="07 Workflows">
+  <h2>Workflow for teams with a consulting content designer</h2>
+  <div class="cols cols-2 grow">
+    <div class="card accent">
+      <span class="tag accent">Designers</span>
+      <ul class="clean small">
+        <li>Use shared tools for everyday copy: labels, tooltips, helper text</li>
+        <li>Run the evaluation tool before asking for review</li>
+        <li>Bring a draft and context to every review</li>
+      </ul>
+    </div>
+    <div class="card good">
+      <span class="tag good">Content designer</span>
+      <ul class="clean small">
+        <li>Builds and maintains the shared tools and rules</li>
+        <li>Reviews high-risk copy: errors, onboarding, pricing, legal, AI disclosures</li>
+        <li>Turns recurring review comments into new rules</li>
+      </ul>
+    </div>
+  </div>
+  <aside class="notes" data-time="33:30">
+    <ul>
+      <li>The feedback loop is key: the same comment twice means a missing rule.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide" data-section="07 Workflows">
+  <h2>Workflow for teams without content designers</h2>
+  <div class="cols cols-2 grow">
+    <ul class="clean small">
+      <li><strong>Create one page</strong> with your voice, key terms, and formatting rules</li>
+      <li><strong>Build one review tool</strong> for the UI element you write most</li>
+      <li><strong>Peer review</strong> with a shared checklist</li>
+    </ul>
+    <ul class="clean small">
+      <li><strong>Borrow</strong> from your design system docs and public style guides</li>
+      <li><strong>Test copy</strong> with real users in usability sessions</li>
+      <li><strong>Bring in a content designer</strong> for an audit when you can</li>
+    </ul>
+  </div>
+  <div class="callout warn">Without a content designer, evals and user testing matter even more.</div>
+  <aside class="notes" data-time="35:00">
+    <ul>
+      <li>Don't wait for a perfect style guide. One page is enough to start.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide" data-section="07 Workflows">
+  <h2>Review checklist for any team</h2>
+  <div class="cols cols-2">
+    <ul class="clean small">
+      <li><strong>Clear:</strong> says what happened and what to do next</li>
+      <li><strong>Accurate:</strong> matches what the product actually does</li>
+      <li><strong>Consistent:</strong> approved terms, sentence case, formats</li>
+      <li><strong>Concise:</strong> fits the space, no filler</li>
+    </ul>
+    <ul class="clean small">
+      <li><strong>Empathetic:</strong> right tone for the situation, no blame</li>
+      <li><strong>Accessible:</strong> descriptive links, no direction or color-only cues, works with screen readers</li>
+      <li><strong>Translatable:</strong> no idioms, no strings built from fragments</li>
+    </ul>
+  </div>
+  <div class="callout">Use the same checklist for human review, AI evaluation tools, and evals.</div>
+  <aside class="notes" data-time="36:00">
+    <ul>
+      <li>One checklist, three uses. That's what makes quality independent of who wrote it.</li>
+    </ul>
+  </aside>
+</section>
+
+<!-- ============ 08 PRINCIPLES ============ -->
+
+<section class="slide dark divider" data-section="08 Principles">
+  <div class="num">8</div>
+  <h1>Principles and next steps</h1>
+  <aside class="notes" data-time="37:00 · section: 3 min"><ul><li>Transition: "Let's close with how to do this responsibly."</li></ul></aside>
+</section>
+
+<section class="slide" data-section="08 Principles">
+  <h2>Principles for using AI responsibly</h2>
+  <div class="cols cols-3 grow" style="gap:20px">
+    <div class="card accent"><h3>You make the call</h3><p>AI suggests options. You decide and you're responsible for the result.</p></div>
+    <div class="card accent"><h3>Use approved tools</h3><p>Don't paste confidential designs or customer data into public tools.</p></div>
+    <div class="card accent"><h3>Bring context</h3><p>Share a draft, product facts, and constraints.</p></div>
+    <div class="card accent"><h3>Verify facts</h3><p>Check system behavior with your PM and engineers.</p></div>
+    <div class="card accent"><h3>Test with people</h3><p>Only usability testing shows what users actually understand.</p></div>
+    <div class="card accent"><h3>Check accessibility</h3><p>Review every AI suggestion for accessibility before you use it.</p></div>
+  </div>
+  <aside class="notes" data-time="37:30">
+    <ul>
+      <li>These build credibility with your team: you're the one using AI carefully, not blindly.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide" data-section="08 Principles">
+  <h2>What to try next week</h2>
+  <div class="flow grow" style="max-height:300px">
+    <div class="step"><div class="n">Step 1</div><h3>Pick one UI element</h3><p>Choose the one your team writes most often: errors, empty states, or notifications.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">Step 2</div><h3>Write one instruction</h3><p>One markdown page: task, context, rules, examples, output.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">Step 3</div><h3>Test and share it</h3><p>Run it on 10 real strings, fix what fails, and share it with your team.</p></div>
+  </div>
+  <aside class="notes" data-time="38:30">
+    <ul>
+      <li>Small and specific beats big and vague.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide title" data-section="Q&amp;A">
+  <h1>Thank you</h1>
+  <p class="subtitle">Questions?</p>
+  <p class="speaker">Kalina Tyrkiel-Szymańska<span>Placeholder: LinkedIn or contact link</span></p>
+  <aside class="notes" data-time="40:00">
+    <ul>
+      <li>Open Q&amp;A. Start with chat questions collected during the session.</li>
+      <li>Remind people the recording and links will follow.</li>
+    </ul>
+  </aside>
+</section>
+
+</div>
+
+<div id="notes"></div>
+
+<script>
+  const stage = document.getElementById('stage');
+  const slides = [...document.querySelectorAll('.slide')];
+  const notesEl = document.getElementById('notes');
+  const progress = document.getElementById('progress');
+  let current = 0;
+
+  slides.forEach((s, i) => {
+    if (i === 0) return;
+    const f = document.createElement('div');
+    f.className = 'slide-footer';
+    f.innerHTML = `<span></span><span>${i + 1} / ${slides.length}</span>`;
+    s.appendChild(f);
+  });
+
+  function fit() {
+    const scale = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+    stage.style.transform = `translate(-50%, -50%) scale(${scale})`;
+  }
+
+  function show(n) {
+    current = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach((s, i) => s.classList.toggle('active', i === current));
+    progress.style.width = `${((current + 1) / slides.length) * 100}%`;
+    const notes = slides[current].querySelector('.notes');
+    notesEl.innerHTML = notes
+      ? `<div class="time">${notes.dataset.time || ''}</div>${notes.innerHTML}`
+      : '';
+    history.replaceState(null, '', `#${current + 1}`);
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); show(current + 1); }
+    else if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); show(current - 1); }
+    else if (e.key === 'Home') show(0);
+    else if (e.key === 'End') show(slides.length - 1);
+    else if (e.key.toLowerCase() === 'n') notesEl.classList.toggle('open');
+    else if (e.key.toLowerCase() === 'f') {
+      document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+    }
+  });
+
+  window.addEventListener('resize', fit);
+  fit();
+  show((parseInt(location.hash.slice(1), 10) || 1) - 1);
+</script>
+</body>
+</html>

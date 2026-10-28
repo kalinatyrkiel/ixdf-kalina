@@ -428,6 +428,10 @@
   /* Poll */
   .slide.poll { background: var(--dark-2); color: #fff; }
   .slide.poll .eyebrow { color: #4fc3f2; }
+  .slide.poll .poll-sub {
+    font-size: 22px; font-weight: 700; color: #b3b3b3; margin-top: 8px; margin-bottom: 4px;
+  }
+  .slide.poll h2 { margin-bottom: 8px; }
   .slide.poll .slide-footer { color: #b3b3b3; }
   .poll-options { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 12px; }
   .poll-option { background: #333; border: 1px solid #4b4b4b; border-radius: var(--radius); padding: 22px 26px; font-size: 24px; line-height: 1.35; display: flex; gap: 18px; align-items: center; }
@@ -493,8 +497,8 @@
 </section>
 
 <section class="slide poll" data-section="Intro">
-  <div class="eyebrow">Reply with a letter in the chat</div>
-  <h2>Which best describes you?</h2>
+  <h2>Reply with a letter in the chat</h2>
+  <div class="eyebrow poll-sub">Which best describes you?</div>
   <div class="poll-options" style="grid-template-columns:1fr">
     <div class="poll-option"><b>A</b>I'm a content designer or UX writer</div>
     <div class="poll-option"><b>B</b>I'm not a content designer, but we have content designers in our organization</div>
@@ -503,8 +507,8 @@
 </section>
 
 <section class="slide poll" data-section="Intro">
-  <div class="eyebrow">Reply with a letter in the chat</div>
-  <h2>How do you use AI for UX copy today?</h2>
+  <h2>Reply with a letter in the chat</h2>
+  <div class="eyebrow poll-sub">How do you use AI for UX copy today?</div>
   <div class="poll-options">
     <div class="poll-option"><b>A</b>I don't use it yet</div>
     <div class="poll-option"><b>B</b>Occasionally, to get a few options</div>
@@ -863,43 +867,14 @@
   <h2>What is the one UX writing task you feel AI could help you with the most?</h2>
 </section>
 
-<!-- ============ 03 TOOLS ============ -->
+<!-- ============ 03 INSTRUCTIONS ============ -->
 
-<section class="slide dark divider" data-section="03 Tools">
+<section class="slide dark divider" data-section="03 Instructions">
   <div class="num">3</div>
-  <h1>Generative vs evaluative tools</h1>
-</section>
-
-<section class="slide" data-section="03 Tools">
-  <h2>Tools that generate and tools that evaluate</h2>
-  <div class="cols cols-2">
-    <div class="card accent">
-      <span class="tag accent">Generative</span>
-      <h3>Creates copy</h3>
-      <p>Drafts, variants, tone shifts, shorter versions.</p>
-    </div>
-    <div class="card warn">
-      <span class="tag warn">Evaluative</span>
-      <h3>Checks copy</h3>
-      <p>Compares copy against rules.</p>
-    </div>
-  </div>
-  <table style="margin-top:24px">
-    <tr><th>Tool type</th><th>Generate</th><th>Evaluate</th><th>Best for</th></tr>
-    <tr><td><strong>Figma plugins and tools</strong></td><td class="limited">⚠️ Limited</td><td class="yes">Yes</td><td>In-place evaluation: copy in the context of the design and layout</td></tr>
-    <tr><td><strong>LLMs (ChatGPT, Claude skills)</strong></td><td class="yes">Yes</td><td class="yes">Yes</td><td>Generating and evaluating anywhere text lives: docs, strings, screenshots</td></tr>
-  </table>
-  <div class="callout">Evaluate copy where it lives, for example in Figma. Generate copy where you can give the most context.</div>
-</section>
-
-<!-- ============ 04 INSTRUCTIONS ============ -->
-
-<section class="slide dark divider" data-section="04 Instructions">
-  <div class="num">4</div>
   <h1>Structuring instructions</h1>
 </section>
 
-<section class="slide slide-why-structure" data-section="04 Instructions">
+<section class="slide slide-why-structure" data-section="03 Instructions">
   <h2>Why structure instructions?</h2>
   <div class="why-structure-split grow">
     <div class="why-structure-copy">
@@ -930,7 +905,7 @@ Table: Issue | Why it matters | Suggested fix</pre>
   </div>
 </section>
 
-<section class="slide" data-section="04 Instructions">
+<section class="slide" data-section="03 Instructions">
   <h2>Markdown basics</h2>
   <table>
     <tr><th>You type</th><th>You get</th><th>Use it in prompts for</th></tr>
@@ -943,18 +918,7 @@ Table: Issue | Why it matters | Suggested fix</pre>
   </table>
 </section>
 
-<section class="slide" data-section="04 Instructions">
-  <h2>What to include in a copy instruction</h2>
-  <div class="cols cols-5 grow" style="gap:16px">
-    <div class="card accent"><span class="tag accent">1</span><h3>Task</h3><p>What to do and for which UI element</p></div>
-    <div class="card accent"><span class="tag accent">2</span><h3>Context</h3><p>Users, product facts, where the copy appears</p></div>
-    <div class="card accent"><span class="tag accent">3</span><h3>Rules</h3><p>Voice, terminology, case, character limits</p></div>
-    <div class="card accent"><span class="tag accent">4</span><h3>Examples</h3><p>Good and bad, with a reason for each</p></div>
-    <div class="card accent"><span class="tag accent">5</span><h3>Output</h3><p>Format you want back: options, table, rationale</p></div>
-  </div>
-</section>
-
-<section class="slide slide-dense slide-skill-example" data-section="04 Instructions">
+<section class="slide slide-dense slide-skill-example" data-section="03 Instructions">
   <h2 style="font-size:38px">Example: an error message review skill</h2>
 <pre class="md-instruction skill-code"><span class="skill-line" data-explain="Frontmatter tells Claude <strong>when to use</strong> this skill so it does not run on unrelated chats."><span class="c">---</span></span>
 <span class="skill-line" data-explain="A short <strong>id</strong> your team can find in a repo or skills folder.">name: error-message-review</span>
@@ -993,7 +957,7 @@ Table: Issue | Why it matters | Suggested fix</pre>
 <span class="skill-line" data-explain="Table columns match how UX writers already review: issue, why it matters, fix. Easier to scan than prose.">A table with: Issue | Why it matters | Suggested fix</span></pre>
 </section>
 
-<section class="slide" data-section="04 Instructions">
+<section class="slide" data-section="03 Instructions">
   <h2>Best practices for writing instructions</h2>
   <div class="cols cols-2">
     <ul class="clean small">
@@ -1003,20 +967,41 @@ Table: Issue | Why it matters | Suggested fix</pre>
       <li><strong>Say what to do,</strong> not only what to avoid.</li>
     </ul>
     <ul class="clean small">
-      <li><strong>Give each tool one job.</strong> Use separate tools for errors, empty states, and notifications.</li>
+      <li><strong>Don't give tools too many jobs.</strong> Use separate tools for errors, empty states, and notifications.</li>
       <li><strong>Ask for missing context.</strong> Tell the model to ask instead of guessing.</li>
-      <li><strong>Keep it short.</strong> Remove rules it already follows.</li>
       <li><strong>Version and share it.</strong> Maintain it like any other design system asset.</li>
     </ul>
   </div>
 </section>
 
-<section class="slide" data-section="04 Instructions">
+<section class="slide" data-section="03 Instructions">
   <h2>Reuse the same markdown across LLMs</h2>
   <p class="lead">One instruction file – used everywhere.</p>
 </section>
 
-<section class="slide" data-section="04 Instructions">
+<section class="slide" data-section="03 Instructions">
+  <h2>Generative vs evaluative tools</h2>
+  <div class="cols cols-2">
+    <div class="card accent">
+      <span class="tag accent">Generative</span>
+      <h3>Creates copy</h3>
+      <p>Drafts, variants, tone shifts, shorter versions.</p>
+    </div>
+    <div class="card warn">
+      <span class="tag warn">Evaluative</span>
+      <h3>Checks copy</h3>
+      <p>Compares copy against rules.</p>
+    </div>
+  </div>
+  <table style="margin-top:24px">
+    <tr><th>Tool type</th><th>Generate</th><th>Evaluate</th><th>Best for</th></tr>
+    <tr><td><strong>Figma plugins and tools</strong></td><td class="limited">⚠️ Limited</td><td class="yes">Yes</td><td>In-place evaluation: copy in the context of the design and layout</td></tr>
+    <tr><td><strong>LLMs (ChatGPT, Claude skills)</strong></td><td class="yes">Yes</td><td class="yes">Yes</td><td>Generating and evaluating anywhere text lives: docs, strings, screenshots</td></tr>
+  </table>
+  <div class="callout">Evaluate copy where it lives, for example in Figma. Generate copy where you can give the most context.</div>
+</section>
+
+<section class="slide" data-section="03 Instructions">
   <h2>Where to learn more</h2>
   <div class="cols cols-2 grow">
     <div class="card accent">
@@ -1035,7 +1020,7 @@ Table: Issue | Why it matters | Suggested fix</pre>
   </div>
 </section>
 
-<section class="slide demo" data-section="04 Instructions">
+<section class="slide demo" data-section="03 Instructions">
   <div class="eyebrow">Live demo 1 · about 2 min</div>
   <h2>Generate and review copy with a Claude skill</h2>
   <div class="placeholder">Placeholder: demo tool and file</div>
@@ -1051,14 +1036,14 @@ Table: Issue | Why it matters | Suggested fix</pre>
   <div class="callout">Watch for: does it ask for missing context? Does it follow the terminology rules?</div>
 </section>
 
-<!-- ============ 05 EVALS ============ -->
+<!-- ============ 04 EVALS ============ -->
 
-<section class="slide dark divider" data-section="05 Evals">
-  <div class="num">5</div>
+<section class="slide dark divider" data-section="04 Evals">
+  <div class="num">4</div>
   <h1>Evals: how to test</h1>
 </section>
 
-<section class="slide" data-section="05 Evals">
+<section class="slide" data-section="04 Evals">
   <h2>What's an eval?</h2>
   <p class="lead">A repeatable test that checks whether your prompt or tool does what you expect across many examples.</p>
   <div class="flow" style="margin-top:32px">
@@ -1072,7 +1057,7 @@ Table: Issue | Why it matters | Suggested fix</pre>
   </div>
 </section>
 
-<section class="slide" data-section="05 Evals">
+<section class="slide" data-section="04 Evals">
   <h2>Example: eval for your inline error tool</h2>
   <p class="small muted" style="margin:-12px 0 16px">Same rules as section 1. Score outputs, then refine the instructions.</p>
   <table>
@@ -1085,19 +1070,7 @@ Table: Issue | Why it matters | Suggested fix</pre>
   <div class="callout">Three failures → add an example of a good inline error, or tighten the "next step" rule. Rerun all four cases.</div>
 </section>
 
-<section class="slide" data-section="05 Evals">
-  <h2>Example: an eval sheet</h2>
-  <table>
-    <tr><th>Test case</th><th>Sentence case</th><th>Approved terms</th><th>Fits limit</th><th>Next step</th><th>No blame</th><th>Result</th></tr>
-    <tr><td>File too large</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">Pass</td></tr>
-    <tr><td>Session expired</td><td class="yes">✓</td><td class="no">✗ "Log in"</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">Fail</td></tr>
-    <tr><td>Wrong password</td><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">✗ "Invalid"</td><td class="no">Fail</td></tr>
-    <tr><td>No internet</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">✗ 112 chars</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">Fail</td></tr>
-  </table>
-  <div class="callout">For each failure, add a rule, an example, or more context. Then rerun the whole set.</div>
-</section>
-
-<section class="slide" data-section="05 Evals">
+<section class="slide" data-section="04 Evals">
   <h2>Eval tips</h2>
   <div class="cols cols-2 grow">
     <ul class="clean small">
@@ -1112,7 +1085,7 @@ Table: Issue | Why it matters | Suggested fix</pre>
   </div>
 </section>
 
-<section class="slide demo" data-section="05 Evals">
+<section class="slide demo" data-section="04 Evals">
   <div class="eyebrow">Live demo 2 · about 2 min</div>
   <h2>Evaluate copy in place in Figma</h2>
   <div class="placeholder">Placeholder: Figma file and plugin or tool</div>
@@ -1128,14 +1101,14 @@ Table: Issue | Why it matters | Suggested fix</pre>
   <div class="callout">Watch for: what it catches in context that a text-only check would miss, like space, hierarchy, or repeated labels.</div>
 </section>
 
-<!-- ============ 06 COMMON ISSUES ============ -->
+<!-- ============ 05 COMMON ISSUES ============ -->
 
-<section class="slide dark divider" data-section="06 Common issues">
-  <div class="num">6</div>
+<section class="slide dark divider" data-section="05 Common issues">
+  <div class="num">5</div>
   <h1>Common issues when generating copy with LLMs</h1>
 </section>
 
-<section class="slide" data-section="06 Common issues">
+<section class="slide" data-section="05 Common issues">
   <h2 style="margin-bottom:20px">Common issues and what helps</h2>
   <table>
     <tr><th>Issue</th><th>What helps</th></tr>
@@ -1150,14 +1123,14 @@ Table: Issue | Why it matters | Suggested fix</pre>
   </table>
 </section>
 
-<!-- ============ 07 WORKFLOWS ============ -->
+<!-- ============ 06 WORKFLOWS ============ -->
 
-<section class="slide dark divider" data-section="07 Workflows">
-  <div class="num">7</div>
+<section class="slide dark divider" data-section="06 Workflows">
+  <div class="num">6</div>
   <h1>AI-powered content design workflows</h1>
 </section>
 
-<section class="slide" data-section="07 Workflows">
+<section class="slide" data-section="06 Workflows">
   <h2>Workflow for content designers</h2>
   <div class="flow">
     <div class="step"><div class="n">Build</div><p>Turn guidelines into skills and evaluation tools</p></div>
@@ -1171,7 +1144,7 @@ Table: Issue | Why it matters | Suggested fix</pre>
   <div class="callout">You build and maintain the tools, edit copy, and own its quality. Your guidelines get applied even when you're not reviewing.</div>
 </section>
 
-<section class="slide" data-section="07 Workflows">
+<section class="slide" data-section="06 Workflows">
   <h2>Workflow for teams with a consulting content designer</h2>
   <div class="cols cols-2 grow">
     <div class="card accent">
@@ -1193,7 +1166,7 @@ Table: Issue | Why it matters | Suggested fix</pre>
   </div>
 </section>
 
-<section class="slide" data-section="07 Workflows">
+<section class="slide" data-section="06 Workflows">
   <h2>Workflow for teams without content designers</h2>
   <div class="cols cols-2 grow">
     <ul class="clean small">
@@ -1210,7 +1183,7 @@ Table: Issue | Why it matters | Suggested fix</pre>
   <div class="callout warn">Without a content designer, evals and user testing matter even more.</div>
 </section>
 
-<section class="slide" data-section="07 Workflows">
+<section class="slide" data-section="06 Workflows">
   <h2>Review checklist for any team</h2>
   <div class="cols cols-2">
     <ul class="clean small">
@@ -1228,14 +1201,14 @@ Table: Issue | Why it matters | Suggested fix</pre>
   <div class="callout">Use the same checklist for human review, AI evaluation tools, and evals.</div>
 </section>
 
-<!-- ============ 08 PRINCIPLES ============ -->
+<!-- ============ 07 PRINCIPLES ============ -->
 
-<section class="slide dark divider" data-section="08 Principles">
-  <div class="num">8</div>
+<section class="slide dark divider" data-section="07 Principles">
+  <div class="num">7</div>
   <h1>Principles and next steps</h1>
 </section>
 
-<section class="slide" data-section="08 Principles">
+<section class="slide" data-section="07 Principles">
   <h2>Principles for using AI responsibly</h2>
   <div class="cols cols-3 grow" style="gap:20px">
     <div class="card accent"><h3>You make the call</h3><p>AI suggests options. You decide and you're responsible for the result.</p></div>
@@ -1247,7 +1220,7 @@ Table: Issue | Why it matters | Suggested fix</pre>
   </div>
 </section>
 
-<section class="slide" data-section="08 Principles">
+<section class="slide" data-section="07 Principles">
   <h2>What to try next week</h2>
   <div class="flow grow" style="max-height:300px">
     <div class="step"><div class="n">Step 1</div><h3>Pick one UI element</h3><p>Choose the one your team writes most often: errors, empty states, or notifications.</p></div>

@@ -45,7 +45,6 @@
     overflow: hidden;
   }
   .slide.active { display: flex; }
-  .slide .notes { display: none; }
 
   /* Chrome */
   .slide-footer {
@@ -180,7 +179,7 @@
   .slide-stakeholder { padding-left: 48px; padding-right: 48px; }
   .slide-stakeholder .slide-footer { left: 48px; right: 48px; }
   .stakeholder-split {
-    display: grid; grid-template-columns: auto 1fr; gap: 28px; flex: 1; min-height: 0; align-items: center;
+    display: grid; grid-template-columns: auto 1fr; gap: 24px; align-items: stretch;
   }
   .figma-mock {
     width: 100%; max-width: 520px; justify-self: start;
@@ -229,27 +228,35 @@
   .stakeholder-steps li { padding: 12px 0; border-bottom: 1px solid var(--line); display: flex; gap: 12px; align-items: flex-start; }
   .stakeholder-steps li:last-child { border-bottom: none; }
   .stakeholder-steps .sn { font-weight: 700; color: var(--accent); flex: 0 0 28px; font-size: 15px; }
-  .stakeholder-side .callout.tip { font-size: 17px; margin-top: 14px; }
-  .slide-stakeholder h2 { margin-bottom: 14px; font-size: 34px; }
-  .stakeholder-layout { display: flex; flex-direction: column; flex: 1; min-height: 0; gap: 12px; }
-  .stakeholder-split { align-items: start; flex: 0 0 auto; }
-  .slide-stakeholder .stakeholder-split .figma-mock { max-width: 440px; }
-  .slide-stakeholder .figma-mock .figma-canvas { min-height: 248px; }
+  .stakeholder-side { display: flex; flex-direction: column; min-height: 100%; }
+  .stakeholder-side .callout.tip { font-size: 17px; margin-top: auto; margin-bottom: 0; }
+  .slide-stakeholder h2 { margin-bottom: 12px; font-size: 34px; }
+  .slide-stakeholder .eyebrow { margin-bottom: 8px; }
+  .stakeholder-layout {
+    display: flex; flex-direction: column; flex: 1; min-height: 0; gap: 14px; justify-content: flex-start;
+  }
+  .slide-stakeholder .stakeholder-split .figma-mock { max-width: 420px; align-self: start; }
+  .slide-stakeholder .figma-mock .figma-canvas { min-height: 0; padding-bottom: 16px; }
   .stakeholder-steps { font-size: 16px; }
-  .stakeholder-steps li { padding: 8px 0; }
-  .stakeholder-remix { flex: 0 0 auto; padding-top: 4px; border-top: 1px solid var(--line); }
-  .stakeholder-remix .remix-label { margin-top: 10px; margin-bottom: 6px; font-size: 14px; }
-  .stakeholder-remix .remix-sources { gap: 8px; display: grid; grid-template-columns: 1fr 1fr; }
+  .stakeholder-steps li { padding: 7px 0; }
+  .stakeholder-remix {
+    flex: 0 0 auto; padding-top: 12px; margin-top: 0; border-top: 1px solid var(--line);
+  }
+  .stakeholder-remix .remix-sources { gap: 10px; display: grid; grid-template-columns: 1fr 1fr; margin-top: 0; }
   .stakeholder-remix .remix-source {
     font-size: 15px; padding: 10px 12px; grid-template-columns: 24px 1fr; gap: 8px; align-items: start;
   }
   .stakeholder-remix .remix-source .rn { font-size: 15px; }
   .stakeholder-remix .remix-source p { font-size: 15px; line-height: 1.35; margin: 0; }
-  .stakeholder-remix .remix-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; align-items: center; margin-top: 8px; }
-  .stakeholder-remix .remix-arrow { font-size: 22px; margin: 0; text-align: center; }
+  .stakeholder-remix .remix-row {
+    display: grid; grid-template-columns: 1fr auto 1fr; gap: 14px; align-items: start; margin-top: 10px;
+  }
+  .stakeholder-remix .remix-arrow { font-size: 20px; margin: 28px 0 0; text-align: center; line-height: 1; }
   .stakeholder-remix .remix-final { min-width: 0; }
-  .stakeholder-remix .remix-result { font-size: 17px; padding: 12px 14px; max-width: none; margin-top: 6px; }
-  .stakeholder-remix .remix-caption { font-size: 16px; margin-top: 10px; max-width: none; line-height: 1.4; }
+  .stakeholder-remix .remix-final .remix-label { margin-top: 0; margin-bottom: 6px; font-size: 14px; }
+  .stakeholder-remix .remix-result { font-size: 16px; padding: 11px 13px; max-width: none; margin-top: 0; line-height: 1.35; }
+  .stakeholder-remix .remix-result.remix-result-note { font-weight: 400; font-size: 15px; border-color: var(--line); border-width: 1px; }
+  .stakeholder-remix .remix-caption { font-size: 15px; margin-top: 8px; max-width: none; line-height: 1.4; }
   .overview-cards .card { display: flex; flex-direction: column; min-height: 132px; }
   .overview-cards .card-num { font-size: 26px; font-weight: 700; color: var(--accent); line-height: 1; margin-bottom: 8px; }
   .overview-cards .card h3 { font-size: 21px; }
@@ -282,7 +289,38 @@
     background: var(--surface); border-radius: var(--radius); flex: 1; min-height: 120px;
   }
   .limit-tip-explain strong { font-weight: 700; }
+  .slide-why-structure h2 { margin-bottom: 18px; }
+  .why-structure-split {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 32px; flex: 1; min-height: 0; align-items: stretch;
+  }
+  .why-structure-copy { display: flex; flex-direction: column; justify-content: center; }
+  .why-structure-copy .lead { max-width: none; margin: 0; }
+  .why-structure-sample-wrap { display: flex; flex-direction: column; min-height: 0; min-width: 0; }
+  .why-structure-filename {
+    font-family: var(--mono); font-size: 13px; color: var(--muted); margin-bottom: 8px;
+  }
+  .why-structure-sample { font-size: 11.5px; line-height: 1.38; margin: 0; flex: 1; min-height: 0; overflow: hidden; }
   .slide-instruction pre.md-instruction { font-size: 13px; line-height: 1.42; margin-top: 0; padding: 14px 16px; }
+  .slide-skill-example { padding-top: 40px; }
+  .slide-skill-example h2 { margin-bottom: 12px; }
+  .slide-skill-example pre.skill-code {
+    font-size: 11.5px; line-height: 1.38; padding: 14px 18px; margin: 0; flex: 1; min-height: 0; white-space: pre-wrap;
+  }
+  .skill-code .skill-line {
+    display: block; margin: 0 -6px; padding: 1px 6px; border-radius: 3px; cursor: default;
+    transition: background .12s;
+  }
+  .skill-code .skill-line.is-active,
+  .skill-code .skill-line:hover { background: rgba(0, 156, 222, 0.22); }
+  .instruction-tooltip {
+    position: fixed; z-index: 9999; max-width: 340px; padding: 12px 14px;
+    background: var(--dark-2); color: #f5f5f5; font-size: 15px; line-height: 1.45;
+    border-radius: var(--radius); pointer-events: none; opacity: 0; visibility: hidden;
+    transition: opacity .12s; box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+    border: 1px solid rgba(0, 156, 222, 0.45);
+  }
+  .instruction-tooltip.visible { opacity: 1; visibility: visible; }
+  .instruction-tooltip strong { color: #fff; font-weight: 700; }
   .limit-example .ui-copy { font-size: 22px; }
   .limit-why { font-size: 19px; line-height: 1.4; color: var(--muted); margin: 0; }
   strong { font-weight: 700; }
@@ -413,17 +451,6 @@
   .agenda .row .t { font-size: 23px; flex: 1; }
   .agenda .row .m { font-size: 18px; color: var(--muted); }
 
-  /* Notes overlay */
-  #notes {
-    position: fixed; left: 0; right: 0; bottom: 0; max-height: 40vh; overflow: auto;
-    background: rgba(35,35,35,.97); color: #fff; padding: 18px 28px 22px;
-    font-size: 17px; line-height: 1.5; display: none; z-index: 10; border-top: 3px solid var(--accent);
-  }
-  #notes.open { display: block; }
-  #notes .time { color: #4fc3f2; font-weight: 700; margin-bottom: 6px; font-size: 15px; }
-  #notes ul { padding-left: 20px; }
-  #notes li { font-size: 17px; margin-bottom: 4px; }
-
   #progress { position: fixed; left: 0; top: 0; height: 4px; background: var(--accent); z-index: 11; transition: width .2s; }
   #help { position: fixed; right: 14px; top: 10px; color: #777; font-size: 12px; z-index: 11; }
 
@@ -431,14 +458,14 @@
     html, body { background: #fff; overflow: visible; height: auto; }
     #stage { position: static; transform: none !important; width: auto; height: auto; }
     .slide { display: flex !important; position: relative; width: 1280px; height: 720px; page-break-after: always; break-after: page; }
-    #notes, #progress, #help { display: none !important; }
+    #progress, #help { display: none !important; }
     @page { size: 1280px 720px; margin: 0; }
   }
 </style>
 </head>
 <body>
 <div id="progress"></div>
-<div id="help">← → navigate · N notes · F fullscreen</div>
+<div id="help">← → navigate · F fullscreen</div>
 
 <div id="stage">
 
@@ -453,12 +480,6 @@
     <p>Kalina Tyrkiel-Szymańska<span>Senior Content Designer at Zendesk</span></p>
   </div>
   <p class="date">November 5, 2026</p>
-  <aside class="notes" data-time="0:00">
-    <ul>
-      <li>Welcome everyone, thank you for joining live or watching the recording.</li>
-      <li>40 minutes of content, then Q&amp;A. Drop questions in the chat anytime.</li>
-    </ul>
-  </aside>
 </section>
 
 <section class="slide" data-section="Intro">
@@ -469,12 +490,6 @@
     <p style="font-size:26px">You'll leave knowing how to build <strong>responsible copy systems for AI</strong>: shared instructions, review steps, and evals.</p>
     <p style="font-size:26px; margin-top:18px">It's as close as it gets to having a <strong>UX writer in every room</strong>.</p>
   </div>
-  <aside class="notes" data-time="0:15">
-    <ul>
-      <li>Thank the host. Read the line and the promise, then move to the poll. About 20 seconds.</li>
-      <li>Optional spoken beat: psychologist by training (helps when you discuss user testing later).</li>
-    </ul>
-  </aside>
 </section>
 
 <section class="slide poll" data-section="Intro">
@@ -485,12 +500,6 @@
     <div class="poll-option"><b>B</b>I'm not a content designer, but we have content designers in our organization</div>
     <div class="poll-option"><b>C</b>I don't work with a content designer</div>
   </div>
-  <aside class="notes" data-time="0:35">
-    <ul>
-      <li>Give 20 seconds. Read out the split.</li>
-      <li>Remember the result: it decides which workflow gets the most time in section 7.</li>
-    </ul>
-  </aside>
 </section>
 
 <section class="slide poll" data-section="Intro">
@@ -502,32 +511,6 @@
     <div class="poll-option"><b>C</b>Regularly, in my everyday design work</div>
     <div class="poll-option"><b>D</b>My team shares prompts, skills, or plugins</div>
   </div>
-  <aside class="notes" data-time="1:00">
-    <ul>
-      <li>Give 20 seconds. Read out the split.</li>
-      <li>If most are A/B: "Great, today is about getting from occasional to repeatable." If C/D: "Today is about making it consistent across the team."</li>
-    </ul>
-  </aside>
-</section>
-
-<section class="slide" data-section="Intro">
-  <h2>Agenda</h2>
-  <div class="agenda">
-    <div class="row"><span class="n">1</span><span class="t">The shift: from writing to guiding</span><span class="m">3 min</span></div>
-    <div class="row"><span class="n">5</span><span class="t">Evals: how to test</span><span class="m">5 min</span></div>
-    <div class="row"><span class="n">2</span><span class="t">What LLMs are good and bad at</span><span class="m">7 min</span></div>
-    <div class="row"><span class="n">6</span><span class="t">Common issues</span><span class="m">3 min</span></div>
-    <div class="row"><span class="n">3</span><span class="t">Generative vs evaluative tools</span><span class="m">4 min</span></div>
-    <div class="row"><span class="n">7</span><span class="t">Workflows for your team</span><span class="m">6 min</span></div>
-    <div class="row"><span class="n">4</span><span class="t">Structuring instructions</span><span class="m">7 min</span></div>
-    <div class="row"><span class="n">8</span><span class="t">Principles and next steps</span><span class="m">3 min</span></div>
-  </div>
-  <p class="muted small" style="margin-top:28px">Then Q&amp;A. Includes 2 live demos.</p>
-  <aside class="notes" data-time="2:00">
-    <ul>
-      <li>Quick walk through. Don't read every line.</li>
-    </ul>
-  </aside>
 </section>
 
 <!-- ============ 01 THE SHIFT ============ -->
@@ -535,7 +518,6 @@
 <section class="slide dark divider" data-section="01 The shift">
   <div class="num">1</div>
   <h1>The shift: from writing to guiding</h1>
-  <aside class="notes" data-time="2:00 · section: 3 min"><ul><li>Transition: "Let's start with the mindset."</li></ul></aside>
 </section>
 
 <section class="slide compare-reveal" data-section="01 The shift">
@@ -568,14 +550,6 @@
       </ul>
     </div>
   </div>
-  <aside class="notes" data-time="2:30">
-    <ul>
-      <li>Walk through the inline error example: generic drafts on the left, rules + one specific line on the right.</li>
-      <li>Step 1: Before only. Click or → to reveal After. ← hides After again.</li>
-      <li>Second beat: permission on the left, payoff on the right. Not everyone has to love writing; AI gives you options to react to.</li>
-      <li>Reviewing well still requires knowing what good copy is.</li>
-    </ul>
-  </aside>
 </section>
 
 <section class="slide" data-section="01 The shift">
@@ -588,13 +562,6 @@
     <div class="step"><div class="n">3 · Refine</div><h3>Fix the instructions</h3><p>Update the prompt or tool, so the next output is better too.</p></div>
   </div>
   <div class="callout">When the output is wrong, check what was missing from your instructions and add it. Everyone who uses them gets the fix.</div>
-  <aside class="notes" data-time="3:30">
-    <ul>
-      <li>This loop is the title of the masterclass. Everything else hangs on it.</li>
-      <li>Refining the instructions is what makes AI use scale beyond you.</li>
-      <li>Evals are how you make review repeatable; we'll build a sheet in section 5 using the inline error example from slide 7.</li>
-    </ul>
-  </aside>
 </section>
 
 <!-- ============ 02 GOOD AND BAD ============ -->
@@ -602,7 +569,6 @@
 <section class="slide dark divider" data-section="02 Strengths and limits">
   <div class="num">2</div>
   <h1>What LLMs are good and bad at in UX writing</h1>
-  <aside class="notes" data-time="5:15 · section: 7 min"><ul><li>Transition: "To guide AI well, you need to know its strengths and limits."</li></ul></aside>
 </section>
 
 <section class="slide slide-dense" data-section="02 Strengths and limits">
@@ -613,12 +579,6 @@
     <div class="card good"><span class="card-num">3</span><h3>Critique</h3><p>Judgment on what you already wrote</p></div>
     <div class="card good"><span class="card-num">4</span><h3>Providing alternatives</h3><p>Options to react to, plus trade-offs</p></div>
   </div>
-  <aside class="notes" data-time="5:30">
-    <ul>
-      <li>Overview only. Next slides: four use cases (example plus how-to, except patterns: one slide with results and tip).</li>
-      <li>The common thread: they're great when <em>you</em> provide the source of truth.</li>
-    </ul>
-  </aside>
 </section>
 
 <section class="slide slide-dense slide-example" data-section="02 Strengths and limits">
@@ -651,11 +611,6 @@
       </div>
     </div>
   </div>
-  <aside class="notes" data-time="5:40">
-    <ul>
-      <li>Use case 1 of 4. One pass fixes term and case when the rules are in the prompt. Row 3 is the goal for length; often needs a retry or eval.</li>
-    </ul>
-  </aside>
 </section>
 
 <section class="slide slide-dense slide-instruction slide-instruction-explore" data-section="02 Strengths and limits">
@@ -680,12 +635,6 @@
       </div>
     </div>
   </div>
-  <aside class="notes" data-time="5:50">
-    <ul>
-      <li>Same pattern as character limits: challenge, then hover each line in the markdown.</li>
-      <li>Proper nouns may stay capitalized. Your style guide decides.</li>
-    </ul>
-  </aside>
 </section>
 
 <section class="slide slide-dense slide-instruction slide-limit-chars slide-instruction-explore" data-section="02 Strengths and limits">
@@ -711,13 +660,6 @@
       </div>
     </div>
   </div>
-  <aside class="notes" data-time="6:05">
-    <ul>
-      <li>Challenge first, then walk the markdown: hover each rule and example; read the explain box on the right.</li>
-      <li>Bad example: 112 chars is why you still verify length after generation.</li>
-      <li>Row 3 on the previous slide is the length goal; one rule plus two examples beats vague advice.</li>
-    </ul>
-  </aside>
 </section>
 
 <section class="slide slide-dense slide-example" data-section="02 Strengths and limits">
@@ -747,13 +689,6 @@
       <div class="callout tip">💡 <strong>Tip:</strong> Biggest time saver before a release or design system audit.</div>
     </div>
   </div>
-  <aside class="notes" data-time="6:00">
-    <ul>
-      <li>Use case 2 of 4. Numbers are illustrative. The win is grouping by type.</li>
-      <li>You fix the list in your CMS or Figma; the model did the tedious scan.</li>
-      <li>Prompt to paste with the export: list inconsistent terms, capitalization, tone, and sentence structure; group by type.</li>
-    </ul>
-  </aside>
 </section>
 
 <section class="slide slide-dense slide-example" data-section="02 Strengths and limits">
@@ -768,14 +703,6 @@
       <li><strong>No next step:</strong> user doesn't know what to do next</li>
     </ul>
   </div>
-  <aside class="notes" data-time="6:30">
-    <ul>
-      <li>Use case 3 of 4. Name problems first, then iterate.</li>
-      <li>Evaluative beat. Stops the model from "helpfully" rewriting before you agree on what's wrong.</li>
-      <li>When they're ready to fix it, switch to alternatives, not before.</li>
-      <li>Same string as the inline error on slide 7.</li>
-    </ul>
-  </aside>
 </section>
 
 <section class="slide slide-dense slide-example slide-options" data-section="02 Strengths and limits">
@@ -796,11 +723,6 @@
       <p class="trade">Less formal</p>
     </div>
   </div>
-  <aside class="notes" data-time="7:00">
-    <ul>
-      <li>Use case 4 of 4. You pick and edit. Legal may veto option 2's "we can't".</li>
-    </ul>
-  </aside>
 </section>
 
 <section class="slide slide-dense slide-example" data-section="02 Strengths and limits">
@@ -821,18 +743,12 @@
   <p class="remix-label">Final sentence</p>
   <div class="remix-result">This file type isn't supported. Try a PDF or PNG.</div>
   <p class="remix-caption">Direct opening from 1, next step from 2. You're in control. <strong>You're the DJ</strong> 💿</p>
-  <aside class="notes" data-time="7:10">
-    <ul>
-      <li>This is still your judgment, not paste-and-ship from the model.</li>
-      <li>No "we can't" if legal pushes back. Connect to slide 16: not option 1 or 2 wholesale.</li>
-    </ul>
-  </aside>
 </section>
 
 <section class="slide slide-dense slide-stakeholder" data-section="02 Strengths and limits">
   <div class="eyebrow">4. Providing alternatives</div>
   <h2>From stakeholder feedback to a decision</h2>
-  <div class="stakeholder-layout grow">
+  <div class="stakeholder-layout">
     <div class="stakeholder-split">
       <div class="figma-mock">
         <div class="figma-bar">
@@ -878,25 +794,18 @@
       </div>
       <div class="remix-row">
         <div class="remix-final">
-          <p class="remix-label" style="margin-top:0">Final sentence</p>
+          <p class="remix-label">Final sentence</p>
           <div class="remix-result">This file type isn't supported. Try a PDF or PNG.</div>
         </div>
         <div class="remix-arrow">→</div>
         <div class="remix-final">
-          <p class="remix-label" style="margin-top:0">What you tell Alex</p>
-          <div class="remix-result" style="font-weight:400;font-size:16px;border-color:var(--line);border-width:1px">Dropped "Upload failed" and "Invalid."</div>
+          <p class="remix-label">What you tell Alex</p>
+          <div class="remix-result remix-result-note">Dropped "Upload failed" and "Invalid."</div>
         </div>
       </div>
       <p class="remix-caption">Same remix as the previous slide. Here you also <strong>explain the trade-off</strong> to the person who gave feedback.</p>
     </div>
   </div>
-  <aside class="notes" data-time="7:20">
-    <ul>
-      <li>Point at the mock: same error string as the options slide. Only paste designs into a safe, approved enterprise AI tool.</li>
-      <li>Walk the example: options → remix → what you'd say back in Figma or Slack.</li>
-      <li>Options give you something to react to. Reacting is faster than inventing.</li>
-    </ul>
-  </aside>
 </section>
 
 <section class="slide" data-section="02 Strengths and limits">
@@ -907,11 +816,6 @@
     <div class="card bad"><h3>Dependencies between products</h3><p>It won't know another feature already has the same name.</p></div>
     <div class="card bad"><h3>Knowing what's clear to real users</h3><p>Copy that seems simple to the model can still confuse people in the actual flow.</p></div>
   </div>
-  <aside class="notes" data-time="9:00">
-    <ul>
-      <li>All four have one root cause: the model doesn't know what you know.</li>
-    </ul>
-  </aside>
 </section>
 
 <section class="slide" data-section="02 Strengths and limits">
@@ -932,12 +836,6 @@
       <div class="ui-copy good">report.pdf is larger than 25 MB. Upload a smaller file or compress it first.</div>
     </div>
   </div>
-  <aside class="notes" data-time="9:45">
-    <ul>
-      <li>Even a bad draft carries the facts: what happened, the limit, where it appears.</li>
-      <li>"Try again later" is wrong here: trying again won't help. The model can't know that.</li>
-    </ul>
-  </aside>
 </section>
 
 <section class="slide slide-dense" data-section="02 Strengths and limits">
@@ -952,35 +850,17 @@
       <p class="limit-why">Another product in your suite may already use the name Workflows.</p>
     </div>
   </div>
-  <aside class="notes" data-time="10:30">
-    <ul>
-      <li>Left: wrong if the product doesn't autosave. Right: another product in your suite may already own "Workflows".</li>
-      <li>What helps: product facts and system behavior in the prompt, shared glossary across products, check with PM and engineers.</li>
-      <li>The bigger the product, the more these matter. A shared glossary is the cheapest fix for naming conflicts.</li>
-    </ul>
-  </aside>
 </section>
 
 <section class="slide statement" data-section="02 Strengths and limits">
+  <div class="eyebrow">Keep it human</div>
   <h1>Copy that seems clear to the model can still confuse your users</h1>
   <p class="lead" style="margin-top:28px">LLMs can critique copy and generate options, but they can't replace usability testing. Test copy with real users in the actual flow.</p>
-  <aside class="notes" data-time="11:15">
-    <ul>
-      <li>Psychology angle: comprehension depends on context, expectations, and stress level, none of which the model sees.</li>
-    </ul>
-  </aside>
 </section>
 
 <section class="slide poll" data-section="02 Strengths and limits">
   <div class="eyebrow">In the chat</div>
   <h2>What is the one UX writing task you feel AI could help you with the most?</h2>
-  <aside class="notes" data-time="11:30">
-    <ul>
-      <li>Low bar: no paste, no war story. Everyone can answer, including people who don't use AI yet ("I'd want help with…").</li>
-      <li>Read 2–3 answers, then bridge: "We'll map these to generative vs evaluative tools next."</li>
-      <li>If someone says "write everything": nod, then remind them: draft + context, and you still review. ~45 seconds.</li>
-    </ul>
-  </aside>
 </section>
 
 <!-- ============ 03 TOOLS ============ -->
@@ -988,7 +868,6 @@
 <section class="slide dark divider" data-section="03 Tools">
   <div class="num">3</div>
   <h1>Generative vs evaluative tools</h1>
-  <aside class="notes" data-time="12:00 · section: 4 min"><ul><li>Transition: "You named your tasks in the chat. Let's match them to the right kind of tool."</li></ul></aside>
 </section>
 
 <section class="slide" data-section="03 Tools">
@@ -1011,13 +890,6 @@
     <tr><td><strong>LLMs (ChatGPT, Claude skills)</strong></td><td class="yes">Yes</td><td class="yes">Yes</td><td>Generating and evaluating anywhere text lives: docs, strings, screenshots</td></tr>
   </table>
   <div class="callout">Evaluate copy where it lives, for example in Figma. Generate copy where you can give the most context.</div>
-  <aside class="notes" data-time="12:30">
-    <ul>
-      <li>Figma tools see the layout: space, hierarchy, the screen around the string.</li>
-      <li>LLM skills are flexible: one instruction file can generate and review.</li>
-      <li>Pick 1–2 chat answers from the poll: is their task generative, evaluative, or both? Where should it run?</li>
-    </ul>
-  </aside>
 </section>
 
 <!-- ============ 04 INSTRUCTIONS ============ -->
@@ -1025,21 +897,37 @@
 <section class="slide dark divider" data-section="04 Instructions">
   <div class="num">4</div>
   <h1>Structuring instructions</h1>
-  <aside class="notes" data-time="16:00 · section: 7 min"><ul><li>Transition: "Tools are only as good as the instructions behind them."</li></ul></aside>
 </section>
 
-<section class="slide" data-section="04 Instructions">
-  <h2>Why structure your instructions</h2>
-  <div class="cols cols-3 grow">
-    <div class="card accent"><h3>For the model</h3><p>It follows rules in sections and lists more reliably than rules in one long paragraph.</p></div>
-    <div class="card accent"><h3>For your team</h3><p>Anyone can read, review, and improve the same instructions.</p></div>
-    <div class="card accent"><h3>For your tools</h3><p>Markdown is the shared format for prompts, Claude skills, custom GPTs, and project rules.</p></div>
+<section class="slide slide-why-structure" data-section="04 Instructions">
+  <h2>Why structure instructions?</h2>
+  <div class="why-structure-split grow">
+    <div class="why-structure-copy">
+      <p class="lead">Content guidelines used to live in Confluence and Zeroheight. Now they live in .md files.</p>
+    </div>
+    <div class="why-structure-sample-wrap">
+      <div class="why-structure-filename">error-messages.md</div>
+<pre class="md-instruction why-structure-sample"><span class="h"># Error messages</span>
+
+<span class="h">## Task</span>
+Review the message. Suggest up to 3 rewrites.
+
+<span class="h">## Context</span>
+<span class="k">-</span> Where it appears (toast, inline, modal)
+<span class="k">-</span> What went wrong and what the user can do next
+
+<span class="h">## Rules</span>
+<span class="k">-</span> Sentence case. Use "sign in", not "log in".
+<span class="k">-</span> <span class="k">**</span>Never blame the user.<span class="k">**</span>
+<span class="k">-</span> Toasts and inline: max 90 characters.
+
+<span class="h">## Examples</span>
+Bad: "Invalid input."  Good: "Enter a date in the future."
+
+<span class="h">## Output</span>
+Table: Issue | Why it matters | Suggested fix</pre>
+    </div>
   </div>
-  <aside class="notes" data-time="16:30">
-    <ul>
-      <li>Markdown isn't code. If you can write a bulleted list, you can write markdown.</li>
-    </ul>
-  </aside>
 </section>
 
 <section class="slide" data-section="04 Instructions">
@@ -1053,11 +941,6 @@
     <tr><td><code>**bold**</code></td><td><strong>Bold</strong></td><td>Rules that must never be broken</td></tr>
     <tr><td><code>| a | b |</code></td><td>Table</td><td>Terminology lists and output format</td></tr>
   </table>
-  <aside class="notes" data-time="17:00">
-    <ul>
-      <li>Use bold sparingly. If everything is important, nothing is.</li>
-    </ul>
-  </aside>
 </section>
 
 <section class="slide" data-section="04 Instructions">
@@ -1069,47 +952,45 @@
     <div class="card accent"><span class="tag accent">4</span><h3>Examples</h3><p>Good and bad, with a reason for each</p></div>
     <div class="card accent"><span class="tag accent">5</span><h3>Output</h3><p>Format you want back: options, table, rationale</p></div>
   </div>
-  <aside class="notes" data-time="18:00">
-    <ul>
-      <li>Most bad outputs trace back to a missing block, usually Context or Examples.</li>
-    </ul>
-  </aside>
 </section>
 
-<section class="slide" data-section="04 Instructions" style="padding-top:44px">
-  <h2 style="margin-bottom:16px; font-size:38px">Example: an error message review skill</h2>
-<pre style="font-size:13.5px; line-height:1.42; padding:18px 24px; flex-shrink:0"><span class="c">---
-name: error-message-review
-description: Review and rewrite error messages. Use when someone shares an error, toast, or inline validation.
----</span>
+<section class="slide slide-dense slide-skill-example" data-section="04 Instructions">
+  <h2 style="font-size:38px">Example: an error message review skill</h2>
+<pre class="md-instruction skill-code"><span class="skill-line" data-explain="Frontmatter tells Claude <strong>when to use</strong> this skill so it does not run on unrelated chats."><span class="c">---</span></span>
+<span class="skill-line" data-explain="A short <strong>id</strong> your team can find in a repo or skills folder.">name: error-message-review</span>
+<span class="skill-line" data-explain="Plain-language trigger: share an error, toast, or inline validation. Helps people and the model pick the right tool.">description: Review and rewrite error messages. Use when someone shares an error, toast, or inline validation.</span>
+<span class="skill-line" data-explain="Closes the metadata block. Same pattern as many Claude skills."><span class="c">---</span></span>
 
-<span class="h"># Error message reviewer</span>
+<span class="skill-line" data-explain="Title orients humans browsing skills. Keep it specific, not &quot;copy helper.&quot;"><span class="h"># Error message reviewer</span></span>
 
-<span class="h">## Task</span>
-Review the error message. Then suggest up to 3 rewrites.
+<span class="skill-line" data-explain="Section headers mirror the five blocks you teach: task, context, rules, examples, output."><span class="h">## Task</span></span>
+<span class="skill-line" data-explain="One job: <strong>review first</strong>, then suggest rewrites.">Review the error message. Then suggest up to 3 rewrites.</span>
 
-<span class="h">## Context</span>
-Ask for these if they're missing:
-<span class="k">-</span> Where it appears (toast, inline, modal)
-<span class="k">-</span> What caused the error and what the user can do next
+<span class="skill-line" data-explain="Context is where most generic AI copy fails. This section says what to know before judging."><span class="h">## Context</span></span>
+<span class="skill-line" data-explain="Strong instruction: <strong>ask instead of guess</strong> when product facts are missing.">Ask for these if they're missing:</span>
+<span class="skill-line" data-explain="Placement changes rules (length, tone). Naming toast vs inline prevents one-size-fits-all copy."><span class="k">-</span> Where it appears (toast, inline, modal)</span>
+<span class="skill-line" data-explain="Encodes the error-message job: problem plus <strong>next step</strong>, not error codes alone."><span class="k">-</span> What caused the error and what the user can do next</span>
 
-<span class="h">## Rules</span>
-<span class="k">-</span> Say what happened and what to do next.
-<span class="k">-</span> Use sentence case. Use "select", not "choose". Use "sign in", not "log in".
-<span class="k">-</span> <span class="k">**</span>Never blame the user.<span class="k">**</span> Avoid "invalid", "illegal", and "failed to".
-<span class="k">-</span> Toasts: 90 characters max.
+<span class="skill-line" data-explain="Rules should be scannable bullets the model can check like an eval."><span class="h">## Rules</span></span>
+<span class="skill-line" data-explain="The core UX writing rule in one line. Easy to score pass or fail."><span class="k">-</span> Say what happened and what to do next.</span>
+<span class="skill-line" data-explain="Concrete terminology and case beat &quot;follow the brand.&quot; Approved terms are testable."><span class="k">-</span> Use sentence case. Use "select", not "choose". Use "sign in", not "log in".</span>
+<span class="skill-line" data-explain="Non-negotiables in <strong>bold</strong>. Banned words are explicit, not implied."><span class="k">-</span> <span class="k">**</span>Never blame the user.<span class="k">**</span> Avoid "invalid", "illegal", and "failed to".</span>
 
-<span class="h">## Examples</span>
-Bad: "Invalid input. Error 422."  Good: "Enter a date in the future, like 12/31/2026."
+<span class="skill-line" data-explain="Split voice rules from <strong>layout and length</strong> so reviewers know which checklist to use."><span class="h">## Formatting</span></span>
+<span class="skill-line" data-explain="Same limit for both surfaces, spelled out like the character-limit slide. Count includes spaces."><span class="k">-</span> Toasts and inline errors: max <span class="k">**</span>90 characters<span class="k">**</span>, including spaces.</span>
+<span class="skill-line" data-explain="Modals can be longer but still scannable. Stops one limit from being applied everywhere."><span class="k">-</span> Modals: max 2 short sentences or 160 characters, whichever is shorter.</span>
+<span class="skill-line" data-explain="Reinforces how to measure. Models need this repeated for length rules."><span class="k">-</span> Count every character, including spaces and punctuation.</span>
+<span class="skill-line" data-explain="Formatting rule with examples in the voice line above. Proper nouns excepted."><span class="k">-</span> Use sentence case for the full message.</span>
+<span class="skill-line" data-explain="Keeps errors calm and scannable. Matches most product voice guides."><span class="k">-</span> Prefer 1–2 sentences. No bullet lists inside a toast or inline error.</span>
+<span class="skill-line" data-explain="Useful when errors mention file size, counts, or dates."><span class="k">-</span> Use numerals for limits and quantities (e.g. 5 MB, 3 files, 12/31/2026).</span>
+<span class="skill-line" data-explain="Small punctuation rules are easy to eval and easy for the model to miss."><span class="k">-</span> End with a period. No exclamation marks in errors unless the voice guide allows them.</span>
+<span class="skill-line" data-explain="Formatting for eng-facing codes: plain language first, code in parentheses if required."><span class="k">-</span> Do not show a raw error code alone. If required, use plain language first, then the code in parentheses.</span>
 
-<span class="h">## Output</span>
-A table with: Issue | Why it matters | Suggested fix</pre>
-  <aside class="notes" data-time="19:00">
-    <ul>
-      <li>Point to each of the five blocks in the file.</li>
-      <li>"Ask for these if missing" stops the model from guessing product facts.</li>
-    </ul>
-  </aside>
+<span class="skill-line" data-explain="Pair bad and good so the model sees <strong>shape and tone</strong>, not only rules."><span class="h">## Examples</span></span>
+<span class="skill-line" data-explain="One line contrasts code-like errors with a helpful, specific fix. Faster than more bullets.">Bad: "Invalid input. Error 422."  Good: "Enter a date in the future, like 12/31/2026."</span>
+
+<span class="skill-line" data-explain="Output format turns the skill into a <strong>review artifact</strong> you can share with design or eng."><span class="h">## Output</span></span>
+<span class="skill-line" data-explain="Table columns match how UX writers already review: issue, why it matters, fix. Easier to scan than prose.">A table with: Issue | Why it matters | Suggested fix</span></pre>
 </section>
 
 <section class="slide" data-section="04 Instructions">
@@ -1128,11 +1009,11 @@ A table with: Issue | Why it matters | Suggested fix</pre>
       <li><strong>Version and share it.</strong> Maintain it like any other design system asset.</li>
     </ul>
   </div>
-  <aside class="notes" data-time="20:00">
-    <ul>
-      <li>Highlight "one tool, one job". It ties back to building specialized tools.</li>
-    </ul>
-  </aside>
+</section>
+
+<section class="slide" data-section="04 Instructions">
+  <h2>Reuse the same markdown across LLMs</h2>
+  <p class="lead">One instruction file – used everywhere.</p>
 </section>
 
 <section class="slide" data-section="04 Instructions">
@@ -1152,12 +1033,6 @@ A table with: Issue | Why it matters | Suggested fix</pre>
       <p>Most of your rules can come from your voice and tone guide, glossary, design system docs, and past review comments.</p>
     </div>
   </div>
-  <aside class="notes" data-time="20:45">
-    <ul>
-      <li>Share links in the chat after the session.</li>
-      <li>Past review comments are gold: each recurring comment is a rule waiting to be written.</li>
-    </ul>
-  </aside>
 </section>
 
 <section class="slide demo" data-section="04 Instructions">
@@ -1174,12 +1049,6 @@ A table with: Issue | Why it matters | Suggested fix</pre>
     <div class="step"><div class="n">4</div><p>Pick, edit, and explain why</p></div>
   </div>
   <div class="callout">Watch for: does it ask for missing context? Does it follow the terminology rules?</div>
-  <aside class="notes" data-time="21:00">
-    <ul>
-      <li>Have screenshots ready as a fallback if the live demo fails.</li>
-      <li>Show one thing it gets wrong and how you'd fix the instructions.</li>
-    </ul>
-  </aside>
 </section>
 
 <!-- ============ 05 EVALS ============ -->
@@ -1187,7 +1056,6 @@ A table with: Issue | Why it matters | Suggested fix</pre>
 <section class="slide dark divider" data-section="05 Evals">
   <div class="num">5</div>
   <h1>Evals: how to test</h1>
-  <aside class="notes" data-time="23:00 · section: 5 min"><ul><li>Transition: "How do you know your instructions actually work?"</li></ul></aside>
 </section>
 
 <section class="slide" data-section="05 Evals">
@@ -1202,11 +1070,6 @@ A table with: Issue | Why it matters | Suggested fix</pre>
     <div class="arrow">→</div>
     <div class="step"><div class="n">4 · Compare</div><p>Change one thing, rerun, compare results</p></div>
   </div>
-  <aside class="notes" data-time="23:30">
-    <ul>
-      <li>Change one thing at a time, or you won't know what helped.</li>
-    </ul>
-  </aside>
 </section>
 
 <section class="slide" data-section="05 Evals">
@@ -1220,13 +1083,6 @@ A table with: Issue | Why it matters | Suggested fix</pre>
     <tr><td>Upload a PDF or PNG file.</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">Pass</td></tr>
   </table>
   <div class="callout">Three failures → add an example of a good inline error, or tighten the "next step" rule. Rerun all four cases.</div>
-  <aside class="notes" data-time="24:00">
-    <ul>
-      <li>Callback to "From writer to reviewer": this is the review step made repeatable.</li>
-      <li>Point out row 3: no banned words, but still fails because it doesn't say what went wrong.</li>
-      <li>Next slide: a fuller sheet with more criteria and edge cases.</li>
-    </ul>
-  </aside>
 </section>
 
 <section class="slide" data-section="05 Evals">
@@ -1239,12 +1095,6 @@ A table with: Issue | Why it matters | Suggested fix</pre>
     <tr><td>No internet</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">✗ 112 chars</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">Fail</td></tr>
   </table>
   <div class="callout">For each failure, add a rule, an example, or more context. Then rerun the whole set.</div>
-  <aside class="notes" data-time="24:30">
-    <ul>
-      <li>A spreadsheet is enough. No special tools needed to start.</li>
-      <li>"Log in" slipped through: the glossary rule needs an example.</li>
-    </ul>
-  </aside>
 </section>
 
 <section class="slide" data-section="05 Evals">
@@ -1260,11 +1110,6 @@ A table with: Issue | Why it matters | Suggested fix</pre>
       <div class="card good"><h3>People judge meaning</h3><p>Tone, empathy, clarity, fit for the situation</p></div>
     </div>
   </div>
-  <aside class="notes" data-time="25:30">
-    <ul>
-      <li>LLM-as-judge is useful but needs spot-checking. It shares the same blind spots.</li>
-    </ul>
-  </aside>
 </section>
 
 <section class="slide demo" data-section="05 Evals">
@@ -1281,12 +1126,6 @@ A table with: Issue | Why it matters | Suggested fix</pre>
     <div class="step"><div class="n">4</div><p>Fix and recheck</p></div>
   </div>
   <div class="callout">Watch for: what it catches in context that a text-only check would miss, like space, hierarchy, or repeated labels.</div>
-  <aside class="notes" data-time="26:00">
-    <ul>
-      <li>Contrast with demo 1: same goal, different place.</li>
-      <li>Fallback: screenshots of before and after.</li>
-    </ul>
-  </aside>
 </section>
 
 <!-- ============ 06 COMMON ISSUES ============ -->
@@ -1294,7 +1133,6 @@ A table with: Issue | Why it matters | Suggested fix</pre>
 <section class="slide dark divider" data-section="06 Common issues">
   <div class="num">6</div>
   <h1>Common issues when generating copy with LLMs</h1>
-  <aside class="notes" data-time="28:00 · section: 3 min"><ul><li>Transition: "Here's what to look for when you review."</li></ul></aside>
 </section>
 
 <section class="slide" data-section="06 Common issues">
@@ -1310,12 +1148,6 @@ A table with: Issue | Why it matters | Suggested fix</pre>
     <tr><td><strong>Over-friendly:</strong> exclamation marks and emoji in errors</td><td>Tone rules for each context</td></tr>
     <tr><td><strong>Accessibility gaps:</strong> "Click here", "see the panel on the right"</td><td>Accessibility rules, plus human review</td></tr>
   </table>
-  <aside class="notes" data-time="28:30">
-    <ul>
-      <li>Don't read the whole table. Pick 3: title case, invented features, accessibility.</li>
-      <li>Accessibility: descriptive link text, no directional or color-only cues.</li>
-    </ul>
-  </aside>
 </section>
 
 <!-- ============ 07 WORKFLOWS ============ -->
@@ -1323,7 +1155,6 @@ A table with: Issue | Why it matters | Suggested fix</pre>
 <section class="slide dark divider" data-section="07 Workflows">
   <div class="num">7</div>
   <h1>AI-powered content design workflows</h1>
-  <aside class="notes" data-time="31:00 · section: 6 min"><ul><li>Transition: "Let's put it together for your team."</li><li>Refer back to the opening poll and spend more time on the workflow that matches the majority.</li></ul></aside>
 </section>
 
 <section class="slide" data-section="07 Workflows">
@@ -1338,11 +1169,6 @@ A table with: Issue | Why it matters | Suggested fix</pre>
     <div class="step"><div class="n">Improve</div><p>Run evals and update instructions</p></div>
   </div>
   <div class="callout">You build and maintain the tools, edit copy, and own its quality. Your guidelines get applied even when you're not reviewing.</div>
-  <aside class="notes" data-time="31:45">
-    <ul>
-      <li>This is how you become invaluable: you scale your expertise.</li>
-    </ul>
-  </aside>
 </section>
 
 <section class="slide" data-section="07 Workflows">
@@ -1365,11 +1191,6 @@ A table with: Issue | Why it matters | Suggested fix</pre>
       </ul>
     </div>
   </div>
-  <aside class="notes" data-time="33:30">
-    <ul>
-      <li>The feedback loop is key: the same comment twice means a missing rule.</li>
-    </ul>
-  </aside>
 </section>
 
 <section class="slide" data-section="07 Workflows">
@@ -1387,11 +1208,6 @@ A table with: Issue | Why it matters | Suggested fix</pre>
     </ul>
   </div>
   <div class="callout warn">Without a content designer, evals and user testing matter even more.</div>
-  <aside class="notes" data-time="35:00">
-    <ul>
-      <li>Don't wait for a perfect style guide. One page is enough to start.</li>
-    </ul>
-  </aside>
 </section>
 
 <section class="slide" data-section="07 Workflows">
@@ -1410,11 +1226,6 @@ A table with: Issue | Why it matters | Suggested fix</pre>
     </ul>
   </div>
   <div class="callout">Use the same checklist for human review, AI evaluation tools, and evals.</div>
-  <aside class="notes" data-time="36:00">
-    <ul>
-      <li>One checklist, three uses. That's what makes quality independent of who wrote it.</li>
-    </ul>
-  </aside>
 </section>
 
 <!-- ============ 08 PRINCIPLES ============ -->
@@ -1422,7 +1233,6 @@ A table with: Issue | Why it matters | Suggested fix</pre>
 <section class="slide dark divider" data-section="08 Principles">
   <div class="num">8</div>
   <h1>Principles and next steps</h1>
-  <aside class="notes" data-time="37:00 · section: 3 min"><ul><li>Transition: "Let's close with how to do this responsibly."</li></ul></aside>
 </section>
 
 <section class="slide" data-section="08 Principles">
@@ -1435,11 +1245,6 @@ A table with: Issue | Why it matters | Suggested fix</pre>
     <div class="card accent"><h3>Test with people</h3><p>Only usability testing shows what users actually understand.</p></div>
     <div class="card accent"><h3>Check accessibility</h3><p>Review every AI suggestion for accessibility before you use it.</p></div>
   </div>
-  <aside class="notes" data-time="37:30">
-    <ul>
-      <li>These build credibility with your team: you're the one using AI carefully, not blindly.</li>
-    </ul>
-  </aside>
 </section>
 
 <section class="slide" data-section="08 Principles">
@@ -1451,33 +1256,21 @@ A table with: Issue | Why it matters | Suggested fix</pre>
     <div class="arrow">→</div>
     <div class="step"><div class="n">Step 3</div><h3>Test and share it</h3><p>Run it on 10 real strings, fix what fails, and share it with your team.</p></div>
   </div>
-  <aside class="notes" data-time="38:30">
-    <ul>
-      <li>Small and specific beats big and vague.</li>
-    </ul>
-  </aside>
 </section>
 
 <section class="slide title" data-section="Q&amp;A">
   <h1>Thank you</h1>
   <p class="subtitle">Questions?</p>
   <p class="speaker">Kalina Tyrkiel-Szymańska<span>Placeholder: LinkedIn or contact link</span></p>
-  <aside class="notes" data-time="40:00">
-    <ul>
-      <li>Open Q&amp;A. Start with chat questions collected during the session.</li>
-      <li>Remind people the recording and links will follow.</li>
-    </ul>
-  </aside>
 </section>
 
 </div>
 
-<div id="notes"></div>
+<div id="instruction-tooltip" class="instruction-tooltip" role="tooltip" aria-hidden="true"></div>
 
 <script>
   const stage = document.getElementById('stage');
   const slides = [...document.querySelectorAll('.slide')];
-  const notesEl = document.getElementById('notes');
   const progress = document.getElementById('progress');
   let current = 0;
 
@@ -1501,10 +1294,6 @@ A table with: Issue | Why it matters | Suggested fix</pre>
       if (i !== current) s.classList.remove('revealed');
     });
     progress.style.width = `${((current + 1) / slides.length) * 100}%`;
-    const notes = slides[current].querySelector('.notes');
-    notesEl.innerHTML = notes
-      ? `<div class="time">${notes.dataset.time || ''}</div>${notes.innerHTML}`
-      : '';
     history.replaceState(null, '', `#${current + 1}`);
     document.querySelectorAll('.slide-instruction-explore').forEach((s) => {
       if (s.classList.contains('active')) return;
@@ -1512,6 +1301,12 @@ A table with: Issue | Why it matters | Suggested fix</pre>
       const ex = s.querySelector('.limit-tip-explain');
       if (ex) ex.textContent = ex.dataset.default || ex.textContent;
     });
+    const skillTip = document.getElementById('instruction-tooltip');
+    if (skillTip) {
+      skillTip.classList.remove('visible');
+      skillTip.setAttribute('aria-hidden', 'true');
+    }
+    document.querySelectorAll('.skill-line.is-active').forEach((l) => l.classList.remove('is-active'));
   }
 
   function advanceSlide() {
@@ -1534,7 +1329,6 @@ A table with: Issue | Why it matters | Suggested fix</pre>
 
   stage.addEventListener('click', (e) => {
     if (!slides[current].classList.contains('compare-reveal')) return;
-    if (e.target.closest('#notes')) return;
     advanceSlide();
   });
 
@@ -1543,7 +1337,6 @@ A table with: Issue | Why it matters | Suggested fix</pre>
     else if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); retreatSlide(); }
     else if (e.key === 'Home') show(0);
     else if (e.key === 'End') show(slides.length - 1);
-    else if (e.key.toLowerCase() === 'n') notesEl.classList.toggle('open');
     else if (e.key.toLowerCase() === 'f') {
       document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
     }
@@ -1577,6 +1370,56 @@ A table with: Issue | Why it matters | Suggested fix</pre>
         if (!slide.contains(e.relatedTarget)) clearLine();
       });
     });
+  })();
+
+  (function initSkillExampleTooltips() {
+    const tip = document.getElementById('instruction-tooltip');
+    if (!tip) return;
+    const lines = [...document.querySelectorAll('.slide-skill-example .skill-line[data-explain]')];
+    let activeLine = null;
+
+    function hideTip() {
+      tip.classList.remove('visible');
+      tip.setAttribute('aria-hidden', 'true');
+      if (activeLine) activeLine.classList.remove('is-active');
+      activeLine = null;
+    }
+
+    function placeTip(line) {
+      const html = line.getAttribute('data-explain');
+      if (!html) return;
+      tip.innerHTML = html;
+      tip.classList.add('visible');
+      tip.setAttribute('aria-hidden', 'false');
+      const rect = line.getBoundingClientRect();
+      const tipRect = tip.getBoundingClientRect();
+      let left = rect.left;
+      let top = rect.bottom + 10;
+      if (left + tipRect.width > window.innerWidth - 12) left = window.innerWidth - tipRect.width - 12;
+      if (left < 12) left = 12;
+      if (top + tipRect.height > window.innerHeight - 12) top = rect.top - tipRect.height - 10;
+      tip.style.left = `${left}px`;
+      tip.style.top = `${top}px`;
+    }
+
+    function showTip(line) {
+      if (activeLine && activeLine !== line) activeLine.classList.remove('is-active');
+      activeLine = line;
+      line.classList.add('is-active');
+      tip.classList.add('visible');
+      placeTip(line);
+    }
+
+    lines.forEach((line) => {
+      line.addEventListener('mouseenter', () => showTip(line));
+      line.addEventListener('mouseleave', (e) => {
+        if (tip.contains(e.relatedTarget)) return;
+        hideTip();
+      });
+    });
+
+    window.addEventListener('scroll', hideTip, true);
+    window.addEventListener('resize', hideTip);
   })();
 </script>
 </body>

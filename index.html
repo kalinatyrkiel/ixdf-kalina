@@ -79,14 +79,212 @@
   .slide.compare-reveal:not(.revealed) .compare { grid-template-columns: 1fr; max-width: 620px; }
   .slide.compare-reveal:not(.revealed) .compare-after { display: none; }
   .slide.compare-reveal:not(.revealed) { cursor: pointer; }
-  .tip-bulb {
-    display: flex; gap: 14px; align-items: flex-start; margin-top: 24px;
-    padding: 18px 22px; background: #fff8e6; border-radius: var(--radius); border-left: 4px solid #e6a700;
-    font-size: 20px; line-height: 1.4;
+  .deck-sub { font-size: 19px; line-height: 1.4; color: var(--muted); margin: -12px 0 22px; max-width: 920px; }
+  .deck-ask { font-size: 30px; line-height: 1.35; margin: -8px 0 24px; max-width: 980px; }
+  .deck-ask strong { color: var(--ink); }
+  .deck-footnote { font-size: 17px; margin-top: 14px; }
+  .slide-dense h2 { font-size: 38px; margin-bottom: 18px; }
+  .slide-example-panel {
+    background: var(--good-soft); border-radius: var(--radius); padding: 22px 26px;
+    flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: center;
   }
-  .tip-bulb .icon { font-size: 26px; line-height: 1; flex: 0 0 auto; }
-  .format-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 8px; }
-  .format-compare .ui-copy { margin-top: 0; text-align: center; font-size: 22px; }
+  .slide-example-panel.ba-compare-panel { background: var(--surface); }
+  .ba-rows { max-width: 960px; width: 100%; }
+  .ba-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .ba-row + .ba-row { margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(0,0,0,.08); }
+  .ba-row .label { margin-top: 0; margin-bottom: 8px; }
+  .ba-row .ui-copy { font-size: 18px; }
+  .ba-row .ui-copy + .ui-copy { margin-top: 10px; }
+  .ba-col-before {
+    background: var(--bad-soft); border-radius: var(--radius); padding: 16px 18px;
+    border: 1px solid rgba(228, 38, 38, 0.2);
+  }
+  .ba-col-after {
+    background: var(--good-soft); border-radius: var(--radius); padding: 16px 18px;
+    border: 1px solid rgba(30, 138, 76, 0.25);
+  }
+  .ba-col-before .label { color: var(--bad); }
+  .ba-col-after .label { color: var(--good); }
+  .ba-col-before .ui-copy { background: #fff; border-color: rgba(228, 38, 38, 0.35); }
+  .ba-col-after .ui-copy { background: #fff; border-color: rgba(30, 138, 76, 0.35); }
+  .table-audit { max-width: none; width: 100%; }
+  .table-audit th:last-child, .table-audit td:last-child { text-align: right; width: 72px; }
+  .pattern-split { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: stretch; flex: 1; min-height: 0; }
+  .pattern-results { display: flex; flex-direction: column; gap: 16px; height: 100%; }
+  .callout.tip { font-size: 19px; }
+  .string-sheet {
+    border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: #fff;
+    display: flex; flex-direction: column; height: 100%;
+  }
+  .string-sheet .sheet-bar {
+    background: var(--surface); padding: 10px 14px; font-size: 14px; font-weight: 700;
+    border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .string-sheet .sheet-bar span { font-weight: 400; color: var(--muted); font-size: 13px; }
+  .string-sheet .sheet-grid { width: 100%; border: none; border-radius: 0; }
+  .string-sheet .sheet-grid th { background: #e4e4e4; color: var(--ink); font-size: 12px; padding: 7px 10px; }
+  .string-sheet .sheet-grid td { padding: 6px 10px; font-size: 13px; line-height: 1.3; }
+  .string-sheet .sheet-grid tr:nth-child(even) td { background: #fafafa; }
+  .string-sheet .sheet-more {
+    margin-top: auto; padding: 10px 14px; font-size: 13px; color: var(--muted); background: var(--surface);
+    border-top: 1px solid var(--line); text-align: center;
+  }
+  .critique-split { display: grid; grid-template-columns: 260px 1fr; gap: 40px; align-items: start; }
+  .critique-split .ui-copy { font-size: 22px; margin-top: 0; }
+  .critique-split ul.clean { font-size: 20px; }
+  .option-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-content: start; }
+  .option-cards .card { display: flex; flex-direction: column; gap: 10px; padding: 18px 20px; height: auto; }
+  .option-cards .opt-n { font-size: 15px; font-weight: 700; color: var(--accent); }
+  .option-cards .ui-copy { margin-top: 0; font-size: 16px; line-height: 1.35; flex: 0 0 auto; }
+  .option-cards .card > p { font-size: 16px; line-height: 1.4; color: var(--muted); margin: 0; }
+  .option-rows { display: flex; flex-direction: column; gap: 16px; flex: 1; min-height: 0; justify-content: center; }
+  .option-row {
+    display: grid; grid-template-columns: 1.15fr 1fr; gap: 24px; align-items: center;
+    background: var(--surface); border-radius: var(--radius); padding: 20px 24px;
+  }
+  .option-row .opt-n { font-size: 18px; font-weight: 700; color: var(--accent); }
+  .option-row .ui-copy {
+    margin: 0; font-size: 23px; line-height: 1.35;
+    background: transparent; border: none; padding: 0; border-radius: 0;
+  }
+  .option-row .trade { font-size: 21px; line-height: 1.4; color: var(--muted); margin: 0; }
+  .slide-options.slide-dense h2 { margin-bottom: 12px; }
+  .slide-options .deck-ask { margin-top: -10px; margin-bottom: 14px; }
+  .slide-options .option-rows { justify-content: flex-start; margin-top: -4px; }
+  .remix-sources { display: flex; flex-direction: column; gap: 12px; }
+  .remix-source {
+    display: grid; grid-template-columns: 40px 1fr; gap: 16px; align-items: baseline;
+    font-size: 22px; line-height: 1.4; background: var(--surface); padding: 16px 20px; border-radius: var(--radius);
+  }
+  .remix-source .rn { font-weight: 700; color: var(--accent); font-size: 22px; }
+  .remix-source .hl { font-weight: 700; background: var(--accent-soft); padding: 1px 4px; border-radius: 3px; }
+  .remix-arrow { font-size: 28px; color: var(--accent); font-weight: 700; margin: 14px 0 6px; }
+  .remix-result {
+    font-size: 26px; line-height: 1.35; font-weight: 700; padding: 18px 22px;
+    background: #fff; border: 2px solid var(--accent); border-radius: var(--radius); max-width: 920px;
+  }
+  .remix-label { font-size: 16px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; margin-top: 8px; margin-bottom: 8px; }
+  .remix-caption { font-size: 21px; color: var(--ink); margin-top: 16px; max-width: 920px; line-height: 1.45; }
+  .prompt-block {
+    font-family: var(--mono); font-size: 16px; line-height: 1.45; margin-top: 16px; padding: 16px 18px;
+    background: var(--dark-2); color: #f5f5f5; border-radius: var(--radius); max-width: 920px;
+  }
+  .slide-dense h2 + .prompt-block { margin-top: -6px; margin-bottom: 22px; }
+  .flow-compact .step { padding: 18px 16px; }
+  .flow-compact .step p { font-size: 17px; line-height: 1.4; }
+  .alt-workflow {
+    flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: center; gap: 18px;
+  }
+  .alt-workflow .flow { flex: 0 0 auto; }
+  .alt-workflow .callout { margin-top: 0; flex: 0 0 auto; }
+  .slide-stakeholder { padding-left: 48px; padding-right: 48px; }
+  .slide-stakeholder .slide-footer { left: 48px; right: 48px; }
+  .stakeholder-split {
+    display: grid; grid-template-columns: auto 1fr; gap: 28px; flex: 1; min-height: 0; align-items: center;
+  }
+  .figma-mock {
+    width: 100%; max-width: 520px; justify-self: start;
+    border: 1px solid #d9d9d9; border-radius: 8px; background: #fff; overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+  .figma-mock .figma-bar {
+    background: #2e2e2e; color: #999; font-size: 12px; padding: 8px 14px; display: flex; align-items: center; gap: 8px;
+  }
+  .figma-mock .figma-bar .dots { display: flex; gap: 5px; }
+  .figma-mock .figma-bar .dots span { width: 8px; height: 8px; border-radius: 50%; background: #555; }
+  .figma-mock .figma-bar .file { margin-left: 8px; color: #ccc; font-size: 12px; }
+  .figma-mock .figma-canvas { padding: 18px 12px 20px; background: #f4f4f4; position: relative; min-height: 300px; }
+  .figma-mock .mock-screen {
+    position: relative; background: #fff; border-radius: 6px; border: 1px solid #e8e8e8;
+    padding: 20px 16px 18px; max-width: none; width: 100%; margin: 0;
+  }
+  .figma-mock .mock-screen h4 { font-size: 16px; font-weight: 700; margin-bottom: 14px; color: #333; text-align: left; }
+  .figma-mock .upload-zone {
+    border: 2px dashed #c8c8c8; border-radius: 6px; padding: 22px 16px 14px; text-align: left; font-size: 16px; color: #777; line-height: 1.35;
+    position: relative; z-index: 0;
+  }
+  .figma-mock .upload-zone-failed { border-color: #e8a0a0; border-style: solid; background: #fffafa; }
+  .figma-mock .upload-zone .mock-error {
+    margin-top: 16px; padding-top: 14px; border-top: 1px solid #f5d0d0;
+    font-size: 16px; color: var(--bad); font-weight: 700; position: relative; padding-left: 20px; text-align: left;
+  }
+  .figma-mock .mock-error .pin {
+    position: absolute; left: 0; top: 4px; width: 11px; height: 11px; background: #9747ff; border-radius: 50%; box-shadow: 0 0 0 2px #fff;
+  }
+  .figma-comment {
+    position: absolute; left: 12px; right: 12px; top: 40px; width: auto; max-width: none; background: #fff; border-radius: 8px;
+    border: 1px solid #e0e0e0; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); font-size: 14px; line-height: 1.4; z-index: 2;
+  }
+  .figma-comment .fc-head {
+    display: flex; align-items: center; gap: 8px; padding: 10px 12px 8px; border-bottom: 1px solid #eee; text-align: left;
+  }
+  .figma-comment .fc-avatar {
+    width: 24px; height: 24px; border-radius: 50%; background: #9747ff; color: #fff; font-size: 10px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .figma-comment .fc-name { font-weight: 700; color: #333; font-size: 13px; }
+  .figma-comment .fc-role { font-weight: 400; color: #888; font-size: 12px; }
+  .figma-comment .fc-body { padding: 10px 12px 12px; color: #444; text-align: left; font-size: 14px; }
+  .stakeholder-steps { list-style: none; font-size: 17px; line-height: 1.4; }
+  .stakeholder-steps li { padding: 12px 0; border-bottom: 1px solid var(--line); display: flex; gap: 12px; align-items: flex-start; }
+  .stakeholder-steps li:last-child { border-bottom: none; }
+  .stakeholder-steps .sn { font-weight: 700; color: var(--accent); flex: 0 0 28px; font-size: 15px; }
+  .stakeholder-side .callout.tip { font-size: 17px; margin-top: 14px; }
+  .slide-stakeholder h2 { margin-bottom: 14px; font-size: 34px; }
+  .stakeholder-layout { display: flex; flex-direction: column; flex: 1; min-height: 0; gap: 12px; }
+  .stakeholder-split { align-items: start; flex: 0 0 auto; }
+  .slide-stakeholder .stakeholder-split .figma-mock { max-width: 440px; }
+  .slide-stakeholder .figma-mock .figma-canvas { min-height: 248px; }
+  .stakeholder-steps { font-size: 16px; }
+  .stakeholder-steps li { padding: 8px 0; }
+  .stakeholder-remix { flex: 0 0 auto; padding-top: 4px; border-top: 1px solid var(--line); }
+  .stakeholder-remix .remix-label { margin-top: 10px; margin-bottom: 6px; font-size: 14px; }
+  .stakeholder-remix .remix-sources { gap: 8px; display: grid; grid-template-columns: 1fr 1fr; }
+  .stakeholder-remix .remix-source {
+    font-size: 15px; padding: 10px 12px; grid-template-columns: 24px 1fr; gap: 8px; align-items: start;
+  }
+  .stakeholder-remix .remix-source .rn { font-size: 15px; }
+  .stakeholder-remix .remix-source p { font-size: 15px; line-height: 1.35; margin: 0; }
+  .stakeholder-remix .remix-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; align-items: center; margin-top: 8px; }
+  .stakeholder-remix .remix-arrow { font-size: 22px; margin: 0; text-align: center; }
+  .stakeholder-remix .remix-final { min-width: 0; }
+  .stakeholder-remix .remix-result { font-size: 17px; padding: 12px 14px; max-width: none; margin-top: 6px; }
+  .stakeholder-remix .remix-caption { font-size: 16px; margin-top: 10px; max-width: none; line-height: 1.4; }
+  .overview-cards .card { display: flex; flex-direction: column; min-height: 132px; }
+  .overview-cards .card-num { font-size: 26px; font-weight: 700; color: var(--accent); line-height: 1; margin-bottom: 8px; }
+  .overview-cards .card h3 { font-size: 21px; }
+  .format-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 4px; max-width: 720px; }
+  .format-compare .card { padding: 20px 22px; }
+  .format-compare .ui-copy { margin-top: 8px; text-align: left; font-size: 20px; }
+  .format-compare .label { margin-top: 0; }
+  .limit-tips { font-size: 20px; max-width: 920px; margin-bottom: 18px; }
+  .limit-tips li { margin-bottom: 10px; }
+  .slide-limit-chars h2 { margin-bottom: 14px; }
+  .slide-instruction-explore h2 { margin-bottom: 14px; }
+  .limit-challenge {
+    max-width: 980px; padding: 16px 20px; margin-bottom: 14px;
+    background: var(--bad-soft); border: 1px solid rgba(228, 38, 38, 0.22); border-radius: var(--radius);
+  }
+  .limit-challenge p { font-size: 21px; line-height: 1.4; margin: 8px 0 0; }
+  .limit-solution-head { font-size: 18px; font-weight: 700; color: var(--good); margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+  .limit-solution-head .tag { margin: 0; }
+  .limit-split { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 22px; align-items: stretch; }
+  .slide-limit-chars pre.limit-code { font-size: 11px; line-height: 1.38; margin: 0; padding: 12px 14px; }
+  .limit-code .code-line {
+    display: block; border-radius: 3px; margin: 0 -4px; padding: 2px 4px; transition: background .12s;
+    cursor: pointer;
+  }
+  .limit-code .code-line.is-active,
+  .limit-code .code-line:hover { background: rgba(0, 156, 222, 0.18); }
+  .limit-explain-col { display: flex; flex-direction: column; min-height: 0; }
+  .limit-tip-explain {
+    font-size: 17px; line-height: 1.45; color: var(--ink); padding: 16px 18px;
+    background: var(--surface); border-radius: var(--radius); flex: 1; min-height: 120px;
+  }
+  .limit-tip-explain strong { font-weight: 700; }
+  .slide-instruction pre.md-instruction { font-size: 13px; line-height: 1.42; margin-top: 0; padding: 14px 16px; }
+  .limit-example .ui-copy { font-size: 22px; }
+  .limit-why { font-size: 19px; line-height: 1.4; color: var(--muted); margin: 0; }
   strong { font-weight: 700; }
   code { font-family: var(--mono); font-size: .88em; background: var(--surface); padding: 2px 7px; border-radius: 4px; }
   a { color: var(--accent); }
@@ -169,6 +367,7 @@
   th { background: var(--dark-2); font-weight: 700; font-size: 17px; color: #fff; }
   tr:last-child td { border-bottom: none; }
   .yes { color: var(--good); font-weight: 700; }
+  .limited { color: #b86e00; font-weight: 700; }
   .no { color: var(--bad); font-weight: 700; }
 
   /* Code */
@@ -264,7 +463,7 @@
 
 <section class="slide" data-section="Intro">
   <div class="eyebrow">Hi, I'm Kalina</div>
-  <h2>UX writer by trade, psychologist by training</h2>
+  <h2>Content designer. I train teams on UX writing<br>and AI for copy.</h2>
   <div class="card accent" style="max-width:900px">
     <span class="tag accent">Today's promise</span>
     <p style="font-size:26px">You'll leave knowing how to build <strong>responsible copy systems for AI</strong>: shared instructions, review steps, and evals.</p>
@@ -272,14 +471,14 @@
   </div>
   <aside class="notes" data-time="0:15">
     <ul>
-      <li>The host has already introduced you. Thank them and skip the bio.</li>
-      <li>Read the promise and move to the poll. About 20 seconds.</li>
+      <li>Thank the host. Read the line and the promise, then move to the poll. About 20 seconds.</li>
+      <li>Optional spoken beat: psychologist by training (helps when you discuss user testing later).</li>
     </ul>
   </aside>
 </section>
 
 <section class="slide poll" data-section="Intro">
-  <div class="eyebrow">Poll</div>
+  <div class="eyebrow">Reply with a letter in the chat</div>
   <h2>Which best describes you?</h2>
   <div class="poll-options" style="grid-template-columns:1fr">
     <div class="poll-option"><b>A</b>I'm a content designer or UX writer</div>
@@ -295,7 +494,7 @@
 </section>
 
 <section class="slide poll" data-section="Intro">
-  <div class="eyebrow">Poll</div>
+  <div class="eyebrow">Reply with a letter in the chat</div>
   <h2>How do you use AI for UX copy today?</h2>
   <div class="poll-options">
     <div class="poll-option"><b>A</b>I don't use it yet</div>
@@ -373,7 +572,7 @@
     <ul>
       <li>Walk through the inline error example: generic drafts on the left, rules + one specific line on the right.</li>
       <li>Step 1: Before only. Click or → to reveal After. ← hides After again.</li>
-      <li>Second beat: permission on the left, payoff on the right—not everyone has to love writing; AI gives you options to react to.</li>
+      <li>Second beat: permission on the left, payoff on the right. Not everyone has to love writing; AI gives you options to react to.</li>
       <li>Reviewing well still requires knowing what good copy is.</li>
     </ul>
   </aside>
@@ -393,26 +592,7 @@
     <ul>
       <li>This loop is the title of the masterclass. Everything else hangs on it.</li>
       <li>Refining the instructions is what makes AI use scale beyond you.</li>
-    </ul>
-  </aside>
-</section>
-
-<section class="slide" data-section="01 The shift">
-  <h2>Example: eval for your inline error tool</h2>
-  <p class="small muted" style="margin:-12px 0 16px">Same rules as the slide before. Score outputs, then refine the instructions.</p>
-  <table>
-    <tr><th>Test input</th><th>Problem + next step</th><th>No "invalid" or "error"</th><th>≤ 90 chars</th><th>Result</th></tr>
-    <tr><td>Invalid input.</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="no">Fail</td></tr>
-    <tr><td>Error: file type not supported.</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="no">Fail</td></tr>
-    <tr><td>Something went wrong. Try again.</td><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">Fail</td></tr>
-    <tr><td>Upload a PDF or PNG file.</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">Pass</td></tr>
-  </table>
-  <div class="callout">Three failures → add an example of a good inline error, or tighten the "next step" rule. Rerun all four cases.</div>
-  <aside class="notes" data-time="4:15">
-    <ul>
-      <li>Bridge from slide 7: this is the "review" step made repeatable.</li>
-      <li>Point out row 3: no banned words, but still fails because it doesn't say what went wrong.</li>
-      <li>We'll build a fuller eval sheet later in section 5.</li>
+      <li>Evals are how you make review repeatable; we'll build a sheet in section 5 using the inline error example from slide 7.</li>
     </ul>
   </aside>
 </section>
@@ -425,115 +605,296 @@
   <aside class="notes" data-time="5:15 · section: 7 min"><ul><li>Transition: "To guide AI well, you need to know its strengths and limits."</li></ul></aside>
 </section>
 
-<section class="slide" data-section="02 Strengths and limits">
+<section class="slide slide-dense" data-section="02 Strengths and limits">
   <h2>What LLMs do well</h2>
-  <div class="cols cols-4 grow" style="gap:18px">
-    <div class="card good"><h3>Consistency and constraints</h3><p>Terms, formatting, voice guide, character limits</p></div>
-    <div class="card good"><h3>Finding patterns</h3><p>Inconsistent tone, terminology, and formatting across many strings</p></div>
-    <div class="card good"><h3>Providing alternatives</h3><p>Options to react to, plus trade-offs</p></div>
-    <div class="card good"><h3>Critique</h3><p>Judgment on what you already wrote</p></div>
+  <div class="cols cols-4 grow overview-cards" style="gap:18px">
+    <div class="card good"><span class="card-num">1</span><h3>Consistency and constraints</h3><p>Terms, formatting, voice guide, character limits</p></div>
+    <div class="card good"><span class="card-num">2</span><h3>Finding patterns</h3><p>Inconsistent tone, terminology, and formatting across many strings</p></div>
+    <div class="card good"><span class="card-num">3</span><h3>Critique</h3><p>Judgment on what you already wrote</p></div>
+    <div class="card good"><span class="card-num">4</span><h3>Providing alternatives</h3><p>Options to react to, plus trade-offs</p></div>
   </div>
   <aside class="notes" data-time="5:30">
     <ul>
-      <li>Overview only. Next slides go deeper on each.</li>
+      <li>Overview only. Next slides: four use cases (example plus how-to, except patterns: one slide with results and tip).</li>
       <li>The common thread: they're great when <em>you</em> provide the source of truth.</li>
     </ul>
   </aside>
 </section>
 
-<section class="slide" data-section="02 Strengths and limits">
-  <h2>Consistency and constraints</h2>
-  <p class="lead">Paste your glossary and formatting rules into instructions. The model follows them when you give it the source of truth.</p>
-  <aside class="notes" data-time="5:45">
+<section class="slide slide-dense slide-example" data-section="02 Strengths and limits">
+  <div class="eyebrow">1. Consistency and constraints</div>
+  <h2>Apply your glossary, case, and limits</h2>
+  <p class="deck-sub">Same strings, with your rules in the instructions.</p>
+  <div class="slide-example-panel ba-compare-panel">
+    <div class="ba-rows">
+      <div class="ba-row">
+        <div class="ba-col-before">
+          <div class="label">Before</div>
+          <div class="ui-copy bad">Choose a file to upload</div>
+          <div class="ui-copy bad">Save Changes</div>
+        </div>
+        <div class="ba-col-after">
+          <div class="label">After</div>
+          <div class="ui-copy good">Select a file to upload</div>
+          <div class="ui-copy good">Save changes</div>
+        </div>
+      </div>
+      <div class="ba-row">
+        <div class="ba-col-before">
+          <div class="label">Before</div>
+          <div class="ui-copy bad" style="font-size:16px">Your upload could not be completed because the file type you selected is not supported by our system.</div>
+        </div>
+        <div class="ba-col-after">
+          <div class="label">After</div>
+          <div class="ui-copy good" style="font-size:16px">This file type isn't supported. Upload a PDF or PNG.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes" data-time="5:40">
     <ul>
-      <li>Bridge into the next two slides: terms, then formatting.</li>
+      <li>Use case 1 of 4. One pass fixes term and case when the rules are in the prompt. Row 3 is the goal for length; often needs a retry or eval.</li>
     </ul>
   </aside>
 </section>
 
-<section class="slide" data-section="02 Strengths and limits">
-  <h2>1. Terms: Select vs Choose</h2>
-  <table style="max-width:720px">
-    <tr><th>Use</th><th>Avoid</th></tr>
-    <tr><td class="yes">Select</td><td class="no">Choose, Pick</td></tr>
-    <tr><td class="yes">Sign in</td><td class="no">Log in, Login</td></tr>
-    <tr><td class="yes">Delete</td><td class="no">Remove (when data is gone)</td></tr>
-  </table>
-  <p class="small muted" style="margin-top:16px">Add your glossary to instructions. One specialized tool per recurring inconsistency works better than one mega-prompt.</p>
+<section class="slide slide-dense slide-instruction slide-instruction-explore" data-section="02 Strengths and limits">
+  <div class="eyebrow">1. Consistency and constraints</div>
+  <h2>Title case vs sentence case</h2>
+  <div class="limit-challenge">
+    <span class="tag bad">Challenge</span>
+    <p>Without a rule, LLMs mix title case and sentence case. Title case is a common default in training data.</p>
+  </div>
+  <div class="limit-solution grow">
+    <div class="limit-solution-head"><span class="tag good">Solution</span> Add a formatting rule plus examples</div>
+    <div class="limit-split">
+<pre class="md-instruction limit-code"><span class="h">## Formatting</span>
+<span class="code-line" data-explain="One clear default stops the model from guessing. Name which surfaces it applies to: buttons, labels, nav, headings."><span class="k">-</span> Use <span class="k">**</span>sentence case<span class="k">**</span> for buttons, labels, and UI headings.</span>
+<span class="code-line" data-explain="Product names and proper nouns stay capped. Point to your glossary so &quot;Auto assist&quot; vs a product name stays consistent."><span class="k">-</span> Capitalize proper nouns and product names only (see glossary).</span>
+
+<span class="h">## Examples</span>
+<span class="code-line" data-explain="What the model often produces when no rule is set. Every word capped reads like a document, not UI copy.">Bad: Auto Assist · Save Changes</span>
+<span class="code-line" data-explain="Same strings with your rule applied. Only the first word and proper nouns are capped.">Good: Auto assist · Save changes</span></pre>
+      <div class="limit-explain-col">
+        <div class="limit-tip-explain" data-default="How does it work?">How does it work?</div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes" data-time="5:50">
+    <ul>
+      <li>Same pattern as character limits: challenge, then hover each line in the markdown.</li>
+      <li>Proper nouns may stay capitalized. Your style guide decides.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide slide-dense slide-instruction slide-limit-chars slide-instruction-explore" data-section="02 Strengths and limits">
+  <div class="eyebrow">1. Consistency and constraints</div>
+  <h2>Character limits</h2>
+  <div class="limit-challenge">
+    <span class="tag bad">Challenge</span>
+    <p>LLMs don't count characters reliably. They predict tokens, not letters.</p>
+  </div>
+  <div class="limit-solution grow">
+    <div class="limit-solution-head"><span class="tag good">Solution</span> Put limits in your instructions, with examples</div>
+    <div class="limit-split">
+<pre class="md-instruction limit-code"><span class="h">## Character limits</span>
+<span class="code-line" data-explain="Name the <strong>max for each UI type</strong>. Toasts, inline errors, and modals often differ, and the model won't guess your product's numbers."><span class="k">-</span> Toasts and inline errors: max <span class="k">**</span>90 characters<span class="k">**</span>, including spaces.</span>
+<span class="code-line" data-explain="<strong>Spell out how to count.</strong> Without it, the model optimizes for readable copy, not an exact character total."><span class="k">-</span> Count every character including spaces.</span>
+<span class="code-line" data-explain="When trimming, models often drop the fix. This rule keeps both the <strong>problem and the next step</strong>."><span class="k">-</span> If over the limit, shorten without dropping the problem or the next step.</span>
+
+<span class="h">## Examples</span>
+<span class="code-line" data-explain="Shows what <strong>too long</strong> looks like with a real count (112 chars). Use it to explain why you still <strong>spot-check or run an eval</strong>.">Bad (112 chars): Your upload could not be completed because the file type you selected is not supported by our system.</span>
+<span class="code-line" data-explain="One <strong>good line at or under the limit</strong> teaches length better than &quot;keep it short.&quot;">Good (54 chars): This file type isn't supported. Upload a PDF or PNG.</span></pre>
+      <div class="limit-explain-col">
+        <div class="limit-tip-explain" data-default="How does it work?">How does it work?</div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes" data-time="6:05">
+    <ul>
+      <li>Challenge first, then walk the markdown: hover each rule and example; read the explain box on the right.</li>
+      <li>Bad example: 112 chars is why you still verify length after generation.</li>
+      <li>Row 3 on the previous slide is the length goal; one rule plus two examples beats vague advice.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide slide-dense slide-example" data-section="02 Strengths and limits">
+  <div class="eyebrow">2. Finding patterns</div>
+  <h2>Scan many strings at once</h2>
+  <div class="pattern-split grow">
+    <div class="string-sheet">
+      <div class="sheet-bar">Onboarding flow <span>50 strings</span></div>
+      <table class="sheet-grid">
+        <tr><th>#</th><th>String</th></tr>
+        <tr><td>1</td><td>Choose a plan</td></tr>
+        <tr><td>2</td><td>Log in to continue</td></tr>
+        <tr><td>3</td><td>Save Changes</td></tr>
+        <tr><td>4</td><td>Pick a folder</td></tr>
+        <tr><td>5</td><td>Sign In Required</td></tr>
+        <tr><td>6</td><td>Click to choose file</td></tr>
+      </table>
+      <div class="sheet-more">… 44 more rows</div>
+    </div>
+    <div class="pattern-results">
+      <table class="table-audit">
+        <tr><th>Issue</th><th>Count</th></tr>
+        <tr><td>"choose" instead of approved <strong>select</strong></td><td>×6</td></tr>
+        <tr><td><strong>Log in</strong> instead of <strong>Sign in</strong></td><td>×4</td></tr>
+        <tr><td>Title Case button and label text</td><td>×9</td></tr>
+      </table>
+      <div class="callout tip">💡 <strong>Tip:</strong> Biggest time saver before a release or design system audit.</div>
+    </div>
+  </div>
   <aside class="notes" data-time="6:00">
     <ul>
-      <li>Pick one term battle your team actually has. Select vs Choose is the classic example.</li>
+      <li>Use case 2 of 4. Numbers are illustrative. The win is grouping by type.</li>
+      <li>You fix the list in your CMS or Figma; the model did the tedious scan.</li>
+      <li>Prompt to paste with the export: list inconsistent terms, capitalization, tone, and sentence structure; group by type.</li>
     </ul>
   </aside>
 </section>
 
-<section class="slide" data-section="02 Strengths and limits">
-  <h2>2. Formatting: Sentence case vs title case</h2>
-  <p class="small" style="margin-bottom:16px">Many models default to title case. Teach sentence case with a rule and examples.</p>
-  <div class="format-compare">
-    <div>
-      <div class="label">Title case (default)</div>
-      <div class="ui-copy bad">Auto Assist</div>
-      <div class="ui-copy bad" style="margin-top:12px">Save Changes</div>
-    </div>
-    <div>
-      <div class="label">Sentence case</div>
-      <div class="ui-copy good">Auto assist</div>
-      <div class="ui-copy good" style="margin-top:12px">Save changes</div>
-    </div>
+<section class="slide slide-dense slide-example" data-section="02 Strengths and limits">
+  <div class="eyebrow">3. Critique</div>
+  <h2>Judgment without a rewrite</h2>
+  <div class="prompt-block">Criticize this approach. What's unclear, off-brand, or risky? Use our voice guide.</div>
+  <div class="critique-split grow">
+    <div class="ui-copy bad">Invalid input.</div>
+    <ul class="clean">
+      <li><strong>Off-brand:</strong> uses "invalid", which your guide avoids</li>
+      <li><strong>Vague:</strong> doesn't say what failed or where</li>
+      <li><strong>No next step:</strong> user doesn't know what to do next</li>
+    </ul>
   </div>
   <aside class="notes" data-time="6:30">
     <ul>
-      <li>Proper nouns and branded feature names may stay capitalized—your style guide decides.</li>
+      <li>Use case 3 of 4. Name problems first, then iterate.</li>
+      <li>Evaluative beat. Stops the model from "helpfully" rewriting before you agree on what's wrong.</li>
+      <li>When they're ready to fix it, switch to alternatives, not before.</li>
+      <li>Same string as the inline error on slide 7.</li>
     </ul>
   </aside>
 </section>
 
-<section class="slide" data-section="02 Strengths and limits">
-  <h2>Finding patterns</h2>
-  <p class="lead">Spotting inconsistent tone, terminology, and formatting in multiple copy strings</p>
-  <p style="margin-top:20px">Paste many strings from one flow and ask:</p>
-  <div class="ui-copy" style="font-family:var(--mono);font-size:17px;margin-top:12px">List inconsistent terms, capitalization, tone, and sentence structure. Group them by type and show where each one appears.</div>
-  <div class="tip-bulb">
-    <span class="icon" aria-hidden="true">💡</span>
-    <span><strong>Tip:</strong> Biggest time saver before a release or design system audit.</span>
+<section class="slide slide-dense slide-example slide-options" data-section="02 Strengths and limits">
+  <div class="eyebrow">4. Providing alternatives</div>
+  <h2>Options with trade-offs</h2>
+  <p class="deck-ask"><strong>Ask:</strong> Make this error softer: "Upload failed. Invalid file type."</p>
+  <div class="option-rows">
+    <div class="option-row">
+      <div class="ui-copy">This file type isn't supported. Upload a PDF or PNG.</div>
+      <p class="trade">Direct and scannable; still factual</p>
+    </div>
+    <div class="option-row">
+      <div class="ui-copy">We can't upload this file type. Try a PDF or PNG.</div>
+      <p class="trade">Softer tone; "we" shares responsibility</p>
+    </div>
+    <div class="option-row">
+      <div class="ui-copy">That file won't work here. Use PDF or PNG instead.</div>
+      <p class="trade">Less formal</p>
+    </div>
   </div>
   <aside class="notes" data-time="7:00">
     <ul>
-      <li>Pattern finding is where LLMs beat humans: they don't get tired at string 200.</li>
+      <li>Use case 4 of 4. You pick and edit. Legal may veto option 2's "we can't".</li>
     </ul>
   </aside>
 </section>
 
-<section class="slide" data-section="02 Strengths and limits">
-  <h2>Providing alternatives</h2>
-  <div class="flow" style="margin-top:8px">
-    <div class="step"><div class="n">Input</div><p>Screenshot of the design with the copy, plus the stakeholder's comment</p></div>
-    <div class="arrow">→</div>
-    <div class="step"><div class="n">Ask</div><p>"Give me 3 options that address this feedback and explain the trade-offs."</p></div>
-    <div class="arrow">→</div>
-    <div class="step"><div class="n">You</div><p>Pick one, adapt it, and explain your choice in the reply</p></div>
+<section class="slide slide-dense slide-example" data-section="02 Strengths and limits">
+  <div class="eyebrow">4. Providing alternatives</div>
+  <h2>Remix what you like</h2>
+  <p class="deck-sub">Take a bit from one option and another bit from another.</p>
+  <div class="remix-sources">
+    <div class="remix-source">
+      <span class="rn">1</span>
+      <p><span class="hl">This file type isn't supported.</span> Upload a PDF or PNG.</p>
+    </div>
+    <div class="remix-source">
+      <span class="rn">2</span>
+      <p>We can't upload this file type. <span class="hl">Try a PDF or PNG.</span></p>
+    </div>
   </div>
-  <div class="tip-bulb">
-    <span class="icon" aria-hidden="true">💡</span>
-    <span><strong>Chef's favorite:</strong> This is how I use it as a UX writer.</span>
-  </div>
-  <aside class="notes" data-time="7:45">
+  <div class="remix-arrow">↓</div>
+  <p class="remix-label">Final sentence</p>
+  <div class="remix-result">This file type isn't supported. Try a PDF or PNG.</div>
+  <p class="remix-caption">Direct opening from 1, next step from 2. You're in control. <strong>You're the DJ</strong> 💿</p>
+  <aside class="notes" data-time="7:10">
     <ul>
-      <li>Only paste designs into a safe, approved enterprise AI tool.</li>
+      <li>This is still your judgment, not paste-and-ship from the model.</li>
+      <li>No "we can't" if legal pushes back. Connect to slide 16: not option 1 or 2 wholesale.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide slide-dense slide-stakeholder" data-section="02 Strengths and limits">
+  <div class="eyebrow">4. Providing alternatives</div>
+  <h2>From stakeholder feedback to a decision</h2>
+  <div class="stakeholder-layout grow">
+    <div class="stakeholder-split">
+      <div class="figma-mock">
+        <div class="figma-bar">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <span class="file">Upload flow · Frame 24</span>
+        </div>
+        <div class="figma-canvas">
+          <div class="mock-screen">
+            <h4>Upload document</h4>
+            <div class="upload-zone upload-zone-failed">
+              Drag a PDF or PNG here<br>or <strong>Select file</strong>
+              <div class="mock-error"><span class="pin" aria-hidden="true"></span>Upload failed. Invalid file type.</div>
+            </div>
+            <div class="figma-comment">
+              <div class="fc-head">
+                <span class="fc-avatar">PM</span>
+                <div><span class="fc-name">Alex Kim</span> <span class="fc-role">· Product</span></div>
+              </div>
+              <div class="fc-body">Can we soften this error? Feels harsh for someone trying to upload for the first time.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="stakeholder-side">
+        <ol class="stakeholder-steps">
+          <li><span class="sn">1</span><span>Paste the frame screenshotted with the comment</span></li>
+          <li><span class="sn">2</span><span>Ask for 3 copy options that address the feedback</span></li>
+          <li><span class="sn">3</span><span>Review, remix, adapt it and explain your choice</span></li>
+        </ol>
+        <div class="callout tip">👨‍🍳 <strong>Chef's favorite:</strong> This is how I use it as a UX writer.</div>
+      </div>
+    </div>
+    <div class="stakeholder-remix">
+      <div class="remix-sources">
+        <div class="remix-source">
+          <span class="rn">1</span>
+          <p><span class="hl">This file type isn't supported.</span> Upload a PDF or PNG.</p>
+        </div>
+        <div class="remix-source">
+          <span class="rn">2</span>
+          <p>We can't upload this file type. <span class="hl">Try a PDF or PNG.</span></p>
+        </div>
+      </div>
+      <div class="remix-row">
+        <div class="remix-final">
+          <p class="remix-label" style="margin-top:0">Final sentence</p>
+          <div class="remix-result">This file type isn't supported. Try a PDF or PNG.</div>
+        </div>
+        <div class="remix-arrow">→</div>
+        <div class="remix-final">
+          <p class="remix-label" style="margin-top:0">What you tell Alex</p>
+          <div class="remix-result" style="font-weight:400;font-size:16px;border-color:var(--line);border-width:1px">Dropped "Upload failed" and "Invalid."</div>
+        </div>
+      </div>
+      <p class="remix-caption">Same remix as the previous slide. Here you also <strong>explain the trade-off</strong> to the person who gave feedback.</p>
+    </div>
+  </div>
+  <aside class="notes" data-time="7:20">
+    <ul>
+      <li>Point at the mock: same error string as the options slide. Only paste designs into a safe, approved enterprise AI tool.</li>
+      <li>Walk the example: options → remix → what you'd say back in Figma or Slack.</li>
       <li>Options give you something to react to. Reacting is faster than inventing.</li>
-    </ul>
-  </aside>
-</section>
-
-<section class="slide" data-section="02 Strengths and limits">
-  <h2>Critique</h2>
-  <p class="lead">Ask for judgment on what you already have—not a rewrite yet.</p>
-  <div class="ui-copy" style="font-family:var(--mono);font-size:18px;margin-top:24px">Criticize this approach. What's unclear, off-brand, or risky? Use our voice guide.</div>
-  <p class="small muted" style="margin-top:20px">Use critique to review. Use alternatives when you need options to choose from.</p>
-  <aside class="notes" data-time="8:15">
-    <ul>
-      <li>Contrast with the previous slide: critique first, generate options when you're ready to iterate.</li>
     </ul>
   </aside>
 </section>
@@ -579,25 +940,23 @@
   </aside>
 </section>
 
-<section class="slide" data-section="02 Strengths and limits">
-  <h2>LLMs don't know your product or the products around it</h2>
-  <div class="cols cols-2 grow">
-    <div class="card bad">
-      <span class="tag bad">Plausible but wrong</span>
+<section class="slide slide-dense" data-section="02 Strengths and limits">
+  <h2>It doesn't know your product</h2>
+  <div class="cols cols-2 grow" style="gap:28px; align-content:center">
+    <div class="limit-example">
       <div class="ui-copy bad">Don't worry, your changes are saved automatically.</div>
-      <p style="margin-top:12px">This is wrong if the product doesn't autosave.</p>
+      <p class="limit-why">Wrong if the product doesn't autosave.</p>
     </div>
-    <div class="card bad">
-      <span class="tag bad">Hidden conflict</span>
+    <div class="limit-example">
       <div class="ui-copy bad">Introducing Workflows: automate your daily tasks.</div>
-      <p style="margin-top:12px">Another product in your suite already has a feature called Workflows.</p>
+      <p class="limit-why">Another product in your suite may already use the name Workflows.</p>
     </div>
   </div>
-  <div class="callout"><strong>What helps:</strong> give product facts and system behavior, keep a glossary across products, and check facts with your PM and engineers.</div>
   <aside class="notes" data-time="10:30">
     <ul>
-      <li>The bigger the product, the more these matter.</li>
-      <li>A shared glossary is the cheapest fix for naming conflicts.</li>
+      <li>Left: wrong if the product doesn't autosave. Right: another product in your suite may already own "Workflows".</li>
+      <li>What helps: product facts and system behavior in the prompt, shared glossary across products, check with PM and engineers.</li>
+      <li>The bigger the product, the more these matter. A shared glossary is the cheapest fix for naming conflicts.</li>
     </ul>
   </aside>
 </section>
@@ -619,7 +978,7 @@
     <ul>
       <li>Low bar: no paste, no war story. Everyone can answer, including people who don't use AI yet ("I'd want help with…").</li>
       <li>Read 2–3 answers, then bridge: "We'll map these to generative vs evaluative tools next."</li>
-      <li>If someone says "write everything": nod, then remind them—draft + context, and you still review. ~45 seconds.</li>
+      <li>If someone says "write everything": nod, then remind them: draft + context, and you still review. ~45 seconds.</li>
     </ul>
   </aside>
 </section>
@@ -638,41 +997,25 @@
     <div class="card accent">
       <span class="tag accent">Generative</span>
       <h3>Creates copy</h3>
-      <p>Drafts, variants, tone shifts, shorter versions, options to address feedback.</p>
+      <p>Drafts, variants, tone shifts, shorter versions.</p>
     </div>
     <div class="card warn">
       <span class="tag warn">Evaluative</span>
       <h3>Checks copy</h3>
-      <p>Compares copy against your rules: terms, case, length, tone, accessibility.</p>
+      <p>Compares copy against rules.</p>
     </div>
   </div>
   <table style="margin-top:24px">
     <tr><th>Tool type</th><th>Generate</th><th>Evaluate</th><th>Best for</th></tr>
-    <tr><td><strong>Figma plugins and tools</strong></td><td class="muted">Sometimes</td><td class="yes">Yes</td><td>In-place evaluation: copy in the context of the design and layout</td></tr>
-    <tr><td><strong>LLMs, such as Claude skills</strong></td><td class="yes">Yes</td><td class="yes">Yes</td><td>Generating and evaluating anywhere text lives: docs, strings, screenshots</td></tr>
+    <tr><td><strong>Figma plugins and tools</strong></td><td class="limited">⚠️ Limited</td><td class="yes">Yes</td><td>In-place evaluation: copy in the context of the design and layout</td></tr>
+    <tr><td><strong>LLMs (ChatGPT, Claude skills)</strong></td><td class="yes">Yes</td><td class="yes">Yes</td><td>Generating and evaluating anywhere text lives: docs, strings, screenshots</td></tr>
   </table>
+  <div class="callout">Evaluate copy where it lives, for example in Figma. Generate copy where you can give the most context.</div>
   <aside class="notes" data-time="12:30">
     <ul>
       <li>Figma tools see the layout: space, hierarchy, the screen around the string.</li>
       <li>LLM skills are flexible: one instruction file can generate and review.</li>
-    </ul>
-  </aside>
-</section>
-
-<section class="slide" data-section="03 Tools">
-  <h2>Which tool to use when</h2>
-  <table>
-    <tr><th>Task</th><th>Type</th><th>Where</th></tr>
-    <tr><td>Reviewing a whole Figma file before handoff</td><td>Evaluative</td><td>Figma tool or plugin</td></tr>
-    <tr><td>Drafting options for an empty state</td><td>Generative</td><td>LLM with your voice guide</td></tr>
-    <tr><td>Checking an error message against guidelines</td><td>Evaluative</td><td>Claude skill or Figma tool</td></tr>
-    <tr><td>Auditing 200 strings exported from code</td><td>Evaluative</td><td>LLM with a specialized skill</td></tr>
-    <tr><td>Replying to stakeholder feedback</td><td>Generative</td><td>Approved enterprise LLM</td></tr>
-  </table>
-  <div class="callout">Evaluate copy where it lives, for example in Figma. Generate copy where you can give the most context.</div>
-  <aside class="notes" data-time="14:00">
-    <ul>
-      <li>Pick 1–2 chat answers from the last slide: is their task generative, evaluative, or both? Where should it run?</li>
+      <li>Pick 1–2 chat answers from the poll: is their task generative, evaluative, or both? Where should it run?</li>
     </ul>
   </aside>
 </section>
@@ -862,6 +1205,26 @@ A table with: Issue | Why it matters | Suggested fix</pre>
   <aside class="notes" data-time="23:30">
     <ul>
       <li>Change one thing at a time, or you won't know what helped.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide" data-section="05 Evals">
+  <h2>Example: eval for your inline error tool</h2>
+  <p class="small muted" style="margin:-12px 0 16px">Same rules as section 1. Score outputs, then refine the instructions.</p>
+  <table>
+    <tr><th>Test input</th><th>Problem + next step</th><th>No "invalid" or "error"</th><th>≤ 90 chars</th><th>Result</th></tr>
+    <tr><td>Invalid input.</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="no">Fail</td></tr>
+    <tr><td>Error: file type not supported.</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="no">Fail</td></tr>
+    <tr><td>Something went wrong. Try again.</td><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">Fail</td></tr>
+    <tr><td>Upload a PDF or PNG file.</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">Pass</td></tr>
+  </table>
+  <div class="callout">Three failures → add an example of a good inline error, or tighten the "next step" rule. Rerun all four cases.</div>
+  <aside class="notes" data-time="24:00">
+    <ul>
+      <li>Callback to "From writer to reviewer": this is the review step made repeatable.</li>
+      <li>Point out row 3: no banned words, but still fails because it doesn't say what went wrong.</li>
+      <li>Next slide: a fuller sheet with more criteria and edge cases.</li>
     </ul>
   </aside>
 </section>
@@ -1143,6 +1506,12 @@ A table with: Issue | Why it matters | Suggested fix</pre>
       ? `<div class="time">${notes.dataset.time || ''}</div>${notes.innerHTML}`
       : '';
     history.replaceState(null, '', `#${current + 1}`);
+    document.querySelectorAll('.slide-instruction-explore').forEach((s) => {
+      if (s.classList.contains('active')) return;
+      s.querySelectorAll('.code-line').forEach((t) => t.classList.remove('is-active'));
+      const ex = s.querySelector('.limit-tip-explain');
+      if (ex) ex.textContent = ex.dataset.default || ex.textContent;
+    });
   }
 
   function advanceSlide() {
@@ -1183,6 +1552,32 @@ A table with: Issue | Why it matters | Suggested fix</pre>
   window.addEventListener('resize', fit);
   fit();
   show((parseInt(location.hash.slice(1), 10) || 1) - 1);
+
+  (function initInstructionExploreSlides() {
+    document.querySelectorAll('.slide-instruction-explore').forEach((slide) => {
+      const lines = [...slide.querySelectorAll('.limit-code .code-line[data-explain]')];
+      const explainEl = slide.querySelector('.limit-tip-explain');
+      if (!explainEl || !lines.length) return;
+      const defaultText = explainEl.dataset.default || explainEl.textContent;
+
+      function clearLine() {
+        lines.forEach((l) => l.classList.remove('is-active'));
+        explainEl.textContent = defaultText;
+      }
+
+      function setLine(line) {
+        lines.forEach((l) => l.classList.toggle('is-active', l === line));
+        const html = line.getAttribute('data-explain');
+        if (html) explainEl.innerHTML = html;
+        else explainEl.textContent = defaultText;
+      }
+
+      lines.forEach((line) => line.addEventListener('mouseenter', () => setLine(line)));
+      slide.addEventListener('mouseleave', (e) => {
+        if (!slide.contains(e.relatedTarget)) clearLine();
+      });
+    });
+  })();
 </script>
 </body>
 </html>

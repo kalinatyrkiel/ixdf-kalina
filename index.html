@@ -151,7 +151,13 @@
   }
   .option-row .trade { font-size: 21px; line-height: 1.4; color: var(--muted); margin: 0; }
   .slide-options.slide-dense h2 { margin-bottom: 12px; }
-  .slide-options .deck-ask { margin-top: -10px; margin-bottom: 14px; }
+  .slide-options .deck-ask {
+    font-size: 22px; line-height: 1.4; margin-top: -6px; margin-bottom: 16px;
+    color: var(--muted); max-width: 920px;
+  }
+  .slide-options .deck-ask strong { color: var(--ink); }
+  .slide-options .option-row .ui-copy { font-size: 22px; }
+  .slide-options .option-row .trade { font-size: 17px; line-height: 1.45; }
   .slide-options .option-rows { justify-content: flex-start; margin-top: -4px; }
   .remix-sources { display: flex; flex-direction: column; gap: 12px; }
   .remix-source {
@@ -243,7 +249,8 @@
   .stakeholder-steps { font-size: 16px; }
   .stakeholder-steps li { padding: 7px 0; }
   .stakeholder-close {
-    font-size: 19px; line-height: 1.45; color: var(--muted); margin: 10px 0 0; max-width: 420px;
+    font-size: 18px; line-height: 1.35; color: var(--muted); margin: 10px 0 0; max-width: none;
+    white-space: nowrap;
   }
   .overview-cards .card { display: flex; flex-direction: column; min-height: 132px; }
   .overview-cards .card-num { font-size: 26px; font-weight: 700; color: var(--accent); line-height: 1; margin-bottom: 8px; }
@@ -311,8 +318,13 @@
   }
   .instruction-tooltip.visible { opacity: 1; visibility: visible; }
   .instruction-tooltip strong { color: #fff; font-weight: 700; }
-  .limit-example .ui-copy { font-size: 22px; }
-  .limit-why { font-size: 19px; line-height: 1.4; color: var(--muted); margin: 0; }
+  .limit-example {
+    display: flex; flex-direction: column; gap: 14px; max-width: 540px;
+  }
+  .limit-example .ui-copy { font-size: 20px; margin-top: 0; }
+  .limit-why { font-size: 18px; line-height: 1.4; color: var(--muted); margin: 0; }
+  .slide-product-limits h2 { margin-bottom: 22px; }
+  .slide-product-limits .cols { align-content: start; padding-top: 4px; }
   strong { font-weight: 700; }
   code { font-family: var(--mono); font-size: .88em; background: var(--surface); padding: 2px 7px; border-radius: 4px; }
   a { color: var(--accent); }
@@ -376,6 +388,33 @@
   .eval-table th .th-note { display: block; font-weight: 400; font-size: 13px; color: var(--muted); margin-top: 4px; line-height: 1.3; }
   .slide.dark .eval-table th .th-note { color: #999; }
   .eval-type { font-size: 15px; white-space: nowrap; }
+
+  .slide-update-log-example h2 { margin-bottom: 16px; }
+  .update-log-split {
+    display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 28px; flex: 1; min-height: 0; align-items: stretch;
+  }
+  .update-log-changelog {
+    background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 28px 32px 32px;
+    display: flex; flex-direction: column; justify-content: flex-start;
+  }
+  .update-log-date { font-size: 34px; font-weight: 700; line-height: 1.2; margin-bottom: 18px; }
+  .update-log-changelog hr { border: none; border-top: 1px solid #ccc; margin: 0 0 22px; }
+  .update-log-changelog ul { list-style: disc; padding-left: 28px; margin: 0; }
+  .update-log-changelog li { font-size: 22px; line-height: 1.4; font-weight: 700; }
+  .update-log-changelog .update-log-caption {
+    font-size: 16px; font-weight: 400; line-height: 1.45; color: var(--muted);
+    margin: 22px 0 0; max-width: none;
+  }
+  .update-log-rule {
+    background: #fff; border: 3px solid var(--ink); border-radius: 14px; padding: 22px 26px 24px;
+    font-size: 15px; line-height: 1.45;
+  }
+  .update-log-rule h3 { font-size: 22px; margin-bottom: 14px; }
+  .update-log-rule ul { list-style: disc; padding-left: 22px; margin: 0; }
+  .update-log-rule li { margin-bottom: 10px; }
+  .update-log-rule ul ul { margin-top: 8px; list-style: circle; font-size: 14px; }
+  .update-log-rule ul ul ul { list-style: disc; font-size: 13px; margin-top: 6px; }
+  .update-log-truncated { font-size: 22px; line-height: 1; color: var(--muted); margin: 8px 0 0; letter-spacing: 0.08em; }
 
   /* Layout helpers */
   .grow { flex: 1; min-height: 0; }
@@ -880,7 +919,7 @@
           <li><span class="sn">2</span><span>Ask for 3 copy options that address the feedback</span></li>
           <li><span class="sn">3</span><span>Review, remix, adapt it and explain your choice</span></li>
         </ol>
-        <p class="stakeholder-close">Final copy on the frame + one sentence back to the PM.</p>
+        <p class="stakeholder-close">Final copy on the frame, then one sentence to the PM.</p>
         <div class="callout tip">👨‍🍳 <strong>Chef's favorite:</strong> This is how I use it as a UX writer.</div>
       </div>
     </div>
@@ -890,10 +929,10 @@
 <section class="slide" data-section="02 Strengths and limits">
   <h2>What LLMs don't do well</h2>
   <div class="cols cols-4 grow" style="gap:20px">
-    <div class="card bad"><h3>Writing from scratch</h3><p>Especially without context. The copy comes out generic and often doesn't fit your product.</p></div>
-    <div class="card bad"><h3>Product context</h3><p>Copy can sound plausible but describe something the product doesn't do.</p></div>
-    <div class="card bad"><h3>Dependencies between products</h3><p>It won't know another feature already has the same name.</p></div>
-    <div class="card bad"><h3>Knowing what's clear to real users</h3><p>Copy that seems simple to the model can still confuse people in the actual flow.</p></div>
+    <div class="card bad"><h3>Writing from scratch</h3><p>Without your context, copy is generic and off-brand.</p></div>
+    <div class="card bad"><h3>Product context</h3><p>It can invent features or flows that do not exist.</p></div>
+    <div class="card bad"><h3>Dependencies between products</h3><p>It's not aware of naming or rules in other parts of your product.</p></div>
+    <div class="card bad"><h3>Knowing what's clear to real users</h3><p>Clear to the model is not clear for humans. Don't stop testing.</p></div>
   </div>
 </section>
 
@@ -917,9 +956,9 @@
   </div>
 </section>
 
-<section class="slide slide-dense" data-section="02 Strengths and limits">
+<section class="slide slide-dense slide-product-limits" data-section="02 Strengths and limits">
   <h2>It doesn't know your product</h2>
-  <div class="cols cols-2 grow" style="gap:28px; align-content:center">
+  <div class="cols cols-2 grow" style="gap:32px; align-content:start">
     <div class="limit-example">
       <div class="ui-copy bad">Don't worry, your changes are saved automatically.</div>
       <p class="limit-why">Wrong if the product doesn't autosave.</p>
@@ -1104,22 +1143,6 @@ description: Review and rewrite error messages. Use when someone shares an error
   </div>
 </section>
 
-<section class="slide demo" data-section="03 Instructions">
-  <div class="eyebrow">Live demo 1 · about 2 min</div>
-  <h2>Generate and review copy with a Claude skill</h2>
-  <div class="placeholder">Placeholder: demo tool and file</div>
-  <div class="flow">
-    <div class="step"><div class="n">1</div><p>Open the error message review skill</p></div>
-    <div class="arrow">→</div>
-    <div class="step"><div class="n">2</div><p>Share a screenshot and a rough draft</p></div>
-    <div class="arrow">→</div>
-    <div class="step"><div class="n">3</div><p>Get a review table and 3 options</p></div>
-    <div class="arrow">→</div>
-    <div class="step"><div class="n">4</div><p>Pick, edit, and explain why</p></div>
-  </div>
-  <div class="callout">Watch for: does it ask for missing context? Does it follow the terminology rules?</div>
-</section>
-
 <!-- ============ 04 EVALS ============ -->
 
 <section class="slide dark divider" data-section="04 Evals">
@@ -1127,12 +1150,6 @@ description: Review and rewrite error messages. Use when someone shares an error
 </section>
 
 <section class="slide dark slide-eval-criteria" data-section="04 Evals">
-  <div class="eval-loop">
-    <span>Define Intent</span><span class="sep">→</span>
-    <span class="step-on">Set Success Criteria</span><span class="sep">→</span>
-    <span>Measure</span><span class="sep">→</span>
-    <span>Learn</span>
-  </div>
   <div class="eval-criteria-layout">
     <p class="eval-criteria-headline">Make your definition of &lsquo;good&rsquo; a shared, consistent, and measurable language.</p>
     <div class="eval-rubric" aria-hidden="true">
@@ -1168,9 +1185,36 @@ description: Review and rewrite error messages. Use when someone shares an error
   </div>
 </section>
 
+<section class="slide slide-dense slide-update-log-example" data-section="04 Evals">
+  <h2>Log the update, then add the rule</h2>
+  <p class="lead">Log failures and turn each one into a rule or example.</p>
+  <div class="update-log-split grow">
+    <div class="update-log-changelog">
+      <div class="update-log-date">Sep 5, 2026 (V2.2)</div>
+      <hr>
+      <ul>
+        <li>Added instructions on asking about create / add</li>
+      </ul>
+      <p class="update-log-caption">Evals flagged mixed Create/Add terms. Compare showed the gap; the changelog records what changed for the team.</p>
+    </div>
+    <div class="update-log-rule">
+      <h3>Create vs. Add Usage</h3>
+      <ul>
+        <li>If copy uses &ldquo;Create&rdquo; or &ldquo;Add,&rdquo; ask what the action is:
+          <ul>
+            <li><strong>Create:</strong> new item.</li>
+            <li><strong>Add:</strong> something that already exists.</li>
+            <li>If unclear, ask before you suggest a term.</li>
+          </ul>
+        </li>
+      </ul>
+      <p class="update-log-truncated" aria-hidden="true">…</p>
+    </div>
+  </div>
+</section>
+
 <section class="slide" data-section="04 Evals">
   <h2>Example: eval for your inline error tool</h2>
-  <p class="small muted" style="margin:-12px 0 16px">Same rules as section 1. Tag each row: failure or empty field. Score against the rule for that situation.</p>
   <table class="eval-table">
     <tr><th>Test input</th><th>Type</th><th>Problem + next step<span class="th-note">or what to enter</span></th><th>No "invalid" or "error"</th><th>≤ 90 chars</th><th>Result</th></tr>
     <tr><td>Invalid input.</td><td class="eval-type">Failure</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="no">Fail</td></tr>
@@ -1183,36 +1227,11 @@ description: Review and rewrite error messages. Use when someone shares an error
 </section>
 
 <section class="slide" data-section="04 Evals">
-  <h2>Eval tips</h2>
-  <div class="cols cols-2 grow">
-    <ul class="clean small">
-      <li><strong>Tag each test case:</strong> failure message or empty-field prompt. Score the matching rule</li>
-      <li><strong>Keep a reference set:</strong> strings you know are right, to compare against</li>
-      <li><strong>Rerun after every change</strong> to instructions, and when the model updates</li>
-      <li><strong>Log failures</strong> and turn each one into a rule or example</li>
-      <li><strong>Score ban-list words:</strong> pass = zero tokens from <code class="inline-code">reference-ai-writing-avoid.md</code></li>
-    </ul>
-    <div class="cols" style="grid-template-columns:1fr; gap:16px; align-self:start">
-      <div class="card accent"><h3>AI can check rules</h3><p>Case, terms, length, hard-ban word list, fit for the situation</p></div>
-      <div class="card good"><h3>People judge meaning</h3><p>Tone, empathy, and whether failure vs empty field fits the moment</p></div>
-    </div>
+  <h2>Eval tips: human vs automated</h2>
+  <div class="cols cols-2 grow" style="gap:28px; max-width:1040px; align-self:center">
+    <div class="card accent"><h3>AI can check rules</h3><p>Case, terms, length, hard-ban word list, fit for the situation</p></div>
+    <div class="card good"><h3>People judge meaning</h3><p>Tone, empathy, and whether failure vs empty field fits the moment</p></div>
   </div>
-</section>
-
-<section class="slide demo" data-section="04 Evals">
-  <div class="eyebrow">Live demo 2 · about 2 min</div>
-  <h2>Evaluate copy in place in Figma</h2>
-  <div class="placeholder">Placeholder: Figma file and plugin or tool</div>
-  <div class="flow">
-    <div class="step"><div class="n">1</div><p>Select a frame or flow</p></div>
-    <div class="arrow">→</div>
-    <div class="step"><div class="n">2</div><p>Run the evaluation tool</p></div>
-    <div class="arrow">→</div>
-    <div class="step"><div class="n">3</div><p>Review flagged issues in context</p></div>
-    <div class="arrow">→</div>
-    <div class="step"><div class="n">4</div><p>Fix and recheck</p></div>
-  </div>
-  <div class="callout">Same eval mindset: failure needs problem + next step; empty field needs what to enter. In Figma, also watch layout and truncation.</div>
 </section>
 
 <!-- ============ 05 COMMON ISSUES ============ -->
@@ -1235,19 +1254,15 @@ description: Review and rewrite error messages. Use when someone shares an error
   <h2>Voice and clarity</h2>
   <table class="table-issues">
     <tr><th>Issue</th><th>What helps</th></tr>
-    <tr><td><strong>Generic filler:</strong> "Oops!" plus any word on your hard-ban list (one word = fail)</td><td>Paste <code class="inline-code">reference-ai-writing-avoid.md</code> into skills; Cursor rule <code class="inline-code">avoid-ai-writing.mdc</code></td></tr>
     <tr><td><strong>Over-friendly:</strong> exclamation marks and emoji in errors</td><td>Tone rules for each context</td></tr>
     <tr><td><strong>Meaning lost</strong> when shortening</td><td>Ask it to list what it removed</td></tr>
   </table>
-</section>
-
-<section class="slide slide-dense slide-common-issues" data-section="05 Common issues">
-  <h2>Product facts</h2>
+  <h2 style="font-size:34px; margin-top:22px; margin-bottom:14px">Product facts</h2>
   <table class="table-issues">
     <tr><th>Issue</th><th>What helps</th></tr>
     <tr><td><strong>Invented features</strong> or system behavior</td><td>Product facts in the instructions, and ask it to flag assumptions</td></tr>
   </table>
-  <div class="callout tip">💡 <strong>Tip:</strong> Tell the model to list what it assumed about the product before it suggests copy.</div>
+  <div class="callout tip">💡 <strong>Tip:</strong> Ask it to list what it removed when shortening, and what it assumes about the product, before it suggests copy.</div>
 </section>
 
 <!-- ============ 06 WORKFLOWS ============ -->

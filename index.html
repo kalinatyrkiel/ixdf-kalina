@@ -63,6 +63,19 @@
   .lead { font-size: 28px; line-height: 1.4; color: var(--muted); max-width: 980px; }
   .small, .small li, .small p { font-size: 19px; }
   .muted { color: var(--muted); }
+  .slide-learn-more a.resource-link {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 5px 12px;
+    border-radius: 6px;
+    background: var(--accent-soft);
+    color: #0077b3;
+    font-size: 17px;
+    line-height: 1.35;
+    text-decoration: none;
+    font-family: var(--mono);
+  }
+  .slide-learn-more a.resource-link:hover { background: #d4eef9; text-decoration: underline; }
   ul.clean { list-style: none; }
   ul.clean li { padding-left: 28px; position: relative; margin-bottom: 12px; }
   ul.clean li::before { content: ""; position: absolute; left: 6px; top: .6em; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
@@ -389,32 +402,39 @@
   .slide.dark .eval-table th .th-note { color: #999; }
   .eval-type { font-size: 15px; white-space: nowrap; }
 
-  .slide-update-log-example h2 { margin-bottom: 16px; }
+  .slide-update-log-example h2 { margin-bottom: 8px; }
+  .slide-update-log-example .lead {
+    font-size: 22px; line-height: 1.4; color: var(--muted);
+    margin: 0 0 20px; max-width: none;
+  }
   .update-log-split {
-    display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 28px; flex: 1; min-height: 0; align-items: stretch;
+    display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 24px; flex: 1; min-height: 0; align-items: stretch;
+    margin-top: 2px;
   }
   .update-log-changelog {
-    background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 28px 32px 32px;
-    display: flex; flex-direction: column; justify-content: flex-start;
+    background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 24px 28px 26px;
+    display: flex; flex-direction: column; justify-content: flex-start; min-height: 0;
   }
-  .update-log-date { font-size: 34px; font-weight: 700; line-height: 1.2; margin-bottom: 18px; }
-  .update-log-changelog hr { border: none; border-top: 1px solid #ccc; margin: 0 0 22px; }
+  .update-log-date { font-size: 30px; font-weight: 700; line-height: 1.2; margin-bottom: 14px; }
+  .update-log-changelog hr { border: none; border-top: 1px solid #ccc; margin: 0 0 18px; }
   .update-log-changelog ul { list-style: disc; padding-left: 28px; margin: 0; }
-  .update-log-changelog li { font-size: 22px; line-height: 1.4; font-weight: 700; }
+  .update-log-changelog li { font-size: 20px; line-height: 1.35; font-weight: 400; margin-bottom: 14px; }
+  .update-log-changelog li:last-child { margin-bottom: 0; }
+  .update-log-changelog li strong { font-weight: 700; }
   .update-log-changelog .update-log-caption {
     font-size: 16px; font-weight: 400; line-height: 1.45; color: var(--muted);
-    margin: 22px 0 0; max-width: none;
+    margin: 0; max-width: none; padding-top: 18px; margin-top: auto;
   }
   .update-log-rule {
-    background: #fff; border: 3px solid var(--ink); border-radius: 14px; padding: 22px 26px 24px;
-    font-size: 15px; line-height: 1.45;
+    background: #fff; border: 3px solid var(--ink); border-radius: 14px; padding: 20px 24px 22px;
+    font-size: 15px; line-height: 1.45; min-height: 0;
   }
-  .update-log-rule h3 { font-size: 22px; margin-bottom: 14px; }
+  .update-log-rule h3 { font-size: 21px; margin-bottom: 12px; }
   .update-log-rule ul { list-style: disc; padding-left: 22px; margin: 0; }
-  .update-log-rule li { margin-bottom: 10px; }
-  .update-log-rule ul ul { margin-top: 8px; list-style: circle; font-size: 14px; }
-  .update-log-rule ul ul ul { list-style: disc; font-size: 13px; margin-top: 6px; }
-  .update-log-truncated { font-size: 22px; line-height: 1; color: var(--muted); margin: 8px 0 0; letter-spacing: 0.08em; }
+  .update-log-rule li { margin-bottom: 8px; }
+  .update-log-rule ul ul { margin-top: 6px; list-style: circle; font-size: 14px; }
+  .update-log-rule ul ul ul { list-style: disc; font-size: 13px; margin-top: 4px; }
+  .update-log-truncated { font-size: 20px; line-height: 1; color: var(--muted); margin: 6px 0 0; letter-spacing: 0.08em; }
 
   /* Layout helpers */
   .grow { flex: 1; min-height: 0; }
@@ -486,6 +506,21 @@
   pre .c { color: #8a8a8a; }
   pre .h { color: #4fc3f2; font-weight: 700; }
   pre .k { color: #4fc3f2; }
+
+  .slide-best-practices .best-practices-stack { display: flex; flex-direction: column; min-height: 0; max-width: 760px; }
+  .slide-best-practices .best-practices-tip {
+    margin-top: 6px; margin-bottom: 14px; font-size: 17px; line-height: 1.4; padding: 12px 16px;
+  }
+  .slide-best-practices .best-practices-stack ul + ul { margin-top: 0; }
+
+  .slide-review-checklist h2 { margin-bottom: 14px; }
+  .slide-review-checklist .review-checklist-wrap {
+    display: flex; flex-direction: column; min-height: 0; flex: 1; max-width: 920px; width: 100%; align-self: center;
+  }
+  .slide-review-checklist .review-checklist-md {
+    font-size: 12.5px; line-height: 1.4; margin: 0; flex: 1; min-height: 0; overflow: hidden;
+  }
+  .slide-review-checklist .callout { margin-top: 14px; flex-shrink: 0; max-width: 920px; align-self: center; width: 100%; }
 
   /* Flow */
   .flow { display: flex; align-items: stretch; gap: 0; }
@@ -560,7 +595,7 @@
   .slide-workflow-split .flow .step.step-design .n { color: #004a6e; }
   .slide-workflow-split .flow .step.step-both .step-name,
   .slide-workflow-split .flow .step.step-both .n { color: var(--ink); }
-  .slide-workflow-cd .callout { border: 2px solid #3d2e6b; border-left-width: 6px; background: #ece8f4; }
+  .slide-workflow-cd .callout { border: 2px solid #3d2e6b; border-left: 6px solid #3d2e6b; background: var(--surface); }
   .slide-workflow-split .callout { border: 2px solid #3d2e6b; border-left: 6px solid #3d2e6b; background: var(--surface); }
 
   /* Poll */
@@ -1040,7 +1075,7 @@ name: error-message-review
 description: Review and rewrite error messages. Use when someone shares an error, toast, or inline validation.
 <span class="c">---</span></span>
 
-<span class="skill-line" data-explain="Title orients humans browsing skills. Keep it specific, not &quot;copy helper.&quot;"><span class="h"># Error message reviewer</span></span>
+<span class="skill-line" data-explain="Keep it specific to what the skill does."><span class="h"># Error message reviewer</span></span>
 
 <span class="skill-line" data-explain="Section headers mirror the five blocks you teach: task, context, rules, examples, output."><span class="h">## Task</span></span>
 <span class="skill-line" data-explain="One job: <strong>review first</strong>, then suggest rewrites.">Review the error message. Then suggest up to 3 rewrites.</span>
@@ -1048,7 +1083,7 @@ description: Review and rewrite error messages. Use when someone shares an error
 <span class="skill-line" data-explain="Context is where most generic AI copy fails. This section says what to know before judging."><span class="h">## Context</span></span>
 <span class="skill-line" data-explain="Strong instruction: <strong>ask instead of guess</strong> when product facts are missing.">Ask for these if they're missing:</span>
 <span class="skill-line" data-explain="Placement changes rules (length, tone). Naming toast vs inline prevents one-size-fits-all copy."><span class="k">-</span> Where it appears (toast, inline, modal)</span>
-<span class="skill-line" data-explain="Encodes the error-message job: problem plus <strong>next step</strong>, not error codes alone."><span class="k">-</span> What caused the error and what the user can do next</span>
+<span class="skill-line" data-explain="Best practice for error messages: what went wrong and what to do next."><span class="k">-</span> What caused the error and what the user can do next</span>
 
 <span class="skill-line" data-explain="Rules should be scannable bullets the model can check like an eval."><span class="h">## Rules</span></span>
 <span class="skill-line" data-explain="The core UX writing rule in one line. Easy to score pass or fail on <strong>failure</strong> messages in evals. For <strong>empty fields</strong>, score whether it says what to enter."><span class="k">-</span> Say what happened and what to do next.</span>
@@ -1077,25 +1112,42 @@ description: Review and rewrite error messages. Use when someone shares an error
 <span class="skill-line" data-explain="Table columns match how UX writers already review: issue, why it's a problem, fix. Easier to scan than prose.">A table with: Issue | Why it's a problem | Suggested fix</span></pre>
 </section>
 
-<section class="slide" data-section="03 Instructions">
+<section class="slide slide-best-practices" data-section="03 Instructions">
   <h2>Best practices for writing instructions</h2>
-  <div class="cols cols-2">
+  <div class="best-practices-stack">
     <ul class="clean small">
       <li><strong>Be specific.</strong> Write "60 characters max", not "keep it short".</li>
       <li><strong>Show good and bad examples.</strong> Examples often work better than more rules.</li>
+    </ul>
+    <div class="callout tip best-practices-tip">💡 <strong>Tip:</strong> <strong>One-shot and few-shot prompting:</strong> one bad/good pair shows the shape (one-shot). Several pairs show a repeatable pattern (few-shot).</div>
+    <ul class="clean small">
       <li><strong>Say what to do,</strong> not only what to avoid.</li>
     </ul>
+  </div>
+</section>
+
+<section class="slide slide-best-practices" data-section="03 Instructions">
+  <h2>Best practices for writing instructions</h2>
+  <div class="best-practices-stack">
     <ul class="clean small">
       <li><strong>Don't give tools too many jobs.</strong> Use separate tools for errors, empty states, and notifications.</li>
       <li><strong>Ask for missing context.</strong> Tell the model to ask instead of guessing.</li>
+    </ul>
+    <div class="callout tip best-practices-tip">💡 <strong>Tip:</strong> <strong>Iterative refinement:</strong> you don't need every detail in the first message. Tell the model to ask what's missing.</div>
+    <ul class="clean small">
       <li><strong>Version and share it.</strong> Maintain it like any other design system asset.</li>
     </ul>
   </div>
 </section>
 
 <section class="slide" data-section="03 Instructions">
-  <h2>Reuse the same markdown across LLMs</h2>
-  <p class="lead">One instruction file – used everywhere.</p>
+  <h2>Reuse the same doc across LLMs</h2>
+  <p class="lead">Use that same document in ChatGPT, Claude, Figma plugins, and anywhere else you work with AI.</p>
+  <ul class="clean" style="max-width:940px">
+    <li><strong>One master document on the team.</strong> Same place you keep voice guides and design system docs: shared drive, internal site. Log all updates.</li>
+    <li><strong>Every AI tool starts from that doc.</strong> Copy from the master or attach the file.</li>
+    <li><strong>Best long-term home: a GitHub repo.</strong> Think of it as a shared folder online where the team saves files, sees what changed, and rolls back mistakes. Not very technical? A friendly engineer can help you set it up.</li>
+  </ul>
 </section>
 
 <section class="slide" data-section="03 Instructions">
@@ -1120,25 +1172,25 @@ description: Review and rewrite error messages. Use when someone shares an error
   <div class="callout">Evaluate copy where it lives, for example in Figma. Generate copy where you can give the most context.</div>
 </section>
 
-<section class="slide" data-section="03 Instructions">
+<section class="slide slide-learn-more" data-section="03 Instructions">
   <h2>Where to learn more</h2>
   <div class="cols cols-2 grow">
-    <div class="card accent">
-      <h3>Markdown</h3>
-      <p>Markdown Guide: basic syntax and cheat sheet<br><span class="muted">markdownguide.org</span></p>
-    </div>
-    <div class="card accent">
-      <h3>Prompting and skills</h3>
-      <p>Anthropic docs: prompt engineering and Claude skills<br><span class="muted">docs.claude.com</span></p>
-      <p style="margin-top:10px">OpenAI docs: prompting guide<br><span class="muted">platform.openai.com/docs</span></p>
-    </div>
-    <div class="card accent">
-      <h3>Signs of AI writing</h3>
-      <p>Wikipedia community checklist of chatbot patterns (vocabulary, tone, structure)<br><span class="muted">en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing</span></p>
-    </div>
     <div class="card good">
       <h3>Start with what you already have</h3>
       <p>Most of your rules can come from your voice and tone guide, glossary, design system docs, and past review comments.</p>
+    </div>
+    <div class="card accent">
+      <h3>Markdown</h3>
+      <p>Markdown Guide: basic syntax and cheat sheet<br><a class="resource-link" href="https://www.markdownguide.org/" target="_blank" rel="noopener noreferrer">markdownguide.org</a></p>
+    </div>
+    <div class="card accent">
+      <h3>Prompting and skills</h3>
+      <p>Anthropic docs: prompt engineering and Claude skills<br><a class="resource-link" href="https://docs.claude.com/" target="_blank" rel="noopener noreferrer">docs.claude.com</a></p>
+      <p style="margin-top:10px">OpenAI docs: prompting guide<br><a class="resource-link" href="https://platform.openai.com/docs" target="_blank" rel="noopener noreferrer">platform.openai.com/docs</a></p>
+    </div>
+    <div class="card accent">
+      <h3>Signs of AI writing</h3>
+      <p>Wikipedia community checklist of chatbot patterns (vocabulary, tone, structure)<br><a class="resource-link" href="https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing" target="_blank" rel="noopener noreferrer">en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing</a></p>
     </div>
   </div>
 </section>
@@ -1173,27 +1225,26 @@ description: Review and rewrite error messages. Use when someone shares an error
 
 <section class="slide" data-section="04 Evals">
   <h2>What's an eval?</h2>
-  <p class="lead">A repeatable test against <strong>shared, measurable criteria</strong>: does your tool follow the rules on every example?</p>
+  <p class="lead">Run the same examples every time. Pass or fail against your checklist.</p>
   <div class="flow" style="margin-top:32px">
-    <div class="step"><div class="n">1 · Collect</div><p>10–20 real test cases. Mix <strong>failure messages</strong> and <strong>empty-field prompts</strong>, plus edge cases: long names, plurals, legal copy, tricky terms</p></div>
+    <div class="step"><div class="n">1 · Collect</div><p>10–20 real strings: <strong>failure messages</strong> and <strong>empty-field prompts</strong>, plus a few edge cases</p></div>
     <div class="arrow">→</div>
-    <div class="step"><div class="n">2 · Define</div><p>Pass or fail checklist. e.g. <strong>problem + next step</strong> when something failed; <strong>what to enter</strong> when the field is empty</p></div>
+    <div class="step"><div class="n">2 · Score</div><p>Pass or fail each one against the checklist from the last slide (by hand, or with an LLM judge you spot-check)</p></div>
     <div class="arrow">→</div>
-    <div class="step"><div class="n">3 · Run and score</div><p>Score each output against the rule for its type (failure or empty field). By hand, or with an LLM judge you spot-check</p></div>
-    <div class="arrow">→</div>
-    <div class="step"><div class="n">4 · Compare</div><p>Change one thing, rerun, compare results</p></div>
+    <div class="step"><div class="n">3 · Improve</div><p>Change one rule or example, rerun the full set, compare results</p></div>
   </div>
 </section>
 
 <section class="slide slide-dense slide-update-log-example" data-section="04 Evals">
-  <h2>Log the update, then add the rule</h2>
+  <h2>Real-life example: changelog</h2>
   <p class="lead">Log failures and turn each one into a rule or example.</p>
   <div class="update-log-split grow">
     <div class="update-log-changelog">
       <div class="update-log-date">Sep 5, 2026 (V2.2)</div>
       <hr>
       <ul>
-        <li>Added instructions on asking about create / add</li>
+        <li><strong>Problem:</strong> Skill doesn&rsquo;t understand the difference between create and add.</li>
+        <li><strong>Solution:</strong> Added instructions on asking about create / add</li>
       </ul>
       <p class="update-log-caption">Evals flagged mixed Create/Add terms. Compare showed the gap; the changelog records what changed for the team.</p>
     </div>
@@ -1223,7 +1274,6 @@ description: Review and rewrite error messages. Use when someone shares an error
     <tr><td>Upload a PDF or PNG file.</td><td class="eval-type">Failure</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">Pass</td></tr>
     <tr><td>Enter your email.</td><td class="eval-type">Empty field</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">Pass</td></tr>
   </table>
-  <div class="callout">Failures → tighten problem + next step or add a good failure example. Empty field → check what to enter. Rerun the full set.</div>
 </section>
 
 <section class="slide" data-section="04 Evals">
@@ -1282,7 +1332,7 @@ description: Review and rewrite error messages. Use when someone shares an error
     <div class="arrow">→</div>
     <div class="step step-cd"><div class="n">Improve</div><p>Run evals and update instructions</p><p class="step-tools">Evals and rubrics</p></div>
   </div>
-  <div class="callout">You build and maintain the tools, edit copy, and own its quality. Your guidelines get applied even when you're not reviewing.</div>
+  <div class="callout"><strong>Your guidelines get applied even if you're not in the room.</strong></div>
 </section>
 
 <section class="slide slide-workflow-split" data-section="06 Workflows">
@@ -1318,23 +1368,23 @@ description: Review and rewrite error messages. Use when someone shares an error
   <div class="callout tip">💡 <strong>Tip:</strong> Have one place to collect feedback on outputs (e.g., a Slack channel).</div>
 </section>
 
-<section class="slide" data-section="06 Workflows">
+<section class="slide slide-dense slide-review-checklist" data-section="06 Workflows">
   <h2>Review checklist for any team</h2>
-  <div class="cols cols-2">
-    <ul class="clean small">
-      <li><strong>Clear:</strong> says what happened and what to do next</li>
-      <li><strong>Accurate:</strong> matches what the product actually does</li>
-      <li><strong>Consistent:</strong> approved terms, sentence case, formats</li>
-      <li><strong>Concise:</strong> fits the space, no filler</li>
-      <li><strong>Ban-list clean:</strong> zero tokens from your hard-ban word list</li>
-    </ul>
-    <ul class="clean small">
-      <li><strong>Empathetic:</strong> right tone for the situation, no blame</li>
-      <li><strong>Accessible:</strong> descriptive links, no direction or color-only cues, works with screen readers</li>
-      <li><strong>Translatable:</strong> no idioms, no strings built from fragments</li>
-    </ul>
+  <div class="review-checklist-wrap grow">
+    <div class="why-structure-filename">review-checklist.md</div>
+<pre class="md-instruction review-checklist-md"><span class="h"># Review checklist</span>
+
+<span class="h">## Checklist</span>
+<span class="k">-</span> <span class="k">**</span>Clear:<span class="k">**</span> says what happened and what to do next
+<span class="k">-</span> <span class="k">**</span>Accurate:<span class="k">**</span> matches what the product actually does
+<span class="k">-</span> <span class="k">**</span>Consistent:<span class="k">**</span> approved terms, sentence case, formats
+<span class="k">-</span> <span class="k">**</span>Concise:<span class="k">**</span> fits the space, no filler
+<span class="k">-</span> <span class="k">**</span>Ban-list clean:<span class="k">**</span> zero tokens from your hard-ban word list
+<span class="k">-</span> <span class="k">**</span>Empathetic:<span class="k">**</span> right tone for the situation, no blame
+<span class="k">-</span> <span class="k">**</span>Accessible:<span class="k">**</span> descriptive links, no direction or color-only cues, works with screen readers
+<span class="k">-</span> <span class="k">**</span>Translatable:<span class="k">**</span> no idioms, no strings built from fragments</pre>
   </div>
-  <div class="callout">Use the same checklist for human review, AI evaluation tools, and evals. Tag failure vs empty field when you score.</div>
+  <div class="callout">Use the same checklist for human review, AI evaluation tools, and evals. Keep track of failures.</div>
 </section>
 
 <!-- ============ 07 PRINCIPLES ============ -->

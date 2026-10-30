@@ -111,8 +111,6 @@
   .slide-common-issues h2 { margin-bottom: 18px; }
   .table-issues td { font-size: 17px; line-height: 1.4; vertical-align: top; }
   .table-issues td:first-child { width: 42%; }
-  .slide-ai-signs .bad-example { display: block; font-size: 15px; line-height: 1.35; color: var(--bad); margin-top: 6px; font-weight: 400; }
-  .slide-ai-signs .bad-example::before { content: "Bad: "; font-weight: 700; }
   .pattern-split { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: stretch; flex: 1; min-height: 0; }
   .pattern-results { display: flex; flex-direction: column; gap: 16px; height: 100%; }
   .callout.tip { font-size: 19px; }
@@ -1021,7 +1019,7 @@ description: Review and rewrite error messages. Use when someone shares an error
 <span class="skill-line" data-explain="Wikipedia signs-of-AI list for UX. Paste reference-ai-writing-avoid.md for the full hard-ban block."><span class="h">## Avoid AI writing</span></span>
 <span class="skill-line" data-explain="Hard ban: any Wikipedia AI-vocab word or chatbot phrase fails eval."><span class="k">-</span> Hard ban on Wikipedia AI-vocab and chatbot phrases (see reference-ai-writing-avoid.md).</span>
 <span class="skill-line" data-explain="Prefer is/has over copula swaps from the ban list."><span class="k">-</span> Use plain copulas: is, has, lets you.</span>
-<span class="skill-line" data-explain="Matches the deck's AI-signs slides and Wikipedia source."><span class="k">-</span> Full list: Wikipedia "Signs of AI writing" (see reference-ai-writing-avoid.md).</span>
+<span class="skill-line" data-explain="Full hard-ban list lives in reference-ai-writing-avoid.md."><span class="k">-</span> Full list in reference-ai-writing-avoid.md.</span>
 
 <span class="skill-line" data-explain="Split voice rules from <strong>layout and length</strong> so reviewers know which checklist to use."><span class="h">## Formatting</span></span>
 <span class="skill-line" data-explain="Same limit for both surfaces, spelled out like the character-limit slide. Count includes spaces."><span class="k">-</span> Toasts and inline errors: max <span class="k">**</span>90 characters<span class="k">**</span>, including spaces.</span>
@@ -1237,37 +1235,10 @@ description: Review and rewrite error messages. Use when someone shares an error
   <h2>Voice and clarity</h2>
   <table class="table-issues">
     <tr><th>Issue</th><th>What helps</th></tr>
-    <tr><td><strong>Generic filler:</strong> "Oops!" plus any word on the <a href="https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing" target="_blank" rel="noopener">Wikipedia ban list</a> (hard ban: one word = fail)</td><td>Paste <code class="inline-code">reference-ai-writing-avoid.md</code> into skills; Cursor rule <code class="inline-code">avoid-ai-writing.mdc</code></td></tr>
+    <tr><td><strong>Generic filler:</strong> "Oops!" plus any word on your hard-ban list (one word = fail)</td><td>Paste <code class="inline-code">reference-ai-writing-avoid.md</code> into skills; Cursor rule <code class="inline-code">avoid-ai-writing.mdc</code></td></tr>
     <tr><td><strong>Over-friendly:</strong> exclamation marks and emoji in errors</td><td>Tone rules for each context</td></tr>
     <tr><td><strong>Meaning lost</strong> when shortening</td><td>Ask it to list what it removed</td></tr>
   </table>
-</section>
-
-<section class="slide slide-dense slide-common-issues slide-ai-signs" data-section="05 Common issues">
-  <h2>Avoid signs of AI writing (1)</h2>
-  <p class="small muted" style="margin:0 0 12px">From <a href="https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing" target="_blank" rel="noopener">Wikipedia: Signs of AI writing</a>. Deck copy follows the same hard ban as your tools. Banned tokens may appear only in labeled <strong>Bad:</strong> lines below.</p>
-  <table class="table-issues">
-    <tr><th>Pattern</th><th>What to do instead</th></tr>
-    <tr><td><strong>Hype and puffery</strong><span class="bad-example">"Unlock the power of seamless uploads!"</span></td><td>One concrete fact; adjectives from your voice guide</td></tr>
-    <tr><td><strong>Fake depth</strong><span class="bad-example">"This error reflects the broader legacy of file limits."</span></td><td>What happened and what to do next</td></tr>
-    <tr><td><strong>Vague links</strong><span class="bad-example">"Issues associated with your account."</span></td><td>Name the relationship in plain language</td></tr>
-    <tr><td><strong>Copula swaps</strong><span class="bad-example">"Settings serves as your hub."</span></td><td><strong>Is</strong>, <strong>has</strong>, <strong>lets you</strong></td></tr>
-    <tr><td><strong>Negative parallelisms</strong><span class="bad-example">"It's not just a warning, it's a chance to fix it."</span></td><td>One clear sentence</td></tr>
-    <tr><td><strong>Rule of three</strong><span class="bad-example">"Fast, secure, and simple."</span></td><td>One or two concrete details</td></tr>
-  </table>
-</section>
-
-<section class="slide slide-dense slide-common-issues slide-ai-signs" data-section="05 Common issues">
-  <h2>Avoid signs of AI writing (2)</h2>
-  <table class="table-issues">
-    <tr><th>Pattern</th><th>What to do instead</th></tr>
-    <tr><td><strong>AI vocabulary</strong><span class="bad-example">"Let's delve into this pivotal workflow."</span></td><td>Plain words; full list in <code class="inline-code">reference-ai-writing-avoid.md</code></td></tr>
-    <tr><td><strong>Chatbot voice</strong><span class="bad-example">"Of course! I hope this helps."</span></td><td>Product voice only; no assistant meta-talk</td></tr>
-    <tr><td><strong>Hedging</strong><span class="bad-example">"Based on available information, try again."</span></td><td>State the fact or ask for missing context</td></tr>
-    <tr><td><strong>Style</strong><span class="bad-example">Title Case buttons, emoji bullets, curly quotes</span></td><td>Match your formatting rules (sentence case, straight quotes)</td></tr>
-    <tr><td><strong>Placeholders</strong><span class="bad-example">[Insert product name here]</span></td><td>Eval: fail if brackets or lorem remain</td></tr>
-  </table>
-  <div class="callout tip">💡 Eval row: <strong>Sounds like AI writing</strong> (pass = zero banned tokens). Global Cursor rule: <code class="inline-code">~/.cursor/rules/avoid-ai-writing.mdc</code>.</div>
 </section>
 
 <section class="slide slide-dense slide-common-issues" data-section="05 Common issues">

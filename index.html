@@ -63,19 +63,6 @@
   .lead { font-size: 28px; line-height: 1.4; color: var(--muted); max-width: 980px; }
   .small, .small li, .small p { font-size: 19px; }
   .muted { color: var(--muted); }
-  .slide-learn-more a.resource-link {
-    display: inline-block;
-    margin-top: 8px;
-    padding: 5px 12px;
-    border-radius: 6px;
-    background: var(--accent-soft);
-    color: #0077b3;
-    font-size: 17px;
-    line-height: 1.35;
-    text-decoration: none;
-    font-family: var(--mono);
-  }
-  .slide-learn-more a.resource-link:hover { background: #d4eef9; text-decoration: underline; }
   ul.clean { list-style: none; }
   ul.clean li { padding-left: 28px; position: relative; margin-bottom: 12px; }
   ul.clean li::before { content: ""; position: absolute; left: 6px; top: .6em; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
@@ -91,6 +78,21 @@
   .slide.compare-reveal:not(.revealed) .compare { grid-template-columns: 1fr; max-width: 620px; }
   .slide.compare-reveal:not(.revealed) .compare-after { display: none; }
   .slide.compare-reveal:not(.revealed) { cursor: pointer; }
+  .slide.flow-reveal:not(.flow-stage-2) { cursor: pointer; }
+  .slide.flow-reveal .flow {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
+    width: 100%;
+    max-width: 980px;
+    align-items: stretch;
+  }
+  .slide.flow-reveal .flow-reveal-stage-1,
+  .slide.flow-reveal .flow-reveal-stage-2 { visibility: hidden; opacity: 0; }
+  .slide.flow-reveal.flow-stage-1 .flow-reveal-stage-1,
+  .slide.flow-reveal.flow-stage-2 .flow-reveal-stage-1,
+  .slide.flow-reveal.flow-stage-2 .flow-reveal-stage-2 { visibility: visible; opacity: 1; }
+  .slide.flow-reveal.flow-stage-1 .flow-reveal-step1-only,
+  .slide.flow-reveal.flow-stage-2 .flow-reveal-step1-only { display: none; }
   .deck-sub { font-size: 19px; line-height: 1.4; color: var(--muted); margin: -12px 0 22px; max-width: 920px; }
   .deck-ask { font-size: 30px; line-height: 1.35; margin: -8px 0 24px; max-width: 980px; }
   .deck-ask strong { color: var(--ink); }
@@ -301,8 +303,17 @@
   .why-structure-split {
     display: grid; grid-template-columns: 1fr 1fr; gap: 32px; flex: 1; min-height: 0; align-items: stretch;
   }
-  .why-structure-copy { display: flex; flex-direction: column; justify-content: center; }
-  .why-structure-copy .lead { max-width: none; margin: 0; }
+  .why-structure-copy { display: flex; flex-direction: column; justify-content: center; gap: 20px; max-width: 440px; }
+  .why-structure-copy .why-structure-lede {
+    font-size: 26px; line-height: 1.3; font-weight: 700; color: var(--ink); margin: 0;
+  }
+  .why-structure-shift { display: flex; flex-direction: column; gap: 16px; }
+  .why-structure-row {
+    display: grid; grid-template-columns: 5.5rem 1fr; gap: 12px; align-items: baseline;
+    font-size: 21px; line-height: 1.4;
+  }
+  .why-structure-label { font-weight: 700; color: var(--muted); font-size: 18px; }
+  .why-structure-row-now .why-structure-label { color: var(--accent); }
   .why-structure-sample-wrap { display: flex; flex-direction: column; min-height: 0; min-width: 0; }
   .why-structure-filename {
     font-family: var(--mono); font-size: 13px; color: var(--muted); margin-bottom: 8px;
@@ -356,6 +367,26 @@
   .slide.title .speaker p { font-size: 20px; line-height: 1.35; }
   .slide.title .speaker span { display: block; color: #b3b3b3; font-size: 18px; margin-top: 2px; }
   .slide.title .date { margin-top: 18px; font-size: 18px; color: #b3b3b3; }
+  .slide.title .deck-qr-wrap {
+    position: absolute; right: 80px; top: 50%; transform: translateY(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+  }
+  .slide.title .deck-qr {
+    width: 200px; height: auto; background: #fff; padding: 10px; border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  }
+  .slide.title .deck-qr-caption {
+    font-size: 15px; color: #b3b3b3; line-height: 1.35; text-align: center; margin: 0;
+  }
+  .slide.title.title-outro .deck-qr-wrap { width: 220px; }
+  .slide.title.title-outro .deck-qr {
+    width: 100%; padding: 12px; border-radius: 12px;
+    box-shadow: 0 0 0 2px var(--accent), 0 12px 40px rgba(0, 0, 0, 0.45);
+  }
+  .slide.title.title-outro .deck-qr-caption { color: #4fc3f2; font-size: 16px; font-weight: 700; }
+  .slide.title.title-outro h1 { font-size: 56px; max-width: 640px; line-height: 1.15; color: var(--accent); }
+  .slide.title.title-outro .subtitle { font-size: 22px; color: #f5f5f5; margin-top: 20px; max-width: 560px; line-height: 1.45; }
+  .slide.title.title-outro .speaker { margin-top: 36px; }
   .slide.divider { justify-content: center; }
   .slide.divider .num { font-size: 96px; font-weight: 700; color: var(--accent); line-height: 1; margin-bottom: 20px; }
   .slide.divider h1 { color: #fff; max-width: 1000px; }
@@ -367,37 +398,71 @@
     font-size: 15px; line-height: 1.4; color: #888; max-width: 900px;
   }
   .eval-source em { font-style: italic; color: #999; }
-  .slide-eval-criteria { padding-top: 52px; }
-  .eval-loop {
-    display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px;
-    font-size: 17px; color: #888; margin-bottom: 36px; max-width: 1080px;
-  }
-  .eval-loop .step-on { color: #4fc3f2; font-weight: 700; }
-  .eval-loop .sep { color: #555; }
+  .slide-eval-criteria { padding-top: 48px; }
+  .slide-eval-criteria h2 { color: #fff; margin-bottom: 16px; font-size: 40px; }
   .eval-criteria-layout {
-    display: grid; grid-template-columns: 1fr 400px; gap: 40px; align-items: center;
-    flex: 1; min-height: 0; max-width: 1120px; width: 100%;
+    display: flex; flex-direction: column; gap: 22px;
+    flex: 1; min-height: 0; max-width: 1080px; width: 100%;
   }
-  .eval-criteria-headline {
-    font-size: 46px; line-height: 1.22; font-weight: 700; color: #fff; margin: 0; max-width: 620px;
+  .eval-criteria-intro { max-width: none; }
+  .eval-criteria-lead {
+    font-size: 24px; line-height: 1.45; color: #b3b3b3; margin: 0; max-width: 980px;
   }
+  .eval-criteria-lead strong { color: #fff; font-weight: 700; }
   .eval-rubric {
-    background: #f5f5f5; color: var(--ink); border-radius: 8px; overflow: hidden;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35); font-size: 11px; line-height: 1.35;
+    background: #f5f5f5; color: var(--ink); border-radius: 10px; overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35); font-size: 15px; line-height: 1.4;
+    flex: 1; min-height: 0; display: flex; flex-direction: column;
   }
   .eval-rubric .rb-head {
-    padding: 10px 12px; background: #fff; border-bottom: 1px solid #ddd;
-    font-weight: 700; font-size: 12px;
+    padding: 16px 20px; background: #fff; border-bottom: 1px solid #ddd;
+    font-weight: 700; font-size: 20px;
   }
   .eval-rubric .rb-q {
-    padding: 8px 12px; background: #fafafa; border-bottom: 1px solid #eee; font-size: 11px;
+    padding: 14px 20px; background: #fafafa; border-bottom: 1px solid #eee; font-size: 17px; line-height: 1.4;
   }
-  .eval-rubric table { border: none; border-radius: 0; background: #fff; }
-  .eval-rubric th { background: #eee; color: var(--ink); font-size: 10px; padding: 6px 8px; }
-  .eval-rubric td { font-size: 10px; padding: 8px; vertical-align: top; }
-  .eval-rubric .score { font-weight: 700; width: 36px; }
-  .eval-rubric .label { font-weight: 700; width: 52px; }
+  .eval-rubric table { border: none; border-radius: 0; background: #fff; flex: 1; }
+  .eval-rubric th { background: #eee; color: var(--ink); font-size: 15px; padding: 12px 16px; }
+  .eval-rubric td { font-size: 16px; padding: 14px 16px; vertical-align: top; line-height: 1.4; }
+  .eval-rubric .score { font-weight: 700; width: 52px; font-size: 17px; }
+  .eval-rubric .label { font-weight: 700; width: 64px; }
   .eval-rubric td em { font-style: normal; color: #444; }
+
+  .slide-eval-sso-example h2 { margin-bottom: 10px; }
+  .slide-eval-sso-example .deck-sub { margin-bottom: 18px; }
+  .eval-sso-split {
+    display: grid; grid-template-columns: 1fr 1.15fr 0.95fr; gap: 22px; flex: 1; min-height: 0; align-items: stretch;
+  }
+  .eval-sso-col {
+    background: var(--surface); border-radius: var(--radius); padding: 20px 22px; display: flex; flex-direction: column; min-height: 0;
+  }
+  .eval-sso-label { font-size: 17px; font-weight: 700; color: var(--muted); margin: 0 0 12px; }
+  .eval-sso-original {
+    font-family: var(--mono); font-size: 17px; line-height: 1.45; font-style: italic; margin: 0; color: var(--ink);
+  }
+  .eval-sso-rewrite { font-size: 18px; line-height: 1.45; margin: 0 0 14px; font-weight: 700; }
+  .eval-sso-note { font-size: 16px; line-height: 1.4; color: var(--muted); margin: 0; }
+  .eval-sso-verdict { background: #fff; border: 1px solid var(--line); }
+  .eval-sso-verdict .callout.warn { margin-top: 0; font-size: 17px; line-height: 1.4; padding: 14px 16px; }
+  .eval-sso-glossary { margin-top: 14px; font-size: 15px; }
+  .eval-sso-glossary th { font-size: 14px; padding: 8px 10px; }
+  .eval-sso-glossary td { font-size: 15px; padding: 10px; }
+  .eval-sso-glossary-caption { font-size: 14px; color: var(--muted); margin: 10px 0 0; }
+
+  .slide-what-eval h2 { margin-bottom: 14px; }
+  .slide-what-eval .eval-plain-def {
+    font-size: 23px; line-height: 1.45; color: var(--ink); margin: 0 0 12px; max-width: 980px;
+  }
+  .slide-what-eval .eval-plain-def strong { font-weight: 700; }
+  .slide-what-eval .eval-plain-def .accent-text { color: var(--accent); font-weight: 700; }
+  .slide-what-eval .eval-plain-analogy {
+    font-size: 20px; line-height: 1.4; color: var(--muted); margin: 0 0 22px; max-width: 980px;
+  }
+  .slide-what-eval .flow { margin-top: 0; }
+
+  .slide-eval-tips h2 { margin-bottom: 12px; }
+  .slide-eval-tips .eval-tips-callout { margin-top: 0; margin-bottom: 22px; max-width: 1040px; align-self: center; width: 100%; font-size: 19px; }
+
   .eval-table th .th-note { display: block; font-weight: 400; font-size: 13px; color: var(--muted); margin-top: 4px; line-height: 1.3; }
   .slide.dark .eval-table th .th-note { color: #999; }
   .eval-type { font-size: 15px; white-space: nowrap; }
@@ -512,6 +577,32 @@
     margin-top: 6px; margin-bottom: 14px; font-size: 17px; line-height: 1.4; padding: 12px 16px;
   }
   .slide-best-practices .best-practices-stack ul + ul { margin-top: 0; }
+
+  .slide-gen-eval h2 { margin-bottom: 12px; }
+  .slide-gen-eval .lead {
+    font-size: 22px; line-height: 1.4; color: var(--muted); max-width: 920px; margin-bottom: 18px;
+  }
+  .slide-gen-eval .lead strong { color: var(--ink); font-weight: 700; }
+  .slide-gen-eval .cols { margin-top: 0; }
+  .slide-gen-eval .card { padding: 20px 22px; }
+  .slide-gen-eval .card .tag { font-size: 14px; margin-bottom: 10px; }
+  .slide-gen-eval .card h3 { font-size: 21px; line-height: 1.3; margin-bottom: 6px; }
+  .slide-gen-eval .card p { font-size: 18px; line-height: 1.45; }
+
+  .slide-gen-eval .figma-flag {
+    margin-top: 18px; max-width: 920px; font-size: 18px; line-height: 1.45;
+    padding: 16px 20px; border-radius: var(--radius); background: var(--surface);
+    border-left: 4px solid var(--accent);
+    display: flex; align-items: flex-start; gap: 14px;
+  }
+  .slide-gen-eval .figma-flag-logo { width: 28px; height: 28px; flex: 0 0 28px; margin-top: 2px; }
+  .slide-gen-eval .figma-flag strong { font-weight: 700; }
+
+  .slide-same-doc h2 { margin-bottom: 16px; }
+  .slide-same-doc .lead { font-size: 22px; line-height: 1.4; margin-bottom: 22px; max-width: 940px; }
+  .slide-same-doc ul.clean { max-width: 940px; }
+  .slide-same-doc ul.clean li { font-size: 21px; line-height: 1.42; margin-bottom: 18px; }
+  .slide-same-doc ul.clean li:last-child { margin-bottom: 0; }
 
   .slide-review-checklist h2 { margin-bottom: 14px; }
   .slide-review-checklist .review-checklist-wrap {
@@ -631,6 +722,83 @@
   #progress { position: fixed; left: 0; top: 0; height: 4px; background: var(--accent); z-index: 11; transition: width .2s; }
   #help { position: fixed; right: 14px; top: 10px; color: #777; font-size: 12px; z-index: 11; }
 
+  .mobile-nav { display: none; }
+  body.mobile-deck { touch-action: manipulation; }
+  body.mobile-deck #help { left: 14px; right: auto; max-width: 55%; line-height: 1.35; }
+  body.mobile-deck #stage {
+    position: fixed; inset: 0; top: 0; left: 0; width: 100%; height: 100%;
+    transform: none !important;
+  }
+  body.mobile-deck .slide {
+    padding: 20px 18px calc(76px + env(safe-area-inset-bottom, 0px));
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  body.mobile-deck .slide-footer { display: none; }
+  body.mobile-deck h1 { font-size: clamp(28px, 7.5vw, 44px); }
+  body.mobile-deck h2 { font-size: clamp(22px, 6vw, 34px); margin-bottom: 16px; }
+  body.mobile-deck h3 { font-size: clamp(18px, 4.5vw, 22px); }
+  body.mobile-deck p, body.mobile-deck li { font-size: clamp(17px, 4.2vw, 21px); }
+  body.mobile-deck .lead { font-size: clamp(18px, 4.5vw, 22px); }
+  body.mobile-deck .eyebrow { font-size: 16px; margin-bottom: 8px; }
+  body.mobile-deck .cols-2,
+  body.mobile-deck .cols-3,
+  body.mobile-deck .cols-4,
+  body.mobile-deck .cols-5,
+  body.mobile-deck .format-compare,
+  body.mobile-deck .agenda,
+  body.mobile-deck .poll-options { grid-template-columns: 1fr; }
+  body.mobile-deck .why-structure-split,
+  body.mobile-deck .critique-split,
+  body.mobile-deck .stakeholder-split { grid-template-columns: 1fr; gap: 20px; }
+  body.mobile-deck .option-row { grid-template-columns: 1fr; gap: 12px; }
+  body.mobile-deck .slide.title .brand {
+    position: static; transform: none; width: min(240px, 70vw); margin-bottom: 20px;
+  }
+  body.mobile-deck .slide.title .deck-qr-wrap {
+    position: static; transform: none; width: min(180px, 52vw); margin: 20px 0 0;
+  }
+  body.mobile-deck .slide.title h1,
+  body.mobile-deck .slide.title.title-outro h1 { max-width: none; font-size: clamp(32px, 9vw, 48px); }
+  body.mobile-deck .slide.flow-reveal .flow {
+    grid-template-columns: 1fr; max-width: none;
+  }
+  body.mobile-deck .slide.flow-reveal .flow .arrow { display: none; }
+  body.mobile-deck .slide.flow-reveal .flow-reveal-stage-1,
+  body.mobile-deck .slide.flow-reveal .flow-reveal-stage-2 {
+    visibility: visible; opacity: 1;
+  }
+  body.mobile-deck .slide.flow-reveal:not(.flow-stage-1) .flow-reveal-stage-1 { display: none; }
+  body.mobile-deck .slide.flow-reveal:not(.flow-stage-2) .flow-reveal-stage-2 { display: none; }
+  body.mobile-deck .slide.compare-reveal:not(.revealed) .compare-after { display: none; }
+  body.mobile-deck .slide.compare-reveal:not(.revealed) .compare { max-width: none; grid-template-columns: 1fr; }
+  body.mobile-deck table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  body.mobile-deck pre.md-instruction,
+  body.mobile-deck pre.skill-code { font-size: 11px; max-height: 42vh; overflow: auto; white-space: pre-wrap; }
+  body.mobile-deck .why-structure-sample { max-height: 36vh; }
+  body.mobile-deck .figma-mock { max-width: none; }
+  body.mobile-deck .stakeholder-close { white-space: normal; }
+  body.mobile-deck .mobile-nav {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+    padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 0px));
+    background: rgba(0, 0, 0, 0.88); color: #fff;
+    border-top: 1px solid #333;
+  }
+  body.mobile-deck .mobile-nav button {
+    font-family: var(--sans); font-size: 15px; font-weight: 700;
+    padding: 12px 18px; border: none; border-radius: 6px;
+    background: var(--accent); color: #fff; min-width: 88px;
+  }
+  body.mobile-deck .mobile-nav button:disabled { opacity: 0.35; }
+  body.mobile-deck .mobile-nav #mobile-count {
+    font-size: 14px; color: #b3b3b3; flex: 1; text-align: center;
+  }
+  body.mobile-deck .mobile-deck-link {
+    display: block; margin-top: 8px; font-size: 13px; color: #4fc3f2;
+  }
+
   @media print {
     html, body { background: #fff; overflow: visible; height: auto; }
     #stage { position: static; transform: none !important; width: auto; height: auto; }
@@ -643,6 +811,11 @@
 <body>
 <div id="progress"></div>
 <div id="help">← → navigate · F fullscreen</div>
+<nav id="mobile-nav" class="mobile-nav" aria-label="Slide navigation" hidden>
+  <button type="button" id="mobile-prev" aria-label="Previous slide">Back</button>
+  <span id="mobile-count" aria-live="polite"></span>
+  <button type="button" id="mobile-next" aria-label="Next slide">Next</button>
+</nav>
 
 <div id="stage">
 
@@ -728,18 +901,18 @@
   </div>
 </section>
 
-<section class="slide" data-section="01 The shift">
+<section class="slide flow-reveal" data-section="01 The shift">
   <h2>Prompt, review, and refine</h2>
   <div class="flow">
     <div class="step"><div class="n">1 · Prompt</div><h3>Give context</h3><p>Share the context, constraints, and a rough first draft.</p></div>
-    <div class="arrow">→</div>
-    <div class="step"><div class="n">2 · Review</div><h3>Check the output</h3><p>Compare it with your guidelines.</p></div>
-    <div class="arrow">→</div>
-    <div class="step"><div class="n">3 · Refine</div><h3>Fix the instructions</h3><p>Update the prompt or tool, so the next output is better too.</p></div>
+    <div class="arrow flow-reveal-stage-1">→</div>
+    <div class="step flow-reveal-stage-1"><div class="n">2 · Review</div><h3>Check the output</h3><p>Compare it with your guidelines.</p></div>
+    <div class="arrow flow-reveal-stage-2">→</div>
+    <div class="step flow-reveal-stage-2"><div class="n">3 · Refine</div><h3>Fix the instructions</h3><p>Update the prompt or tool, so the next output is better.</p></div>
   </div>
-  <div class="callout tip">💡 <strong>Tip:</strong> <strong>Iterative refinement:</strong> you don't need every detail in the first message.</div>
-  <div class="prompt-block" style="margin-top:16px">Ask me questions if anything is unclear.</div>
-  <p class="deck-footnote muted">Source: learnprompting.org</p>
+  <div class="callout tip flow-reveal-step1-only">💡 <strong>Tip:</strong> <strong>Iterative refinement:</strong> you don't need every detail in the first message.</div>
+  <div class="prompt-block flow-reveal-step1-only" style="margin-top:16px">Ask me questions if anything is unclear.</div>
+  <p class="deck-footnote muted flow-reveal-step1-only">Source: learnprompting.org</p>
 </section>
 
 <!-- ============ 02 GOOD AND BAD ============ -->
@@ -1027,7 +1200,17 @@
   <h2>Why structure instructions?</h2>
   <div class="why-structure-split grow">
     <div class="why-structure-copy">
-      <p class="lead">Content guidelines used to live in Confluence and Zeroheight. Now they live in .md files.</p>
+      <p class="why-structure-lede">Content guidelines are moving</p>
+      <div class="why-structure-shift">
+        <div class="why-structure-row">
+          <span class="why-structure-label">Before:</span>
+          <span>Company wiki (Confluence, Zeroheight, Notion...)</span>
+        </div>
+        <div class="why-structure-row why-structure-row-now">
+          <span class="why-structure-label">Now:</span>
+          <span>Markdown (.md) files, universal for humans and machines</span>
+        </div>
+      </div>
     </div>
     <div class="why-structure-sample-wrap">
       <div class="why-structure-filename">error-messages.md</div>
@@ -1140,59 +1323,35 @@ description: Review and rewrite error messages. Use when someone shares an error
   </div>
 </section>
 
-<section class="slide" data-section="03 Instructions">
+<section class="slide slide-same-doc" data-section="03 Instructions">
   <h2>Reuse the same doc across LLMs</h2>
   <p class="lead">Use that same document in ChatGPT, Claude, Figma plugins, and anywhere else you work with AI.</p>
-  <ul class="clean" style="max-width:940px">
+  <ul class="clean small">
     <li><strong>One master document on the team.</strong> Same place you keep voice guides and design system docs: shared drive, internal site. Log all updates.</li>
     <li><strong>Every AI tool starts from that doc.</strong> Copy from the master or attach the file.</li>
     <li><strong>Best long-term home: a GitHub repo.</strong> Think of it as a shared folder online where the team saves files, sees what changed, and rolls back mistakes. Not very technical? A friendly engineer can help you set it up.</li>
   </ul>
 </section>
 
-<section class="slide" data-section="03 Instructions">
+<section class="slide slide-gen-eval" data-section="03 Instructions">
   <h2>Generative vs evaluative tools</h2>
-  <div class="cols cols-2">
+  <p class="lead">Generative tools <strong>draft</strong> copy. Evaluative tools <strong>score</strong> copy against your rules.</p>
+  <div class="cols cols-2" style="max-width:920px">
     <div class="card accent">
       <span class="tag accent">Generative</span>
-      <h3>Creates copy</h3>
-      <p>Drafts, variants, tone shifts, shorter versions.</p>
+      <h3>Draft and rewrite</h3>
+      <p>ChatGPT, Claude, custom GPTs, skills</p>
     </div>
     <div class="card warn">
       <span class="tag warn">Evaluative</span>
-      <h3>Checks copy</h3>
-      <p>Compares copy against rules.</p>
+      <h3>Check against rules</h3>
+      <p>Generative tools + Figma tools and plugins, your eval table</p>
     </div>
   </div>
-  <table style="margin-top:24px">
-    <tr><th>Tool type</th><th>Generate</th><th>Evaluate</th><th>Best for</th></tr>
-    <tr><td><strong>Figma plugins and tools</strong></td><td class="limited">⚠️ Limited</td><td class="yes">Yes</td><td>In-place evaluation: copy in the context of the design and layout</td></tr>
-    <tr><td><strong>LLMs (ChatGPT, Claude skills)</strong></td><td class="yes">Yes</td><td class="yes">Yes</td><td>Generating and evaluating anywhere text lives: docs, strings, screenshots</td></tr>
-  </table>
-  <div class="callout">Evaluate copy where it lives, for example in Figma. Generate copy where you can give the most context.</div>
-</section>
-
-<section class="slide slide-learn-more" data-section="03 Instructions">
-  <h2>Where to learn more</h2>
-  <div class="cols cols-2 grow">
-    <div class="card good">
-      <h3>Start with what you already have</h3>
-      <p>Most of your rules can come from your voice and tone guide, glossary, design system docs, and past review comments.</p>
-    </div>
-    <div class="card accent">
-      <h3>Markdown</h3>
-      <p>Markdown Guide: basic syntax and cheat sheet<br><a class="resource-link" href="https://www.markdownguide.org/" target="_blank" rel="noopener noreferrer">markdownguide.org</a></p>
-    </div>
-    <div class="card accent">
-      <h3>Prompting and skills</h3>
-      <p>Anthropic docs: prompt engineering and Claude skills<br><a class="resource-link" href="https://docs.claude.com/" target="_blank" rel="noopener noreferrer">docs.claude.com</a></p>
-      <p style="margin-top:10px">OpenAI docs: prompting guide<br><a class="resource-link" href="https://platform.openai.com/docs" target="_blank" rel="noopener noreferrer">platform.openai.com/docs</a></p>
-    </div>
-    <div class="card accent">
-      <h3>Signs of AI writing</h3>
-      <p>Wikipedia community checklist of chatbot patterns (vocabulary, tone, structure)<br><a class="resource-link" href="https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing" target="_blank" rel="noopener noreferrer">en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing</a></p>
-    </div>
-  </div>
+  <p class="figma-flag">
+    <img class="figma-flag-logo" src="https://upload.wikimedia.org/wikipedia/commons/3/33/Figma-logo.svg" width="28" height="28" alt="">
+    <span><strong>Figma:</strong> Not great for generating copy. Good for evaluating in place, with layout and context.</span>
+  </p>
 </section>
 
 <!-- ============ 04 EVALS ============ -->
@@ -1201,37 +1360,40 @@ description: Review and rewrite error messages. Use when someone shares an error
   <h1>Evals: how to test</h1>
 </section>
 
-<section class="slide dark slide-eval-criteria" data-section="04 Evals">
-  <div class="eval-criteria-layout">
-    <p class="eval-criteria-headline">Make your definition of &lsquo;good&rsquo; a shared, consistent, and measurable language.</p>
-    <div class="eval-rubric" aria-hidden="true">
-      <div class="rb-head">1 · Problem + next step</div>
-      <div class="rb-q">Does the message fit the situation? If something failed, does it say what went wrong and what to do next? If the field is empty, does it say what to enter?</div>
-      <table>
-        <tr><th>Score</th><th>Label</th><th>Anchor</th></tr>
-        <tr>
-          <td class="score">0</td><td class="label">Fail</td>
-          <td>Too vague or wrong for the moment. e.g. <em>Invalid input.</em> or <em>Something went wrong. Try again.</em></td>
-        </tr>
-        <tr>
-          <td class="score">1</td><td class="label">Pass</td>
-          <td>Fits the job. Prompt: <em>Enter your email.</em> Error: <em>Upload a PDF or PNG file.</em></td>
-        </tr>
-      </table>
-    </div>
-  </div>
-  <p class="eval-source">Source: Setor Zilevu, Figma · <em>Own the loop: how designers and researchers win with AI evals</em> · Config 2026</p>
-</section>
-
-<section class="slide" data-section="04 Evals">
+<section class="slide slide-what-eval" data-section="04 Evals">
   <h2>What's an eval?</h2>
-  <p class="lead">Run the same examples every time. Pass or fail against your checklist.</p>
-  <div class="flow" style="margin-top:32px">
+  <p class="eval-plain-def"><strong>What it is:</strong> A <span class="accent-text">repeat test</span> for your AI copy tool. You run the same real UI strings every time and score each output pass or fail against rules you wrote down.</p>
+  <p class="eval-plain-analogy">Like a quiz with a fixed answer key: same questions, same pass/fail bar, every run.</p>
+  <div class="flow">
     <div class="step"><div class="n">1 · Collect</div><p>10–20 real strings: <strong>failure messages</strong> and <strong>empty-field prompts</strong>, plus a few edge cases</p></div>
     <div class="arrow">→</div>
-    <div class="step"><div class="n">2 · Score</div><p>Pass or fail each one against the checklist from the last slide (by hand, or with an LLM judge you spot-check)</p></div>
+    <div class="step"><div class="n">2 · Score</div><p>Pass or fail each one against your checklist (by hand, or with an LLM judge you spot-check)</p></div>
     <div class="arrow">→</div>
     <div class="step"><div class="n">3 · Improve</div><p>Change one rule or example, rerun the full set, compare results</p></div>
+  </div>
+</section>
+
+<section class="slide slide-dense slide-eval-sso-example" data-section="04 Evals">
+  <h2>Real-life example: meets one rule, misses another</h2>
+  <p class="deck-sub">Score each rule separately. A rewrite can pass clarity and still fail your glossary.</p>
+  <div class="eval-sso-split grow">
+    <div class="eval-sso-col">
+      <p class="eval-sso-label">Review this copy</p>
+      <p class="eval-sso-original">Use SSO for faster login. Choose your preferred SSO method.</p>
+    </div>
+    <div class="eval-sso-col">
+      <p class="eval-sso-label">Model rewrite</p>
+      <p class="eval-sso-rewrite">&ldquo;Log in faster with Single Sign-On (SSO). Select your preferred SSO method.&rdquo;</p>
+      <p class="eval-sso-note">Passes clarity: expands SSO, action-led, &ldquo;select&rdquo; not &ldquo;choose.&rdquo;</p>
+    </div>
+    <div class="eval-sso-col eval-sso-verdict">
+      <div class="callout warn"><strong>Partial fail:</strong> use <strong>sign in</strong>, not log in</div>
+      <table class="eval-sso-glossary">
+        <tr><th>Do</th><th>Not</th></tr>
+        <tr><td>sign in</td><td>log in</td></tr>
+      </table>
+      <p class="eval-sso-glossary-caption">Glossary rule in your instructions</p>
+    </div>
   </div>
 </section>
 
@@ -1276,8 +1438,9 @@ description: Review and rewrite error messages. Use when someone shares an error
   </table>
 </section>
 
-<section class="slide" data-section="04 Evals">
+<section class="slide slide-eval-tips" data-section="04 Evals">
   <h2>Eval tips: human vs automated</h2>
+  <div class="callout tip eval-tips-callout">💡 <strong>Tip:</strong> LLMs can help you with setting up evals. Ask questions to build your eval tool.</div>
   <div class="cols cols-2 grow" style="gap:28px; max-width:1040px; align-self:center">
     <div class="card accent"><h3>AI can check rules</h3><p>Case, terms, length, hard-ban word list, fit for the situation</p></div>
     <div class="card good"><h3>People judge meaning</h3><p>Tone, empathy, and whether failure vs empty field fits the moment</p></div>
@@ -1371,18 +1534,15 @@ description: Review and rewrite error messages. Use when someone shares an error
 <section class="slide slide-dense slide-review-checklist" data-section="06 Workflows">
   <h2>Review checklist for any team</h2>
   <div class="review-checklist-wrap grow">
-    <div class="why-structure-filename">review-checklist.md</div>
-<pre class="md-instruction review-checklist-md"><span class="h"># Review checklist</span>
-
-<span class="h">## Checklist</span>
-<span class="k">-</span> <span class="k">**</span>Clear:<span class="k">**</span> says what happened and what to do next
+<pre class="md-instruction review-checklist-md"><span class="h">## Checklist</span>
+<span class="k">-</span> <span class="k">**</span>Clear:<span class="k">**</span> errors say what went wrong and what to do next; empty fields say what to enter
 <span class="k">-</span> <span class="k">**</span>Accurate:<span class="k">**</span> matches what the product actually does
-<span class="k">-</span> <span class="k">**</span>Consistent:<span class="k">**</span> approved terms, sentence case, formats
+<span class="k">-</span> <span class="k">**</span>Consistent:<span class="k">**</span> approved terms, sentence case, same patterns as your glossary
 <span class="k">-</span> <span class="k">**</span>Concise:<span class="k">**</span> fits the space, no filler
-<span class="k">-</span> <span class="k">**</span>Ban-list clean:<span class="k">**</span> zero tokens from your hard-ban word list
+<span class="k">-</span> <span class="k">**</span>Ban-list clean:<span class="k">**</span> none of the words on your hard-ban list
 <span class="k">-</span> <span class="k">**</span>Empathetic:<span class="k">**</span> right tone for the situation, no blame
-<span class="k">-</span> <span class="k">**</span>Accessible:<span class="k">**</span> descriptive links, no direction or color-only cues, works with screen readers
-<span class="k">-</span> <span class="k">**</span>Translatable:<span class="k">**</span> no idioms, no strings built from fragments</pre>
+<span class="k">-</span> <span class="k">**</span>Accessible:<span class="k">**</span> descriptive links; not color-only or direction-only cues; works with screen readers
+<span class="k">-</span> <span class="k">**</span>Translatable:<span class="k">**</span> no idioms; no strings built from fragments</pre>
   </div>
   <div class="callout">Use the same checklist for human review, AI evaluation tools, and evals. Keep track of failures.</div>
 </section>
@@ -1398,7 +1558,7 @@ description: Review and rewrite error messages. Use when someone shares an error
   <div class="cols cols-2 grow" style="gap:24px; max-width:1040px; align-self:center">
     <div class="card accent"><h3>You make the call</h3><p>AI suggests options. You decide and own the result.</p></div>
     <div class="card accent"><h3>Use approved tools</h3><p>Don't put confidential designs or customer data in public AI tools.</p></div>
-    <div class="card accent"><h3>Bring context</h3><p>Share drafts, product facts, and constraints—not empty prompts.</p></div>
+    <div class="card accent"><h3>Bring context</h3><p>Share drafts, product facts, and constraints, not empty prompts.</p></div>
     <div class="card accent"><h3>Verify and test</h3><p>Check behavior with PM and eng. Test copy with users and assistive tech.</p></div>
   </div>
 </section>
@@ -1419,10 +1579,17 @@ description: Review and rewrite error messages. Use when someone shares an error
   <h2>What is your one key takeaway from this masterclass?</h2>
 </section>
 
-<section class="slide title" data-section="Q&amp;A">
-  <h1>Thank you</h1>
-  <p class="subtitle">Questions?</p>
-  <p class="speaker">Kalina Tyrkiel-Szymańska<span>Placeholder: LinkedIn or contact link</span></p>
+<section class="slide title title-outro" data-section="Q&amp;A">
+  <div class="deck-qr-wrap">
+    <img class="deck-qr" src="assets/deck-qr.png" width="220" height="220" alt="QR code: open Kalina Tyrkiel on LinkedIn">
+    <p class="deck-qr-caption">Connect on LinkedIn</p>
+  </div>
+  <h1>Thank you!</h1>
+  <p class="subtitle">Ask questions during the Q&amp;A<br>or scan the code to connect</p>
+  <div class="speaker">
+    <img src="https://public-images.interaction-design.org/masterclasses/speakers/mc-XXX-speaker-image%20(3)-1791832520.jpg?tr=w-332,h-332" alt="Kalina Tyrkiel-Szymańska">
+    <p>Kalina Tyrkiel-Szymańska<span>Senior Content Designer at Zendesk</span></p>
+  </div>
 </section>
 
 </div>
@@ -1430,10 +1597,27 @@ description: Review and rewrite error messages. Use when someone shares an error
 <div id="instruction-tooltip" class="instruction-tooltip" role="tooltip" aria-hidden="true"></div>
 
 <script>
+  const isMobileDeck = new URLSearchParams(location.search).get('mobile') === '1';
+  if (isMobileDeck) {
+    document.body.classList.add('mobile-deck');
+    const mobileNav = document.getElementById('mobile-nav');
+    if (mobileNav) mobileNav.hidden = false;
+    const help = document.getElementById('help');
+    if (help) help.innerHTML = 'Tap Next or swipe · <a class="mobile-deck-link" href="index.html">Desktop deck</a>';
+  }
+
   const stage = document.getElementById('stage');
   const slides = [...document.querySelectorAll('.slide')];
   const progress = document.getElementById('progress');
+  const mobileCount = document.getElementById('mobile-count');
+  const mobilePrev = document.getElementById('mobile-prev');
+  const mobileNext = document.getElementById('mobile-next');
   let current = 0;
+
+  function deckHash(n) {
+    const num = n + 1;
+    return isMobileDeck ? `?mobile=1#${num}` : `#${num}`;
+  }
 
   slides.forEach((s, i) => {
     if (i === 0) return;
@@ -1444,18 +1628,36 @@ description: Review and rewrite error messages. Use when someone shares an error
   });
 
   function fit() {
+    if (isMobileDeck) {
+      stage.style.transform = 'none';
+      stage.style.width = '100%';
+      stage.style.height = '100%';
+      stage.style.top = '0';
+      stage.style.left = '0';
+      return;
+    }
     const scale = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
     stage.style.transform = `translate(-50%, -50%) scale(${scale})`;
+  }
+
+  function updateMobileChrome() {
+    if (!isMobileDeck || !mobileCount) return;
+    mobileCount.textContent = `${current + 1} / ${slides.length}`;
+    if (mobilePrev) mobilePrev.disabled = current === 0;
+    if (mobileNext) mobileNext.disabled = current === slides.length - 1;
   }
 
   function show(n) {
     current = Math.max(0, Math.min(slides.length - 1, n));
     slides.forEach((s, i) => {
       s.classList.toggle('active', i === current);
-      if (i !== current) s.classList.remove('revealed');
+      if (i !== current) {
+        s.classList.remove('revealed', 'flow-stage-1', 'flow-stage-2');
+      }
     });
     progress.style.width = `${((current + 1) / slides.length) * 100}%`;
-    history.replaceState(null, '', `#${current + 1}`);
+    history.replaceState(null, '', deckHash(current));
+    updateMobileChrome();
     document.querySelectorAll('.slide-instruction-explore').forEach((s) => {
       if (s.classList.contains('active')) return;
       s.querySelectorAll('.code-line').forEach((t) => t.classList.remove('is-active'));
@@ -1470,9 +1672,30 @@ description: Review and rewrite error messages. Use when someone shares an error
     document.querySelectorAll('.skill-line.is-active').forEach((l) => l.classList.remove('is-active'));
   }
 
+  function isRevealSlide(slide) {
+    return slide.classList.contains('compare-reveal') || slide.classList.contains('flow-reveal');
+  }
+
+  function flowRevealStage(slide) {
+    if (slide.classList.contains('flow-stage-2')) return 2;
+    if (slide.classList.contains('flow-stage-1')) return 1;
+    return 0;
+  }
+
+  function setFlowRevealStage(slide, stage) {
+    slide.classList.toggle('flow-stage-1', stage >= 1);
+    slide.classList.toggle('flow-stage-2', stage >= 2);
+  }
+
   function advanceSlide() {
     const slide = slides[current];
-    if (slide.classList.contains('compare-reveal') && !slide.classList.contains('revealed')) {
+    if (slide.classList.contains('flow-reveal')) {
+      const stage = flowRevealStage(slide);
+      if (stage < 2) {
+        setFlowRevealStage(slide, stage + 1);
+        return;
+      }
+    } else if (isRevealSlide(slide) && !slide.classList.contains('revealed')) {
       slide.classList.add('revealed');
       return;
     }
@@ -1481,7 +1704,13 @@ description: Review and rewrite error messages. Use when someone shares an error
 
   function retreatSlide() {
     const slide = slides[current];
-    if (slide.classList.contains('compare-reveal') && slide.classList.contains('revealed')) {
+    if (slide.classList.contains('flow-reveal')) {
+      const stage = flowRevealStage(slide);
+      if (stage > 0) {
+        setFlowRevealStage(slide, stage - 1);
+        return;
+      }
+    } else if (isRevealSlide(slide) && slide.classList.contains('revealed')) {
       slide.classList.remove('revealed');
       return;
     }
@@ -1489,9 +1718,39 @@ description: Review and rewrite error messages. Use when someone shares an error
   }
 
   stage.addEventListener('click', (e) => {
-    if (!slides[current].classList.contains('compare-reveal')) return;
+    if (!isRevealSlide(slides[current])) return;
     advanceSlide();
   });
+
+  if (mobilePrev) {
+    mobilePrev.addEventListener('click', (e) => {
+      e.stopPropagation();
+      retreatSlide();
+    });
+  }
+  if (mobileNext) {
+    mobileNext.addEventListener('click', (e) => {
+      e.stopPropagation();
+      advanceSlide();
+    });
+  }
+  if (isMobileDeck) {
+    let touchStartX = 0;
+    stage.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+    stage.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].screenX - touchStartX;
+      if (Math.abs(dx) < 56) return;
+      if (dx < 0) advanceSlide();
+      else retreatSlide();
+    }, { passive: true });
+  } else {
+    const helpEl = document.getElementById('help');
+    if (helpEl) {
+      helpEl.innerHTML += ' · <a href="mobile.html" style="color:#4fc3f2">Mobile</a>';
+    }
+  }
 
   document.addEventListener('keydown', (e) => {
     if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); advanceSlide(); }

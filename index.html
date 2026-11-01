@@ -49,7 +49,7 @@
   /* Chrome */
   .slide-footer {
     position: absolute; left: 80px; right: 80px; bottom: 26px;
-    display: flex; justify-content: space-between;
+    display: flex; justify-content: flex-end;
     font-size: 14px; color: var(--subtle);
   }
   .slide.dark .slide-footer, .slide.title .slide-footer { color: #b3b3b3; }
@@ -277,6 +277,7 @@
   .limit-tips { font-size: 20px; max-width: 920px; margin-bottom: 18px; }
   .limit-tips li { margin-bottom: 10px; }
   .slide-limit-chars h2 { margin-bottom: 14px; }
+  .slide-instruction-explore h2 { margin-bottom: 14px; }
   .limit-challenge {
     max-width: 980px; padding: 16px 20px; margin-bottom: 14px;
     background: var(--bad-soft); border: 1px solid rgba(228, 38, 38, 0.22); border-radius: var(--radius);
@@ -284,9 +285,20 @@
   .limit-challenge p { font-size: 21px; line-height: 1.4; margin: 8px 0 0; }
   .limit-solution-head { font-size: 18px; font-weight: 700; color: var(--good); margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
   .limit-solution-head .tag { margin: 0; }
-  .limit-split { max-width: 920px; }
+  .limit-split { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 22px; align-items: stretch; }
   .slide-limit-chars pre.limit-code { font-size: 11px; line-height: 1.38; margin: 0; padding: 12px 14px; }
-  .limit-code .code-line { display: block; }
+  .limit-code .code-line {
+    display: block; border-radius: 3px; margin: 0 -4px; padding: 2px 4px; transition: background .12s;
+    cursor: pointer;
+  }
+  .limit-code .code-line.is-active,
+  .limit-code .code-line:hover { background: rgba(0, 156, 222, 0.18); }
+  .limit-explain-col { display: flex; flex-direction: column; min-height: 0; }
+  .limit-tip-explain {
+    font-size: 17px; line-height: 1.45; color: var(--ink); padding: 16px 18px;
+    background: var(--surface); border-radius: var(--radius); flex: 1; min-height: 120px;
+  }
+  .limit-tip-explain strong { font-weight: 700; }
   .slide-why-structure h2 { margin-bottom: 18px; }
   .why-structure-split {
     display: grid; grid-template-columns: 1fr 1fr; gap: 32px; flex: 1; min-height: 0; align-items: stretch;
@@ -768,9 +780,6 @@
   body.mobile-deck .mobile-nav #mobile-count {
     font-size: 14px; color: #b3b3b3; flex: 1; text-align: center;
   }
-  body.mobile-deck .mobile-deck-link {
-    display: block; margin-top: 8px; font-size: 13px; color: #4fc3f2;
-  }
 
   @media print {
     html, body { background: #fff; overflow: visible; height: auto; }
@@ -935,7 +944,7 @@
   </div>
 </section>
 
-<section class="slide slide-dense slide-instruction" data-section="02 Strengths and limits">
+<section class="slide slide-dense slide-instruction slide-instruction-explore" data-section="02 Strengths and limits">
   <div class="eyebrow">1. Consistency and constraints</div>
   <h2>Title case vs sentence case</h2>
   <div class="limit-challenge">
@@ -946,17 +955,20 @@
     <div class="limit-solution-head"><span class="tag good">Solution</span> Add a formatting rule plus examples</div>
     <div class="limit-split">
 <pre class="md-instruction limit-code"><span class="h">## Formatting</span>
-<span class="code-line"><span class="k">-</span> Use <span class="k">**</span>sentence case<span class="k">**</span> for buttons, labels, and UI headings.</span>
-<span class="code-line"><span class="k">-</span> Capitalize proper nouns and product names only (see glossary).</span>
+<span class="code-line" data-explain="One clear default stops the model from guessing. Name which surfaces it applies to: buttons, labels, nav, headings."><span class="k">-</span> Use <span class="k">**</span>sentence case<span class="k">**</span> for buttons, labels, and UI headings.</span>
+<span class="code-line" data-explain="Product names and proper nouns stay capped. Point to your glossary so &quot;Auto assist&quot; vs a product name stays consistent."><span class="k">-</span> Capitalize proper nouns and product names only (see glossary).</span>
 
 <span class="h">## Examples</span>
-<span class="code-line">Bad: Auto Assist · Save Changes</span>
-<span class="code-line">Good: Auto assist · Save changes</span></pre>
+<span class="code-line" data-explain="What the model often produces when no rule is set. Every word capped reads like a document, not UI copy.">Bad: Auto Assist · Save Changes</span>
+<span class="code-line" data-explain="Same strings with your rule applied. Only the first word and proper nouns are capped.">Good: Auto assist · Save changes</span></pre>
+      <div class="limit-explain-col">
+        <div class="limit-tip-explain" data-default="Let's unpack it line by line.">Let's unpack it line by line.</div>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="slide slide-dense slide-instruction slide-limit-chars" data-section="02 Strengths and limits">
+<section class="slide slide-dense slide-instruction slide-limit-chars slide-instruction-explore" data-section="02 Strengths and limits">
   <div class="eyebrow">1. Consistency and constraints</div>
   <h2>Character limits</h2>
   <div class="limit-challenge">
@@ -967,13 +979,16 @@
     <div class="limit-solution-head"><span class="tag good">Solution</span> Put limits in your instructions, with examples</div>
     <div class="limit-split">
 <pre class="md-instruction limit-code"><span class="h">## Character limits</span>
-<span class="code-line"><span class="k">-</span> Toasts and inline errors: max <span class="k">**</span>90 characters<span class="k">**</span>, including spaces.</span>
-<span class="code-line"><span class="k">-</span> Count every character including spaces.</span>
-<span class="code-line"><span class="k">-</span> If over the limit, shorten without dropping the problem or the next step.</span>
+<span class="code-line" data-explain="Name the <strong>max for each UI type</strong>. Toasts, inline errors, and modals often differ, and the model won't guess your product's numbers."><span class="k">-</span> Toasts and inline errors: max <span class="k">**</span>90 characters<span class="k">**</span>, including spaces.</span>
+<span class="code-line" data-explain="<strong>Spell out how to count.</strong> Without it, the model optimizes for readable copy, not an exact character total."><span class="k">-</span> Count every character including spaces.</span>
+<span class="code-line" data-explain="When trimming, models often drop the fix. This rule keeps both the <strong>problem and the next step</strong>."><span class="k">-</span> If over the limit, shorten without dropping the problem or the next step.</span>
 
 <span class="h">## Examples</span>
-<span class="code-line">Bad (112 chars): Your upload could not be completed because the file type you selected is not supported by our system.</span>
-<span class="code-line">Good (54 chars): This file type isn't supported. Upload a PDF or PNG.</span></pre>
+<span class="code-line" data-explain="Shows what <strong>too long</strong> looks like with a real count (112 chars).">Bad (112 chars): Your upload could not be completed because the file type you selected is not supported by our system.</span>
+<span class="code-line" data-explain="One <strong>good line at or under the limit</strong> teaches length better than &quot;keep it short.&quot; That is <strong>one-shot</strong> prompting: one bad and one good example, not several (few-shot).">Good (54 chars): This file type isn't supported. Upload a PDF or PNG.</span></pre>
+      <div class="limit-explain-col">
+        <div class="limit-tip-explain" data-default="Let's unpack it line by line.">Let's unpack it line by line.</div>
+      </div>
     </div>
   </div>
 </section>
@@ -1568,7 +1583,7 @@ description: Review and rewrite error messages. Use when someone shares an error
     const mobileNav = document.getElementById('mobile-nav');
     if (mobileNav) mobileNav.hidden = false;
     const help = document.getElementById('help');
-    if (help) help.innerHTML = 'Tap Next or swipe · <a class="mobile-deck-link" href="index.html">Desktop deck</a>';
+    if (help) help.textContent = 'Tap Next or swipe';
   }
 
   const stage = document.getElementById('stage');
@@ -1588,7 +1603,7 @@ description: Review and rewrite error messages. Use when someone shares an error
     if (i === 0) return;
     const f = document.createElement('div');
     f.className = 'slide-footer';
-    f.innerHTML = `<span></span><span>${i + 1} / ${slides.length}</span>`;
+    f.innerHTML = `<span>${i + 1} / ${slides.length}</span>`;
     s.appendChild(f);
   });
 
@@ -1623,6 +1638,12 @@ description: Review and rewrite error messages. Use when someone shares an error
     progress.style.width = `${((current + 1) / slides.length) * 100}%`;
     history.replaceState(null, '', deckHash(current));
     updateMobileChrome();
+    document.querySelectorAll('.slide-instruction-explore').forEach((s) => {
+      if (s.classList.contains('active')) return;
+      s.querySelectorAll('.code-line').forEach((t) => t.classList.remove('is-active'));
+      const ex = s.querySelector('.limit-tip-explain');
+      if (ex) ex.textContent = ex.dataset.default || ex.textContent;
+    });
   }
 
   function isRevealSlide(slide) {
@@ -1698,11 +1719,6 @@ description: Review and rewrite error messages. Use when someone shares an error
       if (dx < 0) advanceSlide();
       else retreatSlide();
     }, { passive: true });
-  } else {
-    const helpEl = document.getElementById('help');
-    if (helpEl) {
-      helpEl.innerHTML += ' · <a href="mobile.html" style="color:#4fc3f2">Mobile</a>';
-    }
   }
 
   document.addEventListener('keydown', (e) => {
@@ -1718,6 +1734,44 @@ description: Review and rewrite error messages. Use when someone shares an error
   window.addEventListener('resize', fit);
   fit();
   show((parseInt(location.hash.slice(1), 10) || 1) - 1);
+
+  function isBadExampleLine(line) {
+    return /^Bad[\s:(]/i.test(line.textContent.trim());
+  }
+
+  function explainForLine(line) {
+    const html = line.getAttribute('data-explain');
+    if (!html) return null;
+    if (!isBadExampleLine(line)) return html;
+    const dotSpace = html.indexOf('. ');
+    return dotSpace === -1 ? html : html.slice(0, dotSpace + 1);
+  }
+
+  (function initInstructionExploreSlides() {
+    document.querySelectorAll('.slide-instruction-explore').forEach((slide) => {
+      const lines = [...slide.querySelectorAll('.limit-code .code-line[data-explain]')];
+      const explainEl = slide.querySelector('.limit-tip-explain');
+      if (!explainEl || !lines.length) return;
+      const defaultText = explainEl.dataset.default || explainEl.textContent;
+
+      function clearLine() {
+        lines.forEach((l) => l.classList.remove('is-active'));
+        explainEl.textContent = defaultText;
+      }
+
+      function setLine(line) {
+        lines.forEach((l) => l.classList.toggle('is-active', l === line));
+        const html = explainForLine(line);
+        if (html) explainEl.innerHTML = html;
+        else explainEl.textContent = defaultText;
+      }
+
+      lines.forEach((line) => line.addEventListener('mouseenter', () => setLine(line)));
+      slide.addEventListener('mouseleave', (e) => {
+        if (!slide.contains(e.relatedTarget)) clearLine();
+      });
+    });
+  })();
 </script>
 </body>
 </html>

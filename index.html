@@ -327,8 +327,23 @@
   .slide-skill-example pre.skill-code {
     font-size: 11.5px; line-height: 1.38; padding: 14px 18px; margin: 0; flex: 1; min-height: 0; white-space: pre-wrap;
   }
-  .skill-code .skill-line { display: block; }
+  .skill-code .skill-line {
+    display: block; margin: 0 -6px; padding: 1px 6px; border-radius: 3px; cursor: default;
+    transition: background .12s;
+  }
+  .skill-code .skill-line.is-active,
+  .skill-code .skill-line:hover { background: rgba(0, 156, 222, 0.22); cursor: pointer; }
   .skill-code .skill-frontmatter { display: block; white-space: pre-wrap; }
+  #instruction-tooltip code { font-family: var(--mono); font-size: 0.92em; background: rgba(255,255,255,.12); padding: 1px 5px; border-radius: 3px; }
+  .instruction-tooltip {
+    position: fixed; z-index: 9999; max-width: 380px; padding: 12px 14px;
+    background: var(--dark-2); color: #f5f5f5; font-size: 15px; line-height: 1.45;
+    border-radius: var(--radius); pointer-events: none; opacity: 0; visibility: hidden;
+    transition: opacity .12s; box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+    border: 1px solid rgba(0, 156, 222, 0.45);
+  }
+  .instruction-tooltip.visible { opacity: 1; visibility: visible; }
+  .instruction-tooltip strong { color: #fff; font-weight: 700; }
   .limit-example {
     display: flex; flex-direction: column; gap: 14px; max-width: 540px;
   }
@@ -590,6 +605,16 @@
   .slide-same-doc ul.clean { max-width: 940px; }
   .slide-same-doc ul.clean li { font-size: 21px; line-height: 1.42; margin-bottom: 18px; }
   .slide-same-doc ul.clean li:last-child { margin-bottom: 0; }
+
+  .slide-figma-plugins-docs { padding-top: 56px; padding-bottom: 56px; }
+  .slide-figma-plugins-docs .figma-docs-shot {
+    flex: 1; min-height: 0; max-height: none; margin: 0; display: flex; align-items: flex-start; justify-content: center;
+    border: 1px solid var(--line); border-radius: var(--radius); background: #fafafa; overflow: hidden;
+  }
+  .slide-figma-plugins-docs .figma-docs-shot img {
+    display: block; width: 100%; height: auto; max-height: 580px; object-fit: contain; object-position: top center;
+  }
+  .slide-figma-plugins-docs .deck-footnote { margin-top: 8px; flex-shrink: 0; }
 
   .slide-review-checklist h2 { margin-bottom: 14px; }
   .slide-review-checklist .review-checklist-wrap {
@@ -1237,47 +1262,48 @@ Table: Issue | Why it's a problem | Suggested fix</pre>
 
 <section class="slide slide-dense slide-skill-example" data-section="03 Instructions">
   <h2 style="font-size:38px">Example: an error message review skill</h2>
-<pre class="md-instruction skill-code"><span class="skill-line skill-frontmatter"><span class="c">---</span>
+<pre class="md-instruction skill-code"><span class="skill-line skill-frontmatter" data-explain="YAML frontmatter: when to load the skill (<strong>name</strong>, <strong>description</strong>). Not 100% universal, but works well across major agent tools (Claude, Cursor, ChatGPT/Codex, etc.)"><span class="c">---</span>
 name: error-message-review
 description: Review and rewrite error messages. Use when someone shares an error, toast, or inline validation.
 <span class="c">---</span></span>
 
-<span class="skill-line"><span class="h"># Error message reviewer</span></span>
+<span class="skill-line" data-explain="Keep it specific to what the skill does."><span class="h"># Error message reviewer</span></span>
 
-<span class="skill-line"><span class="h">## Task</span></span>
-<span class="skill-line">Review the error message. Then suggest up to 3 rewrites.</span>
+<span class="skill-line" data-explain="Section headers mirror the five blocks you teach: task, context, rules, examples, output."><span class="h">## Task</span></span>
+<span class="skill-line" data-explain="One job: <strong>review first</strong>, then suggest rewrites.">Review the error message. Then suggest up to 3 rewrites.</span>
 
-<span class="skill-line"><span class="h">## Context</span></span>
-<span class="skill-line">Ask for these if they're missing:</span>
-<span class="skill-line"><span class="k">-</span> Where it appears (toast, inline, modal)</span>
-<span class="skill-line"><span class="k">-</span> What caused the error and what the user can do next</span>
+<span class="skill-line" data-explain="Context is where most generic AI copy fails. This section says what to know before judging."><span class="h">## Context</span></span>
+<span class="skill-line" data-explain="Strong instruction: <strong>ask instead of guess</strong> when product facts are missing.">Ask for these if they're missing:</span>
+<span class="skill-line" data-explain="Placement changes rules (length, tone). Naming toast vs inline prevents one-size-fits-all copy."><span class="k">-</span> Where it appears (toast, inline, modal)</span>
+<span class="skill-line" data-explain="Best practice for error messages: what went wrong and what to do next."><span class="k">-</span> What caused the error and what the user can do next</span>
 
-<span class="skill-line"><span class="h">## Rules</span></span>
-<span class="skill-line"><span class="k">-</span> Say what happened and what to do next.</span>
-<span class="skill-line"><span class="k">-</span> Use sentence case. Use "select", not "choose". Use "sign in", not "log in".</span>
-<span class="skill-line"><span class="k">-</span> <span class="k">**</span>Never blame the user.<span class="k">**</span> Avoid "invalid", "illegal", and "failed to".</span>
+<span class="skill-line" data-explain="Rules should be scannable bullets the model can check like an eval."><span class="h">## Rules</span></span>
+<span class="skill-line" data-explain="The core UX writing rule in one line. Easy to score pass or fail on <strong>failure</strong> messages in evals. For <strong>empty fields</strong>, score whether it says what to enter."><span class="k">-</span> Say what happened and what to do next.</span>
+<span class="skill-line" data-explain="Concrete terminology and case beat &quot;follow the brand.&quot; Approved terms are testable."><span class="k">-</span> Use sentence case. Use "select", not "choose". Use "sign in", not "log in".</span>
+<span class="skill-line" data-explain="Non-negotiables in <strong>bold</strong>. Banned words are explicit, not implied."><span class="k">-</span> <span class="k">**</span>Never blame the user.<span class="k">**</span> Avoid "invalid", "illegal", and "failed to".</span>
 
-<span class="skill-line"><span class="h">## Avoid AI writing</span></span>
-<span class="skill-line"><span class="k">-</span> Hard ban on Wikipedia AI-vocab and chatbot phrases (see reference-ai-writing-avoid.md).</span>
-<span class="skill-line"><span class="k">-</span> Use plain copulas: is, has, lets you.</span>
-<span class="skill-line"><span class="k">-</span> Full list in reference-ai-writing-avoid.md.</span>
+<span class="skill-line" data-explain="Wikipedia signs-of-AI list for UX. Paste reference-ai-writing-avoid.md for the full hard-ban block."><span class="h">## Avoid AI writing</span></span>
+<span class="skill-line" data-explain="Hard ban: any Wikipedia AI-vocab word or chatbot phrase fails eval."><span class="k">-</span> Hard ban on Wikipedia AI-vocab and chatbot phrases (see reference-ai-writing-avoid.md).</span>
+<span class="skill-line" data-explain="Prefer is/has over copula swaps from the ban list."><span class="k">-</span> Use plain copulas: is, has, lets you.</span>
+<span class="skill-line" data-explain="Full hard-ban list lives in reference-ai-writing-avoid.md."><span class="k">-</span> Full list in reference-ai-writing-avoid.md.</span>
 
-<span class="skill-line"><span class="h">## Formatting</span></span>
-<span class="skill-line"><span class="k">-</span> Toasts and inline errors: max <span class="k">**</span>90 characters<span class="k">**</span>, including spaces.</span>
-<span class="skill-line"><span class="k">-</span> Modals: max 2 short sentences or 160 characters, whichever is shorter.</span>
-<span class="skill-line"><span class="k">-</span> Count every character, including spaces and punctuation.</span>
-<span class="skill-line"><span class="k">-</span> Use sentence case for the full message.</span>
-<span class="skill-line"><span class="k">-</span> Prefer 1–2 sentences. No bullet lists inside a toast or inline error.</span>
-<span class="skill-line"><span class="k">-</span> Use numerals for limits and quantities (e.g. 5 MB, 3 files, 12/31/2026).</span>
-<span class="skill-line"><span class="k">-</span> End with a period. No exclamation marks in errors unless the voice guide allows them.</span>
-<span class="skill-line"><span class="k">-</span> Do not show a raw error code alone. If required, use plain language first, then the code in parentheses.</span>
+<span class="skill-line" data-explain="Split voice rules from <strong>layout and length</strong> so reviewers know which checklist to use."><span class="h">## Formatting</span></span>
+<span class="skill-line" data-explain="Same limit for both surfaces, spelled out like the character-limit slide. Count includes spaces."><span class="k">-</span> Toasts and inline errors: max <span class="k">**</span>90 characters<span class="k">**</span>, including spaces.</span>
+<span class="skill-line" data-explain="Modals can be longer but still scannable. Stops one limit from being applied everywhere."><span class="k">-</span> Modals: max 2 short sentences or 160 characters, whichever is shorter.</span>
+<span class="skill-line" data-explain="Reinforces how to measure. Models need this repeated for length rules."><span class="k">-</span> Count every character, including spaces and punctuation.</span>
+<span class="skill-line" data-explain="Formatting rule with examples in the voice line above. Proper nouns excepted."><span class="k">-</span> Use sentence case for the full message.</span>
+<span class="skill-line" data-explain="Keeps errors calm and scannable. Matches most product voice guides."><span class="k">-</span> Prefer 1–2 sentences. No bullet lists inside a toast or inline error.</span>
+<span class="skill-line" data-explain="Useful when errors mention file size, counts, or dates."><span class="k">-</span> Use numerals for limits and quantities (e.g. 5 MB, 3 files, 12/31/2026).</span>
+<span class="skill-line" data-explain="Small punctuation rules are easy to eval and easy for the model to miss."><span class="k">-</span> End with a period. No exclamation marks in errors unless the voice guide allows them.</span>
+<span class="skill-line" data-explain="Formatting for eng-facing codes: plain language first, code in parentheses if required."><span class="k">-</span> Do not show a raw error code alone. If required, use plain language first, then the code in parentheses.</span>
 
-<span class="skill-line"><span class="h">## Examples</span></span>
-<span class="skill-line">Bad: "Invalid input. Error 422."  Good: "Enter a date in the future, like 12/31/2026."</span>
+<span class="skill-line" data-explain="Pair bad and good so the model sees <strong>shape and tone</strong>, not only rules."><span class="h">## Examples</span></span>
+<span class="skill-line" data-explain="One line contrasts code-like errors with a helpful, specific fix.">Bad: "Invalid input. Error 422."  Good: "Enter a date in the future, like 12/31/2026."</span>
 
-<span class="skill-line"><span class="h">## Output</span></span>
-<span class="skill-line">A table with: Issue | Why it's a problem | Suggested fix</span></pre>
+<span class="skill-line" data-explain="Output format turns the skill into a <strong>review artifact</strong> you can share with design or eng."><span class="h">## Output</span></span>
+<span class="skill-line" data-explain="Table columns match how UX writers already review: issue, why it's a problem, fix. Easier to scan than prose.">A table with: Issue | Why it's a problem | Suggested fix</span></pre>
 </section>
+
 
 <section class="slide slide-best-practices" data-section="03 Instructions">
   <h2>Best practices for writing instructions</h2>
@@ -1309,12 +1335,18 @@ description: Review and rewrite error messages. Use when someone shares an error
 
 <section class="slide slide-same-doc" data-section="03 Instructions">
   <h2>Reuse the same doc across LLMs</h2>
-  <p class="lead">Use that same document in ChatGPT, Claude, Figma plugins, and anywhere else you work with AI.</p>
+  <p class="lead">Write instructions once. Reuse them everywhere you work with AI.</p>
   <ul class="clean small">
-    <li><strong>One master document on the team.</strong> Same place you keep voice guides and design system docs: shared drive, internal site. Log all updates.</li>
-    <li><strong>Every AI tool starts from that doc.</strong> Copy from the master or attach the file.</li>
-    <li><strong>Best long-term home: a GitHub repo.</strong> Think of it as a shared folder online where the team saves files, sees what changed, and rolls back mistakes. Not very technical? A friendly engineer can help you set it up.</li>
+    <li><strong>Master copy</strong> on the team drive or in a GitHub repo.</li>
+    <li><strong>Attach or paste</strong> that file into each tool. Update the master when something fails review.</li>
   </ul>
+</section>
+
+<section class="slide slide-dense slide-figma-plugins-docs" data-section="03 Instructions">
+  <figure class="figma-docs-shot grow">
+    <img src="assets/figma-generative-plugins-docs.png" width="1120" height="520" alt="Figma Help: Generate plugins with the Figma agent">
+  </figure>
+  <p class="deck-footnote muted">Source: Figma Help</p>
 </section>
 
 <section class="slide slide-gen-eval" data-section="03 Instructions">
@@ -1528,7 +1560,7 @@ description: Review and rewrite error messages. Use when someone shares an error
 <span class="k">-</span> <span class="k">**</span>Accessible:<span class="k">**</span> descriptive links; not color-only or direction-only cues; works with screen readers
 <span class="k">-</span> <span class="k">**</span>Translatable:<span class="k">**</span> no idioms; no strings built from fragments</pre>
   </div>
-  <div class="callout">Use the same checklist for human review, AI evaluation tools, and evals. Keep track of failures.</div>
+  <div class="callout"><strong>Checklist</strong> = peer review or LLM review, one string at a time.<br><strong>Eval</strong> = rerun the same 10–20 strings after you edit instructions.</div>
 </section>
 
 <!-- ============ 07 PRINCIPLES ============ -->
@@ -1577,6 +1609,8 @@ description: Review and rewrite error messages. Use when someone shares an error
 </section>
 
 </div>
+
+<div id="instruction-tooltip" class="instruction-tooltip" role="tooltip" aria-hidden="true"></div>
 
 <script>
   const isMobileDeck = new URLSearchParams(location.search).get('mobile') === '1';
@@ -1646,6 +1680,12 @@ description: Review and rewrite error messages. Use when someone shares an error
       const ex = s.querySelector('.limit-tip-explain');
       if (ex) ex.textContent = ex.dataset.default || ex.textContent;
     });
+    const skillTip = document.getElementById('instruction-tooltip');
+    if (skillTip) {
+      skillTip.classList.remove('visible');
+      skillTip.setAttribute('aria-hidden', 'true');
+    }
+    document.querySelectorAll('.skill-line.is-active').forEach((l) => l.classList.remove('is-active'));
   }
 
   function isRevealSlide(slide) {
@@ -1773,6 +1813,55 @@ description: Review and rewrite error messages. Use when someone shares an error
         if (!slide.contains(e.relatedTarget)) clearLine();
       });
     });
+  })();
+
+  (function initSkillExampleTooltips() {
+    const tip = document.getElementById('instruction-tooltip');
+    if (!tip) return;
+    const lines = [...document.querySelectorAll('.slide-skill-example .skill-line[data-explain]')];
+    let activeLine = null;
+
+    function hideTip() {
+      tip.classList.remove('visible');
+      tip.setAttribute('aria-hidden', 'true');
+      if (activeLine) activeLine.classList.remove('is-active');
+      activeLine = null;
+    }
+
+    function placeTip(line) {
+      const html = explainForLine(line);
+      if (!html) return;
+      tip.innerHTML = html;
+      tip.classList.add('visible');
+      tip.setAttribute('aria-hidden', 'false');
+      const rect = line.getBoundingClientRect();
+      const tipRect = tip.getBoundingClientRect();
+      let left = rect.left;
+      let top = rect.bottom + 10;
+      if (left + tipRect.width > window.innerWidth - 12) left = window.innerWidth - tipRect.width - 12;
+      if (left < 12) left = 12;
+      if (top + tipRect.height > window.innerHeight - 12) top = rect.top - tipRect.height - 10;
+      tip.style.left = `${left}px`;
+      tip.style.top = `${top}px`;
+    }
+
+    function showTip(line) {
+      if (activeLine && activeLine !== line) activeLine.classList.remove('is-active');
+      activeLine = line;
+      line.classList.add('is-active');
+      placeTip(line);
+    }
+
+    lines.forEach((line) => {
+      line.addEventListener('mouseenter', () => showTip(line));
+      line.addEventListener('mouseleave', (e) => {
+        if (tip.contains(e.relatedTarget)) return;
+        hideTip();
+      });
+    });
+
+    window.addEventListener('scroll', hideTip, true);
+    window.addEventListener('resize', hideTip);
   })();
 </script>
 </body>

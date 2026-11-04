@@ -272,6 +272,20 @@
   .overview-cards .card { display: flex; flex-direction: column; min-height: 132px; }
   .overview-cards .card-num { font-size: 26px; font-weight: 700; color: var(--accent); line-height: 1; margin-bottom: 8px; }
   .overview-cards .card h3 { font-size: 21px; }
+  .llms-overview-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 1fr);
+    gap: 18px; width: min(520px, 92%); aspect-ratio: 1; max-height: min(520px, 58vh);
+    align-self: start; margin: 0; flex: 0 0 auto;
+  }
+  .llms-overview-grid .card {
+    display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+    text-align: left; padding: 16px 18px; min-height: 0; aspect-ratio: 1;
+  }
+  .llms-overview-grid .card-num {
+    font-size: 28px; font-weight: 700; color: var(--accent); line-height: 1; margin-bottom: 10px;
+  }
+  .llms-overview-grid .card.bad .card-num { color: var(--bad); }
+  .llms-overview-grid .card h3 { font-size: 21px; line-height: 1.25; margin: 0; }
   .format-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 4px; max-width: 720px; }
   .format-compare .card { padding: 20px 22px; }
   .format-compare .ui-copy { margin-top: 8px; text-align: left; font-size: 20px; }
@@ -757,6 +771,7 @@
   body.mobile-deck .cols-2,
   body.mobile-deck .cols-3,
   body.mobile-deck .cols-4,
+  body.mobile-deck .llms-overview-grid { grid-template-columns: 1fr; }
   body.mobile-deck .cols-5,
   body.mobile-deck .format-compare,
   body.mobile-deck .agenda,
@@ -930,13 +945,13 @@
   <h1>What LLMs are good and bad at in UX writing</h1>
 </section>
 
-<section class="slide slide-dense" data-section="02 Strengths and limits">
+<section class="slide slide-dense slide-llms-overview" data-section="02 Strengths and limits">
   <h2>What LLMs do well</h2>
-  <div class="cols cols-4 grow overview-cards" style="gap:18px">
-    <div class="card good"><span class="card-num">1</span><h3>Consistency and constraints</h3><p>Terms, formatting, voice guide, character limits</p></div>
-    <div class="card good"><span class="card-num">2</span><h3>Finding patterns</h3><p>Inconsistent tone, terminology, and formatting across many strings</p></div>
-    <div class="card good"><span class="card-num">3</span><h3>Critique</h3><p>Judgment on what you already wrote</p></div>
-    <div class="card good"><span class="card-num">4</span><h3>Providing alternatives</h3><p>Options to react to, plus trade-offs</p></div>
+  <div class="llms-overview-grid">
+    <div class="card good"><span class="card-num">1</span><h3>Consistency and constraints</h3></div>
+    <div class="card good"><span class="card-num">2</span><h3>Finding patterns</h3></div>
+    <div class="card good"><span class="card-num">3</span><h3>Critique</h3></div>
+    <div class="card good"><span class="card-num">4</span><h3>Providing alternatives</h3></div>
   </div>
 </section>
 
@@ -973,7 +988,7 @@
 
 <section class="slide slide-dense slide-instruction slide-instruction-explore" data-section="02 Strengths and limits">
   <div class="eyebrow">1. Consistency and constraints</div>
-  <h2>Title case vs sentence case</h2>
+  <h2>Title Case vs sentence case</h2>
   <div class="limit-challenge">
     <span class="tag bad">Challenge</span>
     <p>Without a rule, LLMs mix title case and sentence case. Title case is a common default in training data.</p>
@@ -982,8 +997,8 @@
     <div class="limit-solution-head"><span class="tag good">Solution</span> Add a formatting rule plus examples</div>
     <div class="limit-split">
 <pre class="md-instruction limit-code"><span class="h">## Formatting</span>
-<span class="code-line" data-explain="One clear default stops the model from guessing. Name which surfaces it applies to: buttons, labels, nav, headings."><span class="k">-</span> Use <span class="k">**</span>sentence case<span class="k">**</span> for buttons, labels, and UI headings.</span>
-<span class="code-line" data-explain="Product names and proper nouns stay capped. Point to your glossary so &quot;Auto assist&quot; vs a product name stays consistent."><span class="k">-</span> Capitalize proper nouns and product names only (see glossary).</span>
+<span class="code-line" data-explain="Pick one case style. Say where it applies: buttons, labels, nav, headings."><span class="k">-</span> Use <span class="k">**</span>sentence case<span class="k">**</span> for buttons, labels, and UI headings.</span>
+<span class="code-line" data-explain="Capitalize product names and proper nouns only. Your glossary defines names like auto assist."><span class="k">-</span> Capitalize proper nouns and product names only (see glossary).</span>
 
 <span class="h">## Examples</span>
 <span class="code-line" data-explain="What the model often produces when no rule is set. Every word capped reads like a document, not UI copy.">Bad: Auto Assist · Save Changes</span>
@@ -1008,7 +1023,6 @@
 <pre class="md-instruction limit-code"><span class="h">## Character limits</span>
 <span class="code-line" data-explain="Name the <strong>max for each UI type</strong>. Toasts, inline errors, and modals often differ, and the model won't guess your product's numbers."><span class="k">-</span> Toasts and inline errors: max <span class="k">**</span>90 characters<span class="k">**</span>, including spaces.</span>
 <span class="code-line" data-explain="<strong>Spell out how to count.</strong> Without it, the model optimizes for readable copy, not an exact character total."><span class="k">-</span> Count every character including spaces.</span>
-<span class="code-line" data-explain="When trimming, models often drop the fix. This rule keeps both the <strong>problem and the next step</strong>."><span class="k">-</span> If over the limit, shorten without dropping the problem or the next step.</span>
 
 <span class="h">## Examples</span>
 <span class="code-line" data-explain="Shows what <strong>too long</strong> looks like with a real count (112 chars).">Bad (112 chars): Your upload could not be completed because the file type you selected is not supported by our system.</span>
@@ -1143,13 +1157,13 @@
   </div>
 </section>
 
-<section class="slide" data-section="02 Strengths and limits">
+<section class="slide slide-dense slide-llms-overview" data-section="02 Strengths and limits">
   <h2>What LLMs don't do well</h2>
-  <div class="cols cols-4 grow" style="gap:20px">
-    <div class="card bad"><h3>Writing from scratch</h3><p>Without your context, copy is generic and off-brand.</p></div>
-    <div class="card bad"><h3>Product context</h3><p>It can invent features or flows that do not exist.</p></div>
-    <div class="card bad"><h3>Dependencies between products</h3><p>It's not aware of naming or rules in other parts of your product.</p></div>
-    <div class="card bad"><h3>Knowing what's clear to real users</h3><p>Clear to the model is not clear for humans. Don't stop testing.</p></div>
+  <div class="llms-overview-grid">
+    <div class="card bad"><span class="card-num">1</span><h3>Writing from scratch</h3></div>
+    <div class="card bad"><span class="card-num">2</span><h3>Product context</h3></div>
+    <div class="card bad"><span class="card-num">3</span><h3>Dependencies between products</h3></div>
+    <div class="card bad"><span class="card-num">4</span><h3>Knowing what's clear to real users</h3></div>
   </div>
 </section>
 
@@ -1217,19 +1231,19 @@
         </div>
         <div class="why-structure-row why-structure-row-now">
           <span class="why-structure-label">Now:</span>
-          <span>Markdown (.md) files, universal for humans and machines</span>
+          <span>Markdown (.md) files, <strong>universal for humans and machines</strong></span>
         </div>
       </div>
     </div>
     <div class="why-structure-sample-wrap">
-      <div class="why-structure-filename">error-messages.md</div>
+      <div class="why-structure-filename">error-messages.md – example structure</div>
 <pre class="md-instruction why-structure-sample"><span class="h"># Error messages</span>
 
 <span class="h">## Task</span>
 Review the message. Suggest up to 3 rewrites.
 
 <span class="h">## Context</span>
-<span class="k">-</span> Where it appears (toast, inline, modal)
+<span class="k">-</span> Where it appears (toast, inline, modal). Defines the length.
 <span class="k">-</span> What went wrong and what the user can do next
 
 <span class="h">## Rules</span>
@@ -1274,7 +1288,7 @@ description: Review and rewrite error messages. Use when someone shares an error
 
 <span class="skill-line" data-explain="Context is where most generic AI copy fails. This section says what to know before judging."><span class="h">## Context</span></span>
 <span class="skill-line" data-explain="Strong instruction: <strong>ask instead of guess</strong> when product facts are missing.">Ask for these if they're missing:</span>
-<span class="skill-line" data-explain="Placement changes rules (length, tone). Naming toast vs inline prevents one-size-fits-all copy."><span class="k">-</span> Where it appears (toast, inline, modal)</span>
+<span class="skill-line" data-explain="Names the surface so you apply the right length rule in Formatting, not one limit everywhere."><span class="k">-</span> Where it appears (toast, inline, modal). Defines the length.</span>
 <span class="skill-line" data-explain="Best practice for error messages: what went wrong and what to do next."><span class="k">-</span> What caused the error and what the user can do next</span>
 
 <span class="skill-line" data-explain="Rules should be scannable bullets the model can check like an eval."><span class="h">## Rules</span></span>
@@ -1323,7 +1337,16 @@ description: Review and rewrite error messages. Use when someone shares an error
   <h2>Best practices for writing instructions</h2>
   <div class="best-practices-stack">
     <ul class="clean small">
-      <li><strong>Don't give tools too many jobs.</strong> Use separate tools for errors, empty states, and notifications.</li>
+      <li><strong>One job per skill.</strong> Split by UI element (errors, empty states, notifications) so the agent loads the right workflow.</li>
+      <li><strong>Share what repeats.</strong> Keep voice, terminology, and banned words in one linked doc. Don't paste the same rules into every skill.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="slide slide-best-practices" data-section="03 Instructions">
+  <h2>Best practices for writing instructions</h2>
+  <div class="best-practices-stack">
+    <ul class="clean small">
       <li><strong>Ask for missing context.</strong> Tell the model to ask instead of guessing.</li>
     </ul>
     <div class="callout tip best-practices-tip">💡 <strong>Tip:</strong> <strong>Iterative refinement:</strong> you don't need every detail in the first message. Tell the model to ask what's missing.</div>
@@ -1381,11 +1404,11 @@ description: Review and rewrite error messages. Use when someone shares an error
   <p class="eval-plain-def"><strong>What it is:</strong> A <span class="accent-text">repeat test</span> for your AI copy tool. You run the same real UI strings every time and score each output pass or fail against rules you wrote down.</p>
   <p class="eval-plain-analogy">Like a quiz with a fixed answer key: same questions, same pass/fail bar, every run.</p>
   <div class="flow">
-    <div class="step"><div class="n">1 · Collect</div><p>10–20 real strings: <strong>failure messages</strong> and <strong>empty-field prompts</strong>, plus a few edge cases</p></div>
+    <div class="step"><div class="n">1 · Collect</div><p>~<strong>10–20 real strings</strong> from production (e.g., errors + empty fields)</p></div>
     <div class="arrow">→</div>
-    <div class="step"><div class="n">2 · Score</div><p>Pass or fail each one against your checklist (by hand, or with an LLM judge you spot-check)</p></div>
+    <div class="step"><div class="n">2 · Score</div><p><strong>Pass or fail</strong> against your checklist</p></div>
     <div class="arrow">→</div>
-    <div class="step"><div class="n">3 · Improve</div><p>Change one rule or example, rerun the full set, compare results</p></div>
+    <div class="step"><div class="n">3 · Improve</div><p><strong>Change one thing</strong> → rerun the full set</p></div>
   </div>
 </section>
 
@@ -1572,10 +1595,10 @@ description: Review and rewrite error messages. Use when someone shares an error
 <section class="slide" data-section="07 Principles">
   <h2>Principles for using AI responsibly</h2>
   <div class="cols cols-2 grow" style="gap:24px; max-width:1040px; align-self:center">
-    <div class="card accent"><h3>You make the call</h3><p>AI suggests options. You decide and own the result.</p></div>
-    <div class="card accent"><h3>Use approved tools</h3><p>Don't put confidential designs or customer data in public AI tools.</p></div>
-    <div class="card accent"><h3>Bring context</h3><p>Share drafts, product facts, and constraints, not empty prompts.</p></div>
-    <div class="card accent"><h3>Verify and test</h3><p>Check behavior with PM and eng. Test copy with users and assistive tech.</p></div>
+    <div class="card accent"><h3>You decide</h3><p>AI suggests options. You choose and own the copy.</p></div>
+    <div class="card accent"><h3>Use approved tools</h3><p>No confidential designs or customer data in public AI tools.</p></div>
+    <div class="card accent"><h3>Context first</h3><p>Drafts, facts, and limits.</p></div>
+    <div class="card accent"><h3>Test with users</h3><p>Align with stakeholders. Test with real people.</p></div>
   </div>
 </section>
 

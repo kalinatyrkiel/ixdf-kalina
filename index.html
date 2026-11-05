@@ -1903,9 +1903,27 @@ description: Review and rewrite error messages. Use when someone shares an error
       });
     });
 
-    window.addEventListener('scroll', hideTip, true);
     window.addEventListener('resize', hideTip);
   })();
+
+  window.__deckExport = {
+    show,
+    slideCount: () => slides.length,
+    slideAt(i) {
+      const s = slides[i];
+      return {
+        compareReveal: s.classList.contains('compare-reveal'),
+        flowReveal: s.classList.contains('flow-reveal'),
+        title: (s.querySelector('h2, h1') || {}).textContent?.trim() || `Slide ${i + 1}`,
+      };
+    },
+    setCompareRevealed(revealed) {
+      slides[current].classList.toggle('revealed', !!revealed);
+    },
+    setFlowStage(stage) {
+      setFlowRevealStage(slides[current], stage);
+    },
+  };
 </script>
 </body>
 </html>

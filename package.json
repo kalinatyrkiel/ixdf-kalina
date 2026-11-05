@@ -1,0 +1,12 @@
+{
+  "name": "masterclass-ux-copy-ai",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "export:pdf": "node scripts/export-deck-pdf.mjs"
+  },
+  "devDependencies": {
+    "pdf-lib": "^1.17.1",
+    "playwright": "^1.49.0"
+  }
+}

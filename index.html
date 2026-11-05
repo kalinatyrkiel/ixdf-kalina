@@ -630,6 +630,13 @@
   }
   .slide-figma-plugins-docs .deck-footnote { margin-top: 8px; flex-shrink: 0; }
 
+  .slide-ixdf-cover {
+    padding: 0; background: #0a0a0a; justify-content: center; align-items: stretch;
+  }
+  .slide-ixdf-cover .ixdf-cover-img {
+    display: block; width: 100%; height: 100%; object-fit: cover; object-position: center;
+  }
+
   .slide-review-checklist h2 { margin-bottom: 14px; }
   .slide-review-checklist .review-checklist-wrap {
     display: flex; flex-direction: column; min-height: 0; flex: 1; max-width: 920px; width: 100%; align-self: center;
@@ -762,6 +769,7 @@
     -webkit-overflow-scrolling: touch;
   }
   body.mobile-deck .slide-footer { display: none; }
+  body.mobile-deck .slide-ixdf-cover { padding: 0; overflow: hidden; }
   body.mobile-deck h1 { font-size: clamp(28px, 7.5vw, 44px); }
   body.mobile-deck h2 { font-size: clamp(22px, 6vw, 34px); margin-bottom: 16px; }
   body.mobile-deck h3 { font-size: clamp(18px, 4.5vw, 22px); }
@@ -842,6 +850,18 @@
 </nav>
 
 <div id="stage">
+
+<!-- IxDF cover slides (provided by IxDF) -->
+
+<section class="slide slide-ixdf-cover" data-section="Intro" aria-label="IxDF cover slide 1">
+  <img class="ixdf-cover-img" src="assets/ixdf-cover-1.png" width="1280" height="720" alt="Interaction Design Foundation master class">
+</section>
+<section class="slide slide-ixdf-cover" data-section="Intro" aria-label="IxDF cover slide 2">
+  <img class="ixdf-cover-img" src="assets/ixdf-cover-2.png" width="1280" height="720" alt="">
+</section>
+<section class="slide slide-ixdf-cover" data-section="Intro" aria-label="IxDF cover slide 3">
+  <img class="ixdf-cover-img" src="assets/ixdf-cover-3.png" width="1280" height="720" alt="">
+</section>
 
 <!-- ============ INTRO ============ -->
 
@@ -1659,7 +1679,7 @@ description: Review and rewrite error messages. Use when someone shares an error
   }
 
   slides.forEach((s, i) => {
-    if (i === 0) return;
+    if (s.classList.contains('slide-ixdf-cover')) return;
     const f = document.createElement('div');
     f.className = 'slide-footer';
     f.innerHTML = `<span>${i + 1} / ${slides.length}</span>`;

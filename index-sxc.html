@@ -1,0 +1,2125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Better Product UX Copy with AI · SXC 2026</title>
+<link rel="icon" href="assets/favicon.ico" sizes="any">
+<link rel="shortcut icon" href="assets/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #edecea;
+    --surface: #f7f6f4;
+    --ink: #000a1e;
+    --muted: #3a4258;
+    --subtle: #556074;
+    --line: #d8d6d2;
+    --accent: #ff81cd;
+    --accent-text: #8a0f56;
+    --accent-soft: #ffe3f4;
+    --accent-2: #fefa00;
+    --good: #0a5a2f;
+    --good-soft: #e8f5ee;
+    --bad: #c41e1e;
+    --bad-soft: #fdeaea;
+    --warn: #000a1e;
+    --warn-soft: #f0efec;
+    --dark: #000a1e;
+    --dark-2: #0a1428;
+    --cream: #f1f1f1;
+    --radius: 0;
+    --mono: "JetBrains Mono", "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+    --sans: "JetBrains Mono", "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+    --hand: Caveat, "Segoe Print", cursive;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; background: var(--dark); overflow: hidden; font-family: var(--sans); color: var(--ink); letter-spacing: -0.01em; }
+
+  #stage {
+    position: absolute; top: 50%; left: 50%;
+    width: 1280px; height: 720px;
+    transform-origin: center center;
+  }
+  .slide {
+    position: absolute; inset: 0;
+    background: var(--bg);
+    padding: 64px 80px 72px;
+    display: none; flex-direction: column;
+    overflow: hidden;
+  }
+  .slide.active { display: flex; }
+
+  /* Chrome */
+  .slide-footer {
+    position: absolute; left: 80px; right: 80px; bottom: 26px;
+    display: flex; justify-content: flex-end;
+    font-size: 14px; color: var(--subtle);
+  }
+  .slide.dark .slide-footer, .slide.title .slide-footer { color: #b3b3b3; }
+
+  /* Typography */
+  .eyebrow { font-size: 20px; font-weight: 700; color: var(--accent-text); margin-bottom: 12px; }
+  h1 { font-size: 60px; line-height: 1.2; font-weight: 700; }
+  h2 { font-size: 42px; line-height: 1.25; font-weight: 700; margin-bottom: 28px; }
+  h3 { font-size: 24px; line-height: 1.25; font-weight: 700; margin-bottom: 8px; }
+  p, li { font-size: 24px; line-height: 1.45; }
+  .lead { font-size: 28px; line-height: 1.4; color: var(--muted); max-width: 980px; }
+  .small, .small li, .small p { font-size: 19px; }
+  .muted { color: var(--muted); }
+  ul.clean { list-style: none; }
+  ul.clean li { padding-left: 28px; position: relative; margin-bottom: 12px; }
+  ul.clean li::before { content: ""; position: absolute; left: 6px; top: .6em; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+  .compare-lead { font-size: 22px; font-weight: 700; line-height: 1.35; margin: 0 0 12px; }
+  .compare-detail { font-size: 19px; line-height: 1.4; margin: 0; }
+  .compare-rest { margin-top: 16px; padding-top: 16px; border-top: 1px solid #d9d9d9; }
+  .compare .draft { font-size: 24px; margin-top: 16px; margin-bottom: 0; }
+  .compare pre.md-instruction { font-size: 12.5px; line-height: 1.4; margin-top: 16px; padding: 12px 14px; }
+  .compare .ui-copy { font-size: 18px; margin-top: 10px; }
+  .compare .example-label { font-size: 14px; font-weight: 700; color: var(--muted); margin-top: 16px; }
+  .cols.compare { align-items: start; }
+  .cols.compare .card { align-self: start; width: 100%; }
+  .slide.compare-reveal:not(.revealed) .compare { grid-template-columns: 1fr; max-width: 620px; }
+  .slide.compare-reveal:not(.revealed) .compare-after { display: none; }
+  .slide.compare-reveal:not(.revealed) { cursor: pointer; }
+  .slide.flow-reveal:not(.flow-stage-2) { cursor: pointer; }
+  .slide.flow-reveal .flow {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
+    width: 100%;
+    max-width: 980px;
+    align-items: stretch;
+  }
+  .slide.flow-reveal .flow-reveal-stage-1,
+  .slide.flow-reveal .flow-reveal-stage-2 { visibility: hidden; opacity: 0; }
+  .slide.flow-reveal.flow-stage-1 .flow-reveal-stage-1,
+  .slide.flow-reveal.flow-stage-2 .flow-reveal-stage-1,
+  .slide.flow-reveal.flow-stage-2 .flow-reveal-stage-2 { visibility: visible; opacity: 1; }
+  .slide.flow-reveal.flow-stage-1 .flow-reveal-step1-only,
+  .slide.flow-reveal.flow-stage-2 .flow-reveal-step1-only { display: none; }
+  .deck-sub { font-size: 19px; line-height: 1.4; color: var(--muted); margin: -12px 0 22px; max-width: 920px; }
+  .deck-ask { font-size: 30px; line-height: 1.35; margin: -8px 0 24px; max-width: 980px; }
+  .deck-ask strong { color: var(--ink); }
+  .deck-footnote { font-size: 17px; margin-top: 14px; }
+  .slide-dense h2 { font-size: 38px; margin-bottom: 18px; }
+  .slide-example-panel {
+    background: var(--good-soft); border-radius: var(--radius); padding: 22px 26px;
+    flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: center;
+  }
+  .slide-example-panel.ba-compare-panel { background: var(--surface); }
+  .ba-rows { max-width: 960px; width: 100%; }
+  .ba-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .ba-row + .ba-row { margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(0,0,0,.08); }
+  .ba-row .label { margin-top: 0; margin-bottom: 8px; }
+  .ba-row .ui-copy { font-size: 18px; }
+  .ba-row .ui-copy + .ui-copy { margin-top: 10px; }
+  .ba-col-before {
+    background: var(--bad-soft); border-radius: var(--radius); padding: 16px 18px;
+    border: 1px solid rgba(228, 38, 38, 0.2);
+  }
+  .ba-col-after {
+    background: var(--good-soft); border-radius: var(--radius); padding: 16px 18px;
+    border: 1px solid rgba(30, 138, 76, 0.25);
+  }
+  .ba-col-before .label { color: var(--bad); }
+  .ba-col-after .label { color: var(--good); }
+  .ba-col-before .ui-copy { background: #fff; border-color: rgba(228, 38, 38, 0.35); }
+  .ba-col-after .ui-copy { background: #fff; border-color: rgba(30, 138, 76, 0.35); }
+  .table-audit { max-width: none; width: 100%; }
+  .table-audit th:last-child, .table-audit td:last-child { text-align: right; width: 72px; }
+  .slide-common-issues h2 { margin-bottom: 18px; }
+  .table-issues td { font-size: 17px; line-height: 1.4; vertical-align: top; }
+  .table-issues td:first-child { width: 42%; }
+  .pattern-split { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: stretch; flex: 1; min-height: 0; }
+  .pattern-results { display: flex; flex-direction: column; gap: 16px; height: 100%; }
+  .callout.tip { font-size: 19px; }
+  .string-sheet {
+    border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: #fff;
+    display: flex; flex-direction: column; height: 100%;
+  }
+  .string-sheet .sheet-bar {
+    background: var(--surface); padding: 10px 14px; font-size: 14px; font-weight: 700;
+    border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .string-sheet .sheet-bar span { font-weight: 400; color: var(--muted); font-size: 13px; }
+  .string-sheet .sheet-grid { width: 100%; border: none; border-radius: 0; }
+  .string-sheet .sheet-grid th { background: #e4e4e4; color: var(--ink); font-size: 12px; padding: 7px 10px; }
+  .string-sheet .sheet-grid td { padding: 6px 10px; font-size: 13px; line-height: 1.3; }
+  .string-sheet .sheet-grid tr:nth-child(even) td { background: #fafafa; }
+  .string-sheet .sheet-more {
+    margin-top: auto; padding: 10px 14px; font-size: 13px; color: var(--muted); background: var(--surface);
+    border-top: 1px solid var(--line); text-align: center;
+  }
+  .critique-split { display: grid; grid-template-columns: 260px 1fr; gap: 40px; align-items: start; }
+  .critique-split .ui-copy { font-size: 22px; margin-top: 0; }
+  .critique-split ul.clean { font-size: 20px; }
+  .option-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-content: start; }
+  .option-cards .card { display: flex; flex-direction: column; gap: 10px; padding: 18px 20px; height: auto; }
+  .option-cards .opt-n { font-size: 15px; font-weight: 700; color: var(--accent-text); }
+  .option-cards .ui-copy { margin-top: 0; font-size: 16px; line-height: 1.35; flex: 0 0 auto; }
+  .option-cards .card > p { font-size: 16px; line-height: 1.4; color: var(--muted); margin: 0; }
+  .option-rows { display: flex; flex-direction: column; gap: 16px; flex: 1; min-height: 0; justify-content: center; }
+  .option-row {
+    display: grid; grid-template-columns: 1.15fr 1fr; gap: 24px; align-items: center;
+    background: var(--surface); border-radius: var(--radius); padding: 20px 24px;
+  }
+  .option-row .opt-n { font-size: 18px; font-weight: 700; color: var(--accent-text); }
+  .option-row .ui-copy {
+    margin: 0; font-size: 23px; line-height: 1.35;
+    background: transparent; border: none; padding: 0; border-radius: 0;
+  }
+  .option-row .trade { font-size: 21px; line-height: 1.4; color: var(--muted); margin: 0; }
+  .slide-options.slide-dense h2 { margin-bottom: 12px; }
+  .slide-options .deck-ask {
+    font-size: 22px; line-height: 1.4; margin-top: -6px; margin-bottom: 16px;
+    color: var(--muted); max-width: 920px;
+  }
+  .slide-options .deck-ask strong { color: var(--ink); }
+  .slide-options .option-row .ui-copy { font-size: 22px; }
+  .slide-options .option-row .trade { font-size: 17px; line-height: 1.45; }
+  .slide-options .option-rows { justify-content: flex-start; margin-top: -4px; }
+  .remix-sources { display: flex; flex-direction: column; gap: 12px; }
+  .remix-source {
+    display: grid; grid-template-columns: 40px 1fr; gap: 16px; align-items: baseline;
+    font-size: 22px; line-height: 1.4; background: var(--surface); padding: 16px 20px; border-radius: var(--radius);
+  }
+  .remix-source .rn { font-weight: 700; color: var(--accent-text); font-size: 22px; }
+  .remix-source .hl { font-weight: 700; background: var(--accent-soft); padding: 1px 4px; border-radius: 3px; }
+  .remix-arrow { font-size: 28px; color: var(--accent-text); font-weight: 700; margin: 14px 0 6px; }
+  .remix-result {
+    font-size: 26px; line-height: 1.35; font-weight: 700; padding: 18px 22px;
+    background: #fff; border: 2px solid var(--accent); border-radius: var(--radius); max-width: 920px;
+  }
+  .remix-label { font-size: 16px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; margin-top: 8px; margin-bottom: 8px; }
+  .remix-caption { font-size: 21px; color: var(--ink); margin-top: 16px; max-width: 920px; line-height: 1.45; }
+  .prompt-block {
+    font-family: var(--mono); font-size: 16px; line-height: 1.45; margin-top: 16px; padding: 16px 18px;
+    background: var(--dark-2); color: #f5f5f5; border-radius: var(--radius); max-width: 920px;
+  }
+  .slide-dense h2 + .prompt-block { margin-top: -6px; margin-bottom: 22px; }
+  .flow-compact .step { padding: 18px 16px; }
+  .flow-compact .step p { font-size: 17px; line-height: 1.4; }
+  .alt-workflow {
+    flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: center; gap: 18px;
+  }
+  .alt-workflow .flow { flex: 0 0 auto; }
+  .alt-workflow .callout { margin-top: 0; flex: 0 0 auto; }
+  .slide-stakeholder { padding-left: 48px; padding-right: 48px; }
+  .slide-stakeholder .slide-footer { left: 48px; right: 48px; }
+  .stakeholder-split {
+    display: grid; grid-template-columns: auto 1fr; gap: 24px; align-items: stretch;
+  }
+  .figma-mock {
+    width: 100%; max-width: 520px; justify-self: start;
+    border: 1px solid #d9d9d9; border-radius: 8px; background: #fff; overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+  .figma-mock .figma-bar {
+    background: #2e2e2e; color: #999; font-size: 12px; padding: 8px 14px; display: flex; align-items: center; gap: 8px;
+  }
+  .figma-mock .figma-bar .dots { display: flex; gap: 5px; }
+  .figma-mock .figma-bar .dots span { width: 8px; height: 8px; border-radius: 50%; background: #555; }
+  .figma-mock .figma-bar .file { margin-left: 8px; color: #ccc; font-size: 12px; }
+  .figma-mock .figma-canvas { padding: 18px 12px 20px; background: #f4f4f4; position: relative; min-height: 300px; }
+  .figma-mock .mock-screen {
+    position: relative; background: #fff; border-radius: 6px; border: 1px solid #e8e8e8;
+    padding: 20px 16px 18px; max-width: none; width: 100%; margin: 0;
+  }
+  .figma-mock .mock-screen h4 { font-size: 16px; font-weight: 700; margin-bottom: 14px; color: #333; text-align: left; }
+  .figma-mock .upload-zone {
+    border: 2px dashed #c8c8c8; border-radius: 6px; padding: 22px 16px 14px; text-align: left; font-size: 16px; color: #777; line-height: 1.35;
+    position: relative; z-index: 0;
+  }
+  .figma-mock .upload-zone-failed { border-color: #e8a0a0; border-style: solid; background: #fffafa; }
+  .figma-mock .upload-zone .mock-error {
+    margin-top: 16px; padding-top: 14px; border-top: 1px solid #f5d0d0;
+    font-size: 16px; color: var(--bad); font-weight: 700; position: relative; padding-left: 20px; text-align: left;
+  }
+  .figma-mock .mock-error .pin {
+    position: absolute; left: 0; top: 4px; width: 11px; height: 11px; background: #9747ff; border-radius: 50%; box-shadow: 0 0 0 2px #fff;
+  }
+  .figma-comment {
+    position: absolute; left: 12px; right: 12px; top: 40px; width: auto; max-width: none; background: #fff; border-radius: 8px;
+    border: 1px solid #e0e0e0; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); font-size: 14px; line-height: 1.4; z-index: 2;
+  }
+  .figma-comment .fc-head {
+    display: flex; align-items: center; gap: 8px; padding: 10px 12px 8px; border-bottom: 1px solid #eee; text-align: left;
+  }
+  .figma-comment .fc-avatar {
+    width: 24px; height: 24px; border-radius: 50%; background: #9747ff; color: #fff; font-size: 10px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .figma-comment .fc-name { font-weight: 700; color: #333; font-size: 13px; }
+  .figma-comment .fc-role { font-weight: 400; color: #888; font-size: 12px; }
+  .figma-comment .fc-body { padding: 10px 12px 12px; color: #444; text-align: left; font-size: 14px; }
+  .stakeholder-steps { list-style: none; font-size: 17px; line-height: 1.4; }
+  .stakeholder-steps li { padding: 12px 0; border-bottom: 1px solid var(--line); display: flex; gap: 12px; align-items: flex-start; }
+  .stakeholder-steps li:last-child { border-bottom: none; }
+  .stakeholder-steps .sn { font-weight: 700; color: var(--accent-text); flex: 0 0 28px; font-size: 15px; }
+  .stakeholder-side { display: flex; flex-direction: column; min-height: 100%; }
+  .stakeholder-side .callout.tip { font-size: 17px; margin-top: auto; margin-bottom: 0; }
+  .slide-stakeholder h2 { margin-bottom: 12px; font-size: 34px; }
+  .slide-stakeholder .eyebrow { margin-bottom: 8px; }
+  .stakeholder-layout {
+    display: flex; flex-direction: column; flex: 1; min-height: 0; justify-content: center;
+  }
+  .slide-stakeholder .stakeholder-split .figma-mock { max-width: 420px; align-self: start; }
+  .slide-stakeholder .figma-mock .figma-canvas { min-height: 0; padding-bottom: 16px; }
+  .stakeholder-steps { font-size: 16px; }
+  .stakeholder-steps li { padding: 7px 0; }
+  .stakeholder-close {
+    font-size: 18px; line-height: 1.35; color: var(--muted); margin: 10px 0 0; max-width: none;
+    white-space: nowrap;
+  }
+  .overview-cards .card { display: flex; flex-direction: column; min-height: 132px; }
+  .overview-cards .card-num { font-size: 26px; font-weight: 700; color: var(--accent-text); line-height: 1; margin-bottom: 8px; }
+  .overview-cards .card h3 { font-size: 21px; }
+  .llms-overview-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 1fr);
+    gap: 18px; width: min(520px, 92%); aspect-ratio: 1; max-height: min(520px, 58vh);
+    align-self: start; margin: 0; flex: 0 0 auto;
+  }
+  .llms-overview-grid .card {
+    display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+    text-align: left; padding: 16px 18px; min-height: 0; aspect-ratio: 1;
+  }
+  .llms-overview-grid .card-num {
+    font-size: 28px; font-weight: 700; color: var(--accent-text); line-height: 1; margin-bottom: 10px;
+  }
+  .llms-overview-grid .card.bad .card-num { color: var(--bad); }
+  .llms-overview-grid .card h3 { font-size: 21px; line-height: 1.25; margin: 0; }
+  .format-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 4px; max-width: 720px; }
+  .format-compare .card { padding: 20px 22px; }
+  .format-compare .ui-copy { margin-top: 8px; text-align: left; font-size: 20px; }
+  .format-compare .label { margin-top: 0; }
+  .limit-tips { font-size: 20px; max-width: 920px; margin-bottom: 18px; }
+  .limit-tips li { margin-bottom: 10px; }
+  .slide-limit-chars h2 { margin-bottom: 14px; }
+  .slide-instruction-explore h2 { margin-bottom: 14px; }
+  .limit-challenge {
+    max-width: 980px; padding: 16px 20px; margin-bottom: 14px;
+    background: var(--bad-soft); border: 1px solid rgba(228, 38, 38, 0.22); border-radius: var(--radius);
+  }
+  .limit-challenge p { font-size: 21px; line-height: 1.4; margin: 8px 0 0; }
+  .limit-solution-head { font-size: 18px; font-weight: 700; color: var(--good); margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+  .limit-solution-head .tag { margin: 0; }
+  .limit-split { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 22px; align-items: stretch; }
+  .slide-limit-chars pre.limit-code { font-size: 11px; line-height: 1.38; margin: 0; padding: 12px 14px; }
+  .limit-code .code-line {
+    display: block; border-radius: 3px; margin: 0 -4px; padding: 2px 4px; transition: background .12s;
+    cursor: pointer;
+  }
+  .limit-code .code-line.is-active,
+  .limit-code .code-line:hover { background: rgba(255, 129, 205, 0.22); }
+  .limit-explain-col { display: flex; flex-direction: column; min-height: 0; }
+  .limit-tip-explain {
+    font-size: 17px; line-height: 1.45; color: var(--ink); padding: 16px 18px;
+    background: var(--surface); border-radius: var(--radius); flex: 1; min-height: 120px;
+  }
+  .limit-tip-explain strong { font-weight: 700; }
+  .slide-why-structure h2 { margin-bottom: 18px; }
+  .why-structure-split {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 32px; flex: 1; min-height: 0; align-items: stretch;
+  }
+  .why-structure-copy { display: flex; flex-direction: column; justify-content: center; gap: 20px; max-width: 440px; }
+  .why-structure-copy .why-structure-lede {
+    font-size: 26px; line-height: 1.3; font-weight: 700; color: var(--ink); margin: 0;
+  }
+  .why-structure-shift { display: flex; flex-direction: column; gap: 16px; }
+  .why-structure-row {
+    display: grid; grid-template-columns: 5.5rem 1fr; gap: 12px; align-items: baseline;
+    font-size: 21px; line-height: 1.4;
+  }
+  .why-structure-label { font-weight: 700; color: var(--muted); font-size: 18px; }
+  .why-structure-row-now .why-structure-label { color: var(--accent-text); }
+  .why-structure-sample-wrap { display: flex; flex-direction: column; min-height: 0; min-width: 0; }
+  .why-structure-filename {
+    font-family: var(--mono); font-size: 13px; color: var(--muted); margin-bottom: 8px;
+  }
+  .why-structure-sample { font-size: 11.5px; line-height: 1.38; margin: 0; flex: 1; min-height: 0; overflow: hidden; }
+  .slide-instruction pre.md-instruction { font-size: 13px; line-height: 1.42; margin-top: 0; padding: 14px 16px; }
+  .slide-skill-example { padding-top: 40px; }
+  .slide-skill-example h2 { margin-bottom: 12px; }
+  .slide-skill-example pre.skill-code {
+    font-size: 11.5px; line-height: 1.38; padding: 14px 18px; margin: 0; flex: 1; min-height: 0; white-space: pre-wrap;
+  }
+  .skill-code .skill-line {
+    display: block; margin: 0 -6px; padding: 1px 6px; border-radius: 3px; cursor: default;
+    transition: background .12s;
+  }
+  .skill-code .skill-line.is-active,
+  .skill-code .skill-line:hover { background: rgba(255, 129, 205, 0.25); cursor: pointer; }
+  .skill-code .skill-frontmatter { display: block; white-space: pre-wrap; }
+  #instruction-tooltip code { font-family: var(--mono); font-size: 0.92em; background: rgba(255,255,255,.12); padding: 1px 5px; border-radius: 3px; }
+  .instruction-tooltip {
+    position: fixed; z-index: 9999; max-width: 520px; padding: 18px 20px;
+    background: var(--dark-2); color: #f5f5f5; font-size: 22px; line-height: 1.4;
+    border-radius: var(--radius); pointer-events: none; opacity: 0; visibility: hidden;
+    transition: opacity .12s; box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+    border: 1px solid rgba(255, 129, 205, 0.55);
+  }
+  .instruction-tooltip.visible { opacity: 1; visibility: visible; }
+  .instruction-tooltip strong { color: #fff; font-weight: 700; }
+  .limit-example {
+    display: flex; flex-direction: column; gap: 14px; max-width: 540px;
+  }
+  .limit-example .ui-copy { font-size: 20px; margin-top: 0; }
+  .limit-why { font-size: 18px; line-height: 1.4; color: var(--muted); margin: 0; }
+  .slide-product-limits h2 { margin-bottom: 22px; }
+  .slide-product-limits .cols { align-content: start; padding-top: 4px; }
+  strong { font-weight: 700; }
+  code { font-family: var(--mono); font-size: .88em; background: var(--surface); padding: 2px 7px; border-radius: 4px; }
+  a { color: var(--accent-text); }
+
+  /* Title & dividers */
+  .slide.title, .slide.dark { background: var(--dark); color: #fff; }
+  .slide.title { justify-content: center; }
+  .slide.title .brand {
+    position: absolute; right: 80px; top: 50%; transform: translateY(-50%);
+    width: 420px; filter: brightness(0) invert(1);
+  }
+  .slide.title h1 { max-width: 640px; font-size: 52px; }
+  .slide.title .subtitle { font-size: 24px; color: #fff; margin-top: 24px; max-width: 620px; line-height: 1.4; }
+  .slide.title .speaker { margin-top: 40px; font-size: 20px; color: #fff; display: flex; align-items: center; gap: 16px; max-width: 620px; line-height: 1.35; }
+  .slide.title .speaker img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; flex: 0 0 80px; }
+  .slide.title .speaker p { font-size: 20px; line-height: 1.35; }
+  .slide.title .speaker span { display: block; color: #b3b3b3; font-size: 18px; margin-top: 2px; }
+  .slide.title .date { margin-top: 18px; font-size: 18px; color: #b3b3b3; }
+  .slide.title .deck-qr-wrap {
+    position: absolute; right: 80px; top: 50%; transform: translateY(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+  }
+  .slide.title .deck-qr {
+    width: 200px; height: auto; background: #fff; padding: 10px; border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  }
+  .slide.title .deck-qr-caption {
+    font-size: 15px; color: #b3b3b3; line-height: 1.35; text-align: center; margin: 0;
+  }
+  .slide.title.title-outro .deck-qr-wrap { width: 220px; }
+  .slide.title.title-outro .deck-qr {
+    width: 100%; padding: 12px; border-radius: 12px;
+    box-shadow: 0 0 0 2px var(--accent), 0 12px 40px rgba(0, 0, 0, 0.45);
+  }
+  .slide.title.title-outro .deck-qr-caption { color: var(--accent); font-size: 16px; font-weight: 700; }
+  .slide.title.title-outro h1 { font-size: 56px; max-width: 640px; line-height: 1.15; color: var(--accent); }
+  .slide.title.title-outro .subtitle { font-size: 22px; color: #f5f5f5; margin-top: 20px; max-width: 560px; line-height: 1.45; }
+  .slide.title.title-outro .speaker { margin-top: 36px; }
+  .slide.divider { justify-content: center; }
+  .slide.divider .num { font-size: 96px; font-weight: 700; color: var(--accent); line-height: 1; margin-bottom: 20px; }
+  .slide.divider h1 { color: #fff; max-width: 1000px; }
+  .slide.divider .lead { color: #b3b3b3; margin-top: 20px; }
+  .slide.statement { justify-content: center; }
+  .slide.statement h1 { max-width: 1050px; }
+  .eval-source {
+    position: absolute; left: 80px; right: 80px; bottom: 56px;
+    font-size: 15px; line-height: 1.4; color: #888; max-width: 900px;
+  }
+  .eval-source em { font-style: italic; color: #999; }
+  .slide-eval-criteria { padding-top: 48px; }
+  .slide-eval-criteria h2 { color: #fff; margin-bottom: 16px; font-size: 40px; }
+  .eval-criteria-layout {
+    display: flex; flex-direction: column; gap: 22px;
+    flex: 1; min-height: 0; max-width: 1080px; width: 100%;
+  }
+  .eval-criteria-intro { max-width: none; }
+  .eval-criteria-lead {
+    font-size: 24px; line-height: 1.45; color: #b3b3b3; margin: 0; max-width: 980px;
+  }
+  .eval-criteria-lead strong { color: #fff; font-weight: 700; }
+  .eval-rubric {
+    background: #f5f5f5; color: var(--ink); border-radius: 10px; overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35); font-size: 15px; line-height: 1.4;
+    flex: 1; min-height: 0; display: flex; flex-direction: column;
+  }
+  .eval-rubric .rb-head {
+    padding: 16px 20px; background: #fff; border-bottom: 1px solid #ddd;
+    font-weight: 700; font-size: 20px;
+  }
+  .eval-rubric .rb-q {
+    padding: 14px 20px; background: #fafafa; border-bottom: 1px solid #eee; font-size: 17px; line-height: 1.4;
+  }
+  .eval-rubric table { border: none; border-radius: 0; background: #fff; flex: 1; }
+  .eval-rubric th { background: #eee; color: var(--ink); font-size: 15px; padding: 12px 16px; }
+  .eval-rubric td { font-size: 16px; padding: 14px 16px; vertical-align: top; line-height: 1.4; }
+  .eval-rubric .score { font-weight: 700; width: 52px; font-size: 17px; }
+  .eval-rubric .label { font-weight: 700; width: 64px; }
+  .eval-rubric td em { font-style: normal; color: #444; }
+
+  .slide-eval-sso-example h2 { margin-bottom: 10px; }
+  .slide-eval-sso-example .deck-sub { margin-bottom: 18px; }
+  .eval-sso-split {
+    display: grid; grid-template-columns: 1fr 1.15fr 0.95fr; gap: 22px; flex: 1; min-height: 0; align-items: stretch;
+  }
+  .eval-sso-col {
+    background: var(--surface); border-radius: var(--radius); padding: 20px 22px; display: flex; flex-direction: column; min-height: 0;
+  }
+  .eval-sso-label { font-size: 17px; font-weight: 700; color: var(--muted); margin: 0 0 12px; }
+  .eval-sso-original {
+    font-family: var(--mono); font-size: 17px; line-height: 1.45; font-style: italic; margin: 0; color: var(--ink);
+  }
+  .eval-sso-rewrite { font-size: 18px; line-height: 1.45; margin: 0 0 14px; font-weight: 700; }
+  .eval-sso-note { font-size: 16px; line-height: 1.4; color: var(--muted); margin: 0; }
+  .eval-sso-verdict { background: #fff; border: 1px solid var(--line); }
+  .eval-sso-verdict .callout.warn { margin-top: 0; font-size: 17px; line-height: 1.4; padding: 14px 16px; }
+  .eval-sso-glossary { margin-top: 14px; font-size: 15px; }
+  .eval-sso-glossary th { font-size: 14px; padding: 8px 10px; }
+  .eval-sso-glossary td { font-size: 15px; padding: 10px; }
+  .eval-sso-glossary-caption { font-size: 14px; color: var(--muted); margin: 10px 0 0; }
+
+  .slide-what-eval h2 { margin-bottom: 14px; }
+  .slide-what-eval .eval-plain-def {
+    font-size: 23px; line-height: 1.45; color: var(--ink); margin: 0 0 12px; max-width: 980px;
+  }
+  .slide-what-eval .eval-plain-def strong { font-weight: 700; }
+  .slide-what-eval .eval-plain-def .accent-text { color: var(--accent-text); font-weight: 700; }
+  .slide-what-eval .eval-plain-analogy {
+    font-size: 20px; line-height: 1.4; color: var(--muted); margin: 0 0 22px; max-width: 980px;
+  }
+  .slide-what-eval .flow { margin-top: 0; }
+
+  .slide-eval-tips h2 { margin-bottom: 12px; }
+  .slide-eval-tips .eval-tips-callout { margin-top: 0; margin-bottom: 22px; max-width: 1040px; align-self: center; width: 100%; font-size: 19px; }
+
+  .eval-table th .th-note { display: block; font-weight: 400; font-size: 13px; color: var(--muted); margin-top: 4px; line-height: 1.3; }
+  .slide.dark .eval-table th .th-note { color: #999; }
+  .eval-type { font-size: 15px; white-space: nowrap; }
+
+  .slide-update-log-example h2 { margin-bottom: 8px; }
+  .slide-update-log-example .lead {
+    font-size: 22px; line-height: 1.4; color: var(--muted);
+    margin: 0 0 20px; max-width: none;
+  }
+  .update-log-split {
+    display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 24px; flex: 1; min-height: 0; align-items: stretch;
+    margin-top: 2px;
+  }
+  .update-log-changelog {
+    background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 24px 28px 26px;
+    display: flex; flex-direction: column; justify-content: flex-start; min-height: 0;
+  }
+  .update-log-date { font-size: 30px; font-weight: 700; line-height: 1.2; margin-bottom: 14px; }
+  .update-log-changelog hr { border: none; border-top: 1px solid #ccc; margin: 0 0 18px; }
+  .update-log-changelog ul { list-style: disc; padding-left: 28px; margin: 0; }
+  .update-log-changelog li { font-size: 20px; line-height: 1.35; font-weight: 400; margin-bottom: 14px; }
+  .update-log-changelog li:last-child { margin-bottom: 0; }
+  .update-log-changelog li strong { font-weight: 700; }
+  .update-log-changelog .update-log-caption {
+    font-size: 16px; font-weight: 400; line-height: 1.45; color: var(--muted);
+    margin: 0; max-width: none; padding-top: 18px; margin-top: auto;
+  }
+  .update-log-rule {
+    background: #fff; border: 3px solid var(--ink); border-radius: 14px; padding: 20px 24px 22px;
+    font-size: 15px; line-height: 1.45; min-height: 0;
+  }
+  .update-log-rule h3 { font-size: 21px; margin-bottom: 12px; }
+  .update-log-rule ul { list-style: disc; padding-left: 22px; margin: 0; }
+  .update-log-rule li { margin-bottom: 8px; }
+  .update-log-rule ul ul { margin-top: 6px; list-style: circle; font-size: 14px; }
+  .update-log-rule ul ul ul { list-style: disc; font-size: 13px; margin-top: 4px; }
+  .update-log-truncated { font-size: 20px; line-height: 1; color: var(--muted); margin: 6px 0 0; letter-spacing: 0.08em; }
+
+  /* Layout helpers */
+  .grow { flex: 1; min-height: 0; }
+  .cols { display: grid; gap: 28px; align-content: start; }
+  .cols-2 { grid-template-columns: 1fr 1fr; }
+  .cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .cols-4 { grid-template-columns: repeat(4, 1fr); }
+  .cols-5 { grid-template-columns: repeat(5, 1fr); }
+  .center { align-items: center; }
+
+  .card {
+    background: var(--surface); border: none; border-radius: var(--radius);
+    padding: 24px 26px;
+  }
+  .card p, .card li { font-size: 19px; line-height: 1.45; }
+  .card .tag { display: inline-block; font-size: 15px; font-weight: 700; padding: 4px 10px; border-radius: 4px; margin-bottom: 12px; }
+  .card.good { border-top: 4px solid var(--good); }
+  .card.bad { border-top: 4px solid var(--bad); }
+  .card.accent { border-top: 4px solid var(--accent); }
+  .card.warn { border-top: 4px solid var(--warn); }
+  .tag.good { background: var(--good); color: #fff; }
+  .tag.bad { background: var(--bad); color: #fff; }
+  .tag.accent { background: var(--accent); color: #fff; }
+  .tag.warn { background: var(--warn); color: #fff; }
+
+  .callout {
+    margin-top: 24px; padding: 18px 24px; border-radius: var(--radius);
+    background: var(--accent-soft); color: var(--ink); font-size: 21px; line-height: 1.45;
+    border-left: 4px solid var(--accent);
+  }
+  .callout.warn { background: var(--bad-soft); border-color: var(--bad); }
+  .callout.good { background: var(--good-soft); border-left-color: var(--good); }
+
+  /* Copy examples */
+  .ui-copy {
+    font-family: var(--sans); background: #fff; border: 1px solid #d9d9d9; border-radius: var(--radius);
+    padding: 14px 18px; font-size: 20px; line-height: 1.4; margin-top: 8px;
+  }
+  .ui-copy.good { border-left: 4px solid var(--good); }
+  .ui-copy.bad { border-left: 4px solid var(--bad); }
+  .label { font-size: 16px; font-weight: 700; color: var(--muted); margin-top: 14px; }
+  .draft {
+    font-family: Caveat, "Segoe Print", cursive;
+    font-size: 28px; font-weight: 600; line-height: 1.35;
+    color: #333; margin: 10px 0 16px; padding: 14px 18px;
+    background: #fff; border: 1px dashed #b3b3b3; border-radius: var(--radius);
+  }
+  .draft div + div { margin-top: 6px; }
+  pre.md-instruction {
+    font-size: 15px; line-height: 1.45; margin-top: 10px; padding: 14px 16px;
+    background: var(--dark-2); color: #f5f5f5; border-radius: var(--radius);
+  }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; background: #fff; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); }
+  th, td { text-align: left; padding: 12px 16px; font-size: 18px; line-height: 1.35; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { background: var(--dark-2); font-weight: 700; font-size: 17px; color: #fff; }
+  tr:last-child td { border-bottom: none; }
+  .yes { color: var(--good); font-weight: 700; }
+  .limited { color: #b86e00; font-weight: 700; }
+  .no { color: var(--bad); font-weight: 700; }
+
+  /* Code */
+  pre {
+    font-family: var(--mono); font-size: 15px; line-height: 1.5;
+    background: var(--dark-2); color: #f5f5f5; border-radius: var(--radius); padding: 22px 26px;
+    overflow: hidden; white-space: pre;
+  }
+  pre .c { color: #8a8a8a; }
+  pre .h { color: var(--accent); font-weight: 700; }
+  pre .k { color: var(--accent); }
+
+  .slide-best-practices .best-practices-stack { display: flex; flex-direction: column; min-height: 0; max-width: 760px; }
+  .slide-best-practices .best-practices-tip {
+    margin-top: 6px; margin-bottom: 14px; font-size: 17px; line-height: 1.4; padding: 12px 16px;
+  }
+  .slide-best-practices .best-practices-stack ul + ul { margin-top: 0; }
+
+  .slide-gen-eval h2 { margin-bottom: 12px; }
+  .slide-gen-eval .lead {
+    font-size: 22px; line-height: 1.4; color: var(--muted); max-width: 920px; margin-bottom: 18px;
+  }
+  .slide-gen-eval .lead strong { color: var(--ink); font-weight: 700; }
+  .slide-gen-eval .cols { margin-top: 0; }
+  .slide-gen-eval .card { padding: 20px 22px; }
+  .slide-gen-eval .card .tag { font-size: 14px; margin-bottom: 10px; }
+  .slide-gen-eval .card h3 { font-size: 21px; line-height: 1.3; margin-bottom: 6px; }
+  .slide-gen-eval .card p { font-size: 18px; line-height: 1.45; }
+
+  .slide-gen-eval .figma-flag {
+    margin-top: 18px; max-width: 920px; font-size: 18px; line-height: 1.45;
+    padding: 16px 20px; border-radius: var(--radius); background: var(--surface);
+    border-left: 4px solid var(--accent);
+    display: flex; align-items: flex-start; gap: 14px;
+  }
+  .slide-gen-eval .figma-flag-logo { width: 28px; height: 28px; flex: 0 0 28px; margin-top: 2px; }
+  .slide-gen-eval .figma-flag strong { font-weight: 700; }
+
+  .slide-same-doc h2 { margin-bottom: 16px; }
+  .slide-same-doc .lead { font-size: 22px; line-height: 1.4; margin-bottom: 22px; max-width: 940px; }
+  .slide-same-doc ul.clean { max-width: 940px; }
+  .slide-same-doc ul.clean li { font-size: 21px; line-height: 1.42; margin-bottom: 18px; }
+  .slide-same-doc ul.clean li:last-child { margin-bottom: 0; }
+
+  .slide-figma-plugins-docs { padding-top: 56px; padding-bottom: 56px; }
+  .slide-figma-plugins-docs .figma-docs-shot {
+    flex: 1; min-height: 0; max-height: none; margin: 0; display: flex; align-items: flex-start; justify-content: center;
+    border: 1px solid var(--line); border-radius: var(--radius); background: #fafafa; overflow: hidden;
+  }
+  .slide-figma-plugins-docs .figma-docs-shot img {
+    display: block; width: 100%; height: auto; max-height: 580px; object-fit: contain; object-position: top center;
+  }
+  .slide-figma-plugins-docs .deck-footnote { margin-top: 8px; flex-shrink: 0; }
+
+
+  .slide-review-checklist h2 { margin-bottom: 14px; }
+  .slide-review-checklist .review-checklist-wrap {
+    display: flex; flex-direction: column; min-height: 0; flex: 1; max-width: 920px; width: 100%; align-self: center;
+  }
+  .slide-review-checklist .review-checklist-md {
+    font-size: 12.5px; line-height: 1.4; margin: 0; flex: 1; min-height: 0; overflow: hidden;
+  }
+  .slide-review-checklist .callout { margin-top: 14px; flex-shrink: 0; max-width: 920px; align-self: center; width: 100%; }
+
+  /* Flow */
+  .flow { display: flex; align-items: stretch; gap: 0; }
+  .flow .step { flex: 1; background: var(--surface); border: none; border-radius: var(--radius); padding: 24px; }
+  .flow .step .n { font-size: 17px; font-weight: 700; color: var(--accent-text); margin-bottom: 8px; }
+  .flow .step p { font-size: 19px; }
+  .flow .step .step-tools { font-size: 15px; line-height: 1.35; color: var(--muted); margin-top: 10px; }
+  .flow .arrow { display: flex; align-items: center; padding: 0 12px; font-size: 30px; color: var(--accent-text); }
+  .step-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .step-name { font-size: 17px; font-weight: 700; line-height: 1.2; }
+  .step-role {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 3px 8px; border-radius: 4px; line-height: 1.2; flex-shrink: 0;
+  }
+  .step-role.role-cd {
+    color: #3d2e6b; background: #ece8f4; border: 2px solid #3d2e6b;
+  }
+  .step-role.role-cd-hatch {
+    background-color: #ece8f4;
+    background-image: repeating-linear-gradient(
+      135deg, transparent, transparent 3px, rgba(61, 46, 107, 0.05) 3px, rgba(61, 46, 107, 0.05) 6px
+    );
+  }
+  .step-role.role-both {
+    color: #3d2e6b; background: #fff; border: 2px solid #3d2e6b;
+    box-shadow: inset 0 0 0 1px #004a6e;
+  }
+  .workflow-legend { display: flex; flex-wrap: wrap; gap: 14px 22px; margin: -6px 0 16px; font-size: 15px; color: var(--muted); align-items: center; }
+  .workflow-legend .wl { display: inline-flex; align-items: center; gap: 8px; }
+  .workflow-legend .wl-hatch {
+    width: 16px; height: 16px; border-radius: 3px; flex-shrink: 0;
+    background: #ece8f4; border: 2px solid #3d2e6b;
+    background-image: repeating-linear-gradient(
+      135deg, transparent, transparent 3px, rgba(61, 46, 107, 0.05) 3px, rgba(61, 46, 107, 0.05) 6px
+    );
+  }
+  .workflow-legend .wl-dash {
+    width: 16px; height: 16px; border-radius: 3px; flex-shrink: 0;
+    background: #e5f5fc; border: 2px dashed #004a6e;
+  }
+  .slide-workflow-cd .flow .arrow,
+  .slide-workflow-split .flow .arrow { color: var(--subtle); }
+  .slide-workflow-cd .flow .step.step-cd,
+  .slide-workflow-split .flow .step.step-cd {
+    background-color: #ece8f4;
+    background-image: repeating-linear-gradient(
+      135deg, transparent, transparent 10px, rgba(61, 46, 107, 0.035) 10px, rgba(61, 46, 107, 0.035) 20px
+    );
+    border: 2px solid #3d2e6b;
+    border-left-width: 6px;
+  }
+  .slide-workflow-cd .flow .step.step-cd .n,
+  .slide-workflow-split .flow .step.step-cd .step-name { color: #3d2e6b; }
+  .slide-workflow-split .flow .step.step-cd {
+    background-image: none;
+  }
+  .slide-workflow-split .flow .step.step-design {
+    background: #e5f5fc;
+    border: 2px dashed #004a6e;
+    border-left-width: 6px;
+  }
+  .slide-workflow-split .flow .step.step-both {
+    background: #e5f5fc;
+    border: 2px dashed #004a6e;
+    border-left: 6px solid #3d2e6b;
+    background-image: repeating-linear-gradient(
+      135deg, transparent, transparent 10px, rgba(61, 46, 107, 0.025) 10px, rgba(61, 46, 107, 0.025) 20px
+    );
+  }
+  .workflow-legend .wl-design-label { font-weight: 700; color: #004a6e; }
+  .slide-workflow-split .flow .step.step-design .step-name,
+  .slide-workflow-split .flow .step.step-design .n { color: #004a6e; }
+  .slide-workflow-split .flow .step.step-both .step-name,
+  .slide-workflow-split .flow .step.step-both .n { color: var(--ink); }
+  .slide-workflow-cd .callout { border: 2px solid #3d2e6b; border-left: 6px solid #3d2e6b; background: var(--surface); }
+  .slide-workflow-split .callout { border: 2px solid #3d2e6b; border-left: 6px solid #3d2e6b; background: var(--surface); }
+
+  /* Poll */
+  .slide.poll { background: var(--dark-2); color: #fff; }
+  .slide.poll .eyebrow { color: var(--accent); }
+  .slide.poll .poll-sub {
+    font-size: 22px; font-weight: 700; color: #b3b3b3; margin-top: 8px; margin-bottom: 4px;
+  }
+  .slide.poll h2 { margin-bottom: 8px; }
+  .slide.poll .slide-footer { color: #b3b3b3; }
+  .poll-options { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 12px; }
+  .poll-option { background: #333; border: 1px solid #4b4b4b; border-radius: var(--radius); padding: 22px 26px; font-size: 24px; line-height: 1.35; display: flex; gap: 18px; align-items: center; }
+  .poll-option b { display: inline-flex; width: 44px; height: 44px; flex: 0 0 44px; border-radius: var(--radius); background: var(--accent); color: #fff; align-items: center; justify-content: center; font-size: 22px; }
+  .chat-box { margin-top: 20px; background: #333; border: 1px solid #4b4b4b; border-left: 4px solid var(--accent); border-radius: var(--radius); padding: 30px 34px; font-size: 30px; line-height: 1.4; }
+
+  /* Demo */
+  .slide.demo { background: var(--dark); color: #fff; }
+  .slide.demo .eyebrow { color: var(--accent); }
+  .slide.demo .slide-footer { color: #b3b3b3; }
+  .slide.demo .step { background: var(--dark-2); color: #fff; }
+  .slide.demo .step .n { color: var(--accent); }
+  .slide.demo .arrow { color: var(--accent); }
+  .slide.demo .callout { background: var(--dark-2); border-color: var(--accent); color: #fff; }
+  .placeholder { border: 1px dashed #8a8a8a; border-radius: var(--radius); padding: 12px 18px; font-size: 18px; color: #b3b3b3; display: inline-block; margin-bottom: 22px; }
+
+  /* Agenda */
+  .agenda { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 48px; }
+  .agenda .row { display: flex; align-items: baseline; gap: 18px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .agenda .row .n { font-weight: 700; color: var(--accent-text); font-size: 22px; width: 36px; }
+  .agenda .row .t { font-size: 23px; flex: 1; }
+  .agenda .row .m { font-size: 18px; color: var(--muted); }
+
+  #progress { position: fixed; left: 0; top: 0; height: 4px; background: var(--accent); z-index: 11; transition: width .2s; }
+  #help { position: fixed; right: 14px; top: 10px; color: #777; font-size: 12px; z-index: 11; }
+
+  .mobile-nav { display: none; }
+  body.mobile-deck { touch-action: manipulation; }
+  body.mobile-deck #help { left: 14px; right: auto; max-width: 55%; line-height: 1.35; }
+  body.mobile-deck #stage {
+    position: fixed; inset: 0; top: 0; left: 0; width: 100%; height: 100%;
+    transform: none !important;
+  }
+  body.mobile-deck .slide {
+    padding: 20px 18px calc(76px + env(safe-area-inset-bottom, 0px));
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  body.mobile-deck .slide-footer { display: none; }
+  body.mobile-deck h1 { font-size: clamp(28px, 7.5vw, 44px); }
+  body.mobile-deck h2 { font-size: clamp(22px, 6vw, 34px); margin-bottom: 16px; }
+  body.mobile-deck h3 { font-size: clamp(18px, 4.5vw, 22px); }
+  body.mobile-deck p, body.mobile-deck li { font-size: clamp(17px, 4.2vw, 21px); }
+  body.mobile-deck .lead { font-size: clamp(18px, 4.5vw, 22px); }
+  body.mobile-deck .eyebrow { font-size: 16px; margin-bottom: 8px; }
+  body.mobile-deck .cols-2,
+  body.mobile-deck .cols-3,
+  body.mobile-deck .cols-4,
+  body.mobile-deck .llms-overview-grid { grid-template-columns: 1fr; }
+  body.mobile-deck .cols-5,
+  body.mobile-deck .format-compare,
+  body.mobile-deck .agenda,
+  body.mobile-deck .poll-options { grid-template-columns: 1fr; }
+  body.mobile-deck .why-structure-split,
+  body.mobile-deck .critique-split,
+  body.mobile-deck .stakeholder-split { grid-template-columns: 1fr; gap: 20px; }
+  body.mobile-deck .option-row { grid-template-columns: 1fr; gap: 12px; }
+  body.mobile-deck .slide.title .brand {
+    position: static; transform: none; width: min(240px, 70vw); margin-bottom: 20px;
+  }
+  body.mobile-deck .slide.title .deck-qr-wrap {
+    position: static; transform: none; width: min(180px, 52vw); margin: 20px 0 0;
+  }
+  body.mobile-deck .slide.title h1,
+  body.mobile-deck .slide.title.title-outro h1 { max-width: none; font-size: clamp(32px, 9vw, 48px); }
+  body.mobile-deck .slide.flow-reveal .flow {
+    grid-template-columns: 1fr; max-width: none;
+  }
+  body.mobile-deck .slide.flow-reveal .flow .arrow { display: none; }
+  body.mobile-deck .slide.flow-reveal .flow-reveal-stage-1,
+  body.mobile-deck .slide.flow-reveal .flow-reveal-stage-2 {
+    visibility: visible; opacity: 1;
+  }
+  body.mobile-deck .slide.flow-reveal:not(.flow-stage-1) .flow-reveal-stage-1 { display: none; }
+  body.mobile-deck .slide.flow-reveal:not(.flow-stage-2) .flow-reveal-stage-2 { display: none; }
+  body.mobile-deck .slide.compare-reveal:not(.revealed) .compare-after { display: none; }
+  body.mobile-deck .slide.compare-reveal:not(.revealed) .compare { max-width: none; grid-template-columns: 1fr; }
+  body.mobile-deck table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  body.mobile-deck pre.md-instruction,
+  body.mobile-deck pre.skill-code { font-size: 11px; max-height: 42vh; overflow: auto; white-space: pre-wrap; }
+  body.mobile-deck .why-structure-sample { max-height: 36vh; }
+  body.mobile-deck .figma-mock { max-width: none; }
+  body.mobile-deck .stakeholder-close { white-space: normal; }
+  body.mobile-deck .mobile-nav {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+    padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 0px));
+    background: rgba(0, 0, 0, 0.88); color: #fff;
+    border-top: 1px solid #333;
+  }
+  body.mobile-deck .mobile-nav button {
+    font-family: var(--sans); font-size: 15px; font-weight: 700;
+    padding: 12px 18px; border: none; border-radius: 6px;
+    background: var(--accent); color: #fff; min-width: 88px;
+  }
+  body.mobile-deck .mobile-nav button:disabled { opacity: 0.35; }
+  body.mobile-deck .mobile-nav #mobile-count {
+    font-size: 14px; color: #b3b3b3; flex: 1; text-align: center;
+  }
+
+  @media print {
+    html, body { background: #fff; overflow: visible; height: auto; }
+    #stage { position: static; transform: none !important; width: auto; height: auto; }
+    .slide { display: flex !important; position: relative; width: 1280px; height: 720px; page-break-after: always; break-after: page; }
+    #progress, #help { display: none !important; }
+    @page { size: 1280px 720px; margin: 0; }
+  }
+
+  /* ===== SXC restyle layer ===== */
+  .slide {
+    background: var(--bg);
+    border: 8px solid var(--accent);
+    padding: 52px 68px 62px;
+  }
+  .slide::before {
+    content: "";
+    position: absolute; inset: 10px auto auto 10px;
+    width: 28px; height: 28px;
+    background: repeating-linear-gradient(
+      90deg, rgba(241,241,241,.18) 0 3px, transparent 3px 7px
+    );
+    opacity: .55; pointer-events: none;
+  }
+  .slide::after {
+    content: "";
+    position: absolute; right: 18px; bottom: 18px;
+    width: 42px; height: 14px; background: var(--accent-2);
+    opacity: .85; pointer-events: none;
+  }
+  .slide.title, .slide.dark, .slide.poll, .slide.demo, .slide.divider {
+    border-color: var(--accent);
+  }
+  .slide.title::after, .slide.dark::after, .slide.poll::after, .slide.demo::after, .slide.divider::after {
+    background: var(--accent);
+  }
+  .slide-footer {
+    left: 70px; right: 70px; bottom: 22px;
+    font-family: var(--mono); font-size: 13px; letter-spacing: 0.04em;
+    text-transform: uppercase; color: var(--subtle);
+  }
+  .slide.dark .slide-footer, .slide.title .slide-footer, .slide.poll .slide-footer { color: rgba(241,241,241,.55); }
+
+  .eyebrow {
+    color: var(--accent-text); text-transform: uppercase; letter-spacing: 0.08em;
+    font-size: 16px; font-weight: 700;
+  }
+  h1, h2, h3 { letter-spacing: -0.03em; }
+  .slide.title h1, .slide.divider h1 { text-transform: uppercase; letter-spacing: -0.04em; }
+
+  .card { border: 2px solid var(--ink); border-radius: 0; background: #fff; }
+  .card.good { border-top: 6px solid var(--good); }
+  .card.bad { border-top: 6px solid var(--bad); }
+  .card.accent { border-top: 6px solid var(--accent); }
+  .tag.accent { background: var(--accent); color: var(--ink); }
+  .tag.good { background: var(--good); }
+  .tag.bad { background: var(--bad); }
+
+  .callout {
+    border-radius: 0; border-left: 6px solid var(--accent);
+    background: var(--accent-soft);
+  }
+  .callout.tip { border-left-color: var(--accent-2); background: #fffce0; }
+  .callout.good { border-left-color: var(--good); }
+  .callout.warn { border-left-color: var(--bad); }
+
+  .ui-copy { border-radius: 0; border: 2px solid var(--ink); }
+  .draft { font-family: var(--hand); border: 2px dashed var(--accent); background: #fff; }
+
+  .poll-option b, .flow .step .n, .agenda .row .n,
+  .option-cards .opt-n, .option-row .opt-n, .remix-source .rn,
+  .overview-cards .card-num, .llms-overview-grid .card-num,
+  .stakeholder-steps .sn { color: var(--accent-text); }
+  .poll-option b { color: var(--ink); }
+  .flow .arrow, .remix-arrow { color: var(--accent-text); }
+  .poll-option b { background: var(--accent-2); color: var(--ink); border-radius: 0; }
+  .poll-option { border-radius: 0; border: 2px solid rgba(241,241,241,.25); background: #121a2e; }
+  .slide.poll .eyebrow { color: var(--accent); }
+  .slide.poll .poll-sub { color: #c8c8d0; }
+  .chat-box { border-left-color: var(--accent-2); border-radius: 0; }
+
+  .flow .step { border: 2px solid var(--ink); border-radius: 0; background: #fff; }
+  .flow .arrow { color: var(--accent); }
+  .remix-result { border: 3px solid var(--accent); border-radius: 0; background: var(--accent-soft); }
+  .remix-source .hl { background: var(--accent-2); color: var(--ink); }
+  .prompt-block { border-radius: 0; border-left: 6px solid var(--accent-2); }
+  pre, pre.md-instruction { border-radius: 0; border-left: 4px solid var(--accent); }
+  pre .h, pre .k { color: var(--accent); }
+  th { background: var(--dark); }
+  table { border-radius: 0; border: 2px solid var(--ink); }
+
+  .ba-col-before, .ba-col-after { border-radius: 0; }
+  .string-sheet, .figma-mock, .eval-rubric, .update-log-changelog, .update-log-rule { border-radius: 0; }
+  .update-log-rule { border: 3px solid var(--ink); }
+
+  #progress { background: var(--accent-2); height: 5px; }
+  #help { color: var(--accent); font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.06em; }
+
+  /* Title / divider / outro */
+  .slide.title {
+    background:
+      radial-gradient(circle at 85% 20%, rgba(255,129,205,.22), transparent 42%),
+      radial-gradient(circle at 12% 80%, rgba(254,250,0,.12), transparent 36%),
+      var(--dark);
+    color: var(--cream);
+    justify-content: center;
+    padding-top: 72px;
+    padding-bottom: 72px;
+  }
+  .slide.title .brand-pill {
+    position: absolute; right: 70px; top: 50%; transform: translateY(-50%);
+    width: 220px; height: 220px; border-radius: 999px; background: #fff;
+    color: var(--ink); display: flex; align-items: center; justify-content: center;
+    font-size: 64px; font-weight: 700; letter-spacing: -0.06em; line-height: 1;
+    box-shadow: 0 0 0 8px var(--accent);
+  }
+  .slide.title .eyebrow { color: var(--accent-2); }
+  .slide.title h1 { max-width: 720px; font-size: 48px; color: #fff; }
+  .slide.title .subtitle { color: rgba(241,241,241,.85); }
+  .slide.title .speaker span { color: var(--accent); }
+  .slide.title .date { color: rgba(241,241,241,.65); text-transform: uppercase; letter-spacing: 0.06em; }
+  .slide.title .sxc-topbar,
+  .slide.title .sxc-bottombar { z-index: 4; }
+  .slide.title .sxc-topbar {
+    position: absolute; left: 8px; right: 8px; top: 8px; height: 42px;
+    background: var(--accent); color: var(--ink);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 18px; font-size: 13px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  .slide.title .sxc-topbar .cta {
+    background: var(--accent-2); color: var(--ink); padding: 6px 12px; font-weight: 700;
+  }
+  .slide.title .sxc-bottombar {
+    position: absolute; left: 8px; right: 8px; bottom: 8px; height: 36px;
+    background: var(--accent); color: var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+  }
+  .slide.title .slide-footer,
+  .slide.title::after { display: none; }
+  .slide.divider {
+    background:
+      linear-gradient(135deg, rgba(255,129,205,.18), transparent 45%),
+      var(--dark);
+  }
+  .slide.divider .num { color: var(--accent-2); }
+  .slide.divider h1 { color: #fff; text-transform: uppercase; }
+  .slide.divider .lead { color: rgba(241,241,241,.7); }
+
+  .slide.title.title-outro h1 { color: var(--accent-2); font-size: 56px; max-width: 640px; }
+  .slide.title.title-outro .deck-qr {
+    box-shadow: 0 0 0 4px var(--accent), 0 12px 40px rgba(0,0,0,.45);
+    border-radius: 0;
+  }
+  .slide.title.title-outro .deck-qr-caption { color: var(--accent); font-weight: 700; text-transform: uppercase; }
+
+  .slide.poll { background: var(--dark); }
+  .instruction-tooltip { border-radius: 0; border: 2px solid var(--accent); }
+  .instruction-tooltip { border-color: var(--accent); }
+  .limit-code .code-line.is-active,
+  .limit-code .code-line:hover,
+  .skill-code .skill-line.is-active,
+  .skill-code .skill-line:hover { background: rgba(255,129,205,.22); }
+
+  .slide-gen-eval .figma-flag { border-left-color: var(--accent); border-radius: 0; }
+  .slide-workflow-split .flow .step.step-design {
+    background: #fff7c2; border-color: #9a9600; border-style: dashed;
+  }
+  .slide-workflow-split .flow .step.step-design .step-name,
+  .slide-workflow-split .flow .step.step-design .n,
+  .workflow-legend .wl-design-label { color: #6b6800; }
+  .workflow-legend .wl-dash { background: #fff7c2; border-color: #9a9600; }
+  .slide-workflow-cd .flow .step.step-cd,
+  .slide-workflow-split .flow .step.step-cd {
+    background-color: var(--accent-soft);
+    border-color: #c24f98;
+  }
+  .slide-workflow-cd .flow .step.step-cd .n,
+  .slide-workflow-split .flow .step.step-cd .step-name,
+  .step-role.role-cd { color: #8a2068; border-color: #8a2068; background: var(--accent-soft); }
+  .step-role.role-both { color: #8a2068; border-color: #8a2068; box-shadow: inset 0 0 0 1px #9a9600; }
+  .slide-workflow-split .flow .step.step-both {
+    background: #fff7c2; border: 2px dashed #9a9600; border-left: 6px solid #c24f98;
+  }
+  .slide-workflow-cd .callout,
+  .slide-workflow-split .callout { border-color: #c24f98; border-left-color: #c24f98; }
+
+  body.mobile-deck .mobile-nav button { background: var(--accent-2); color: var(--ink); border-radius: 0; }
+
+  /* Contrast: text accents on light surfaces */
+  .slide:not(.dark):not(.title):not(.poll):not(.demo) a,
+  .slide:not(.dark):not(.title):not(.poll):not(.demo) .eyebrow,
+  .slide:not(.dark):not(.title):not(.poll):not(.demo) .flow .step .n,
+  .slide:not(.dark):not(.title):not(.poll):not(.demo) .flow .arrow,
+  .slide:not(.dark):not(.title):not(.poll):not(.demo) .yes {
+    color: var(--accent-text);
+  }
+  .slide:not(.dark):not(.title):not(.poll):not(.demo) .yes { color: var(--good); }
+  .slide.dark .eyebrow,
+  .slide.title .eyebrow,
+  .slide.poll .eyebrow,
+  .slide.demo .eyebrow,
+  .slide.dark a,
+  .slide.title a,
+  .slide.poll a,
+  .slide.demo a,
+  .slide.demo .step .n,
+  .slide.demo .arrow {
+    color: var(--accent);
+  }
+  .slide.title .eyebrow { color: var(--accent-2); }
+  .slide.title .speaker span { color: var(--accent); }
+  .slide.title.title-outro .deck-qr-caption { color: var(--accent); }
+  .tag.good { color: #fff; }
+  .tag.bad { color: #fff; }
+  .ba-col-after .label { color: var(--good); }
+  .limit-solution-head { color: var(--good); }
+  .yes { color: var(--good); }
+  .no { color: var(--bad); }
+  pre .h, pre .k { color: var(--accent); }
+  #help { color: var(--accent); }
+
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div id="help">← → navigate · F fullscreen</div>
+<nav id="mobile-nav" class="mobile-nav" aria-label="Slide navigation" hidden>
+  <button type="button" id="mobile-prev" aria-label="Previous slide">Back</button>
+  <span id="mobile-count" aria-live="polite"></span>
+  <button type="button" id="mobile-next" aria-label="Next slide">Next</button>
+</nav>
+
+<div id="stage">
+
+<!-- ============ INTRO ============ -->
+
+<section class="slide title" data-section="Intro">
+  <div class="brand-pill" aria-hidden="true">SXC</div>
+  <div class="eyebrow">STHLM Xperience Conference</div>
+  <h1>Better Product UX Copy with AI: Prompt, Review, and Refine</h1>
+  <div class="speaker">
+    <img src="https://public-images.interaction-design.org/masterclasses/speakers/mc-XXX-speaker-image%20(3)-1791832520.jpg?tr=w-332,h-332" alt="Kalina Tyrkiel-Szymańska">
+    <p>Kalina Tyrkiel-Szymańska<span>Senior Content Designer at Zendesk</span></p>
+  </div>
+  <p class="date">12 November 2026</p>
+</section>
+
+<section class="slide" data-section="Intro">
+  <div class="eyebrow">Hi, I'm Kalina</div>
+  <h2>Content designer. I train teams on UX writing<br>and AI for copy.</h2>
+  <div class="card accent" style="max-width:900px">
+    <span class="tag accent">Today's promise</span>
+    <p style="font-size:26px">You'll leave knowing how to build <strong>responsible copy systems for AI</strong>: shared instructions, review steps, and evals.</p>
+    <p style="font-size:26px; margin-top:18px">It's as close as it gets to having a <strong>UX writer in every room</strong>.</p>
+  </div>
+</section>
+
+<section class="slide poll" data-section="Intro">
+  <h2>Reply with a letter in the chat</h2>
+  <div class="eyebrow poll-sub">Which best describes you?</div>
+  <div class="poll-options" style="grid-template-columns:1fr">
+    <div class="poll-option"><b>A</b>I'm a content designer or UX writer</div>
+    <div class="poll-option"><b>B</b>I'm not a content designer, but we have content designers in our organization</div>
+    <div class="poll-option"><b>C</b>I don't work with a content designer</div>
+  </div>
+</section>
+
+<section class="slide poll" data-section="Intro">
+  <h2>Reply with a number in the chat</h2>
+  <div class="eyebrow poll-sub">How do you use AI for UX copy today?</div>
+  <div class="poll-options">
+    <div class="poll-option"><b>1</b>I don't use it yet</div>
+    <div class="poll-option"><b>2</b>Occasionally, to get a few options</div>
+    <div class="poll-option"><b>3</b>Regularly, in my everyday design work</div>
+    <div class="poll-option"><b>4</b>My team shares prompts, skills, or plugins</div>
+  </div>
+</section>
+
+<!-- ============ 01 THE SHIFT ============ -->
+
+<section class="slide dark divider" data-section="01 The shift">
+  <h1>The shift: from writing to guiding</h1>
+</section>
+
+<section class="slide compare-reveal" data-section="01 The shift">
+  <h2>From writer to reviewer</h2>
+  <div class="cols cols-2 compare">
+    <div class="card bad compare-before">
+      <span class="tag bad">Before</span>
+      <p class="compare-lead">You write every string from scratch</p>
+      <p class="compare-detail">Don't love writing? It's OK, not everyone has to love it.</p>
+      <div class="draft">
+        <div>Invalid input.</div>
+        <div>Error: file type not supported.</div>
+        <div>Something went wrong. Try again.</div>
+      </div>
+    </div>
+    <div class="card good compare-after">
+      <span class="tag good">After</span>
+      <p class="compare-lead">You set the context and constraints</p>
+      <p class="compare-detail">AI expands your thinking and gives you something to look at.</p>
+<pre class="md-instruction"><span class="h">## Rules</span>
+<span class="k">-</span> Say what went wrong and what to do next
+<span class="k">-</span> Never blame the user. Avoid <span class="k">"invalid"</span> and <span class="k">"error"</span>
+<span class="k">-</span> Inline: max 90 characters</pre>
+      <div class="ui-copy good">Upload a PDF or PNG file.</div>
+      <ul class="clean small compare-rest">
+        <li>Guidelines are built into the tools your team uses</li>
+        <li><strong>You make the final call</strong></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="slide flow-reveal" data-section="01 The shift">
+  <h2>Prompt, review, and refine</h2>
+  <div class="flow">
+    <div class="step"><div class="n">1 · Prompt</div><h3>Give context</h3><p>Share the context, constraints, and a rough first draft.</p></div>
+    <div class="arrow flow-reveal-stage-1">→</div>
+    <div class="step flow-reveal-stage-1"><div class="n">2 · Review</div><h3>Check the output</h3><p>Compare it with your guidelines.</p></div>
+    <div class="arrow flow-reveal-stage-2">→</div>
+    <div class="step flow-reveal-stage-2"><div class="n">3 · Refine</div><h3>Fix the instructions</h3><p>Update the prompt or tool, so the next output is better.</p></div>
+  </div>
+  <div class="callout tip flow-reveal-step1-only">💡 <strong>Tip:</strong> <strong>Iterative refinement:</strong> you don't need every detail in the first message.</div>
+  <div class="prompt-block flow-reveal-step1-only" style="margin-top:16px">Ask me questions if anything is unclear.</div>
+  <p class="deck-footnote muted flow-reveal-step1-only">Source: learnprompting.org</p>
+</section>
+
+<!-- ============ 02 GOOD AND BAD ============ -->
+
+<section class="slide dark divider" data-section="02 Strengths and limits">
+  <h1>What LLMs are good and bad at in UX writing</h1>
+</section>
+
+<section class="slide slide-dense slide-llms-overview" data-section="02 Strengths and limits">
+  <h2>What LLMs do well</h2>
+  <div class="llms-overview-grid">
+    <div class="card good"><span class="card-num">1</span><h3>Consistency and constraints</h3></div>
+    <div class="card good"><span class="card-num">2</span><h3>Finding patterns</h3></div>
+    <div class="card good"><span class="card-num">3</span><h3>Critique</h3></div>
+    <div class="card good"><span class="card-num">4</span><h3>Providing alternatives</h3></div>
+  </div>
+</section>
+
+<section class="slide slide-dense slide-example" data-section="02 Strengths and limits">
+  <div class="eyebrow">1. Consistency and constraints</div>
+  <h2>Apply your glossary, case, and limits</h2>
+  <div class="slide-example-panel ba-compare-panel">
+    <div class="ba-rows">
+      <div class="ba-row">
+        <div class="ba-col-before">
+          <div class="label">Before</div>
+          <div class="ui-copy bad"><strong>Choose</strong> a file to upload</div>
+          <div class="ui-copy bad">Save Changes</div>
+        </div>
+        <div class="ba-col-after">
+          <div class="label">After</div>
+          <div class="ui-copy good"><strong>Select</strong> a file to upload</div>
+          <div class="ui-copy good">Save changes</div>
+        </div>
+      </div>
+      <div class="ba-row">
+        <div class="ba-col-before">
+          <div class="label">Before</div>
+          <div class="ui-copy bad" style="font-size:16px">Your upload could not be completed because the file type you selected is not supported by our system.</div>
+        </div>
+        <div class="ba-col-after">
+          <div class="label">After</div>
+          <div class="ui-copy good" style="font-size:16px">This file type isn't supported. Upload a PDF or PNG.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide slide-dense slide-instruction slide-instruction-explore" data-section="02 Strengths and limits">
+  <div class="eyebrow">1. Consistency and constraints</div>
+  <h2>Title Case vs sentence case</h2>
+  <div class="limit-challenge">
+    <span class="tag bad">Challenge</span>
+    <p>Without a rule, LLMs mix title case and sentence case. Title case is a common default in training data.</p>
+  </div>
+  <div class="limit-solution grow">
+    <div class="limit-solution-head"><span class="tag good">Solution</span> Add a formatting rule plus examples</div>
+    <div class="limit-split">
+<pre class="md-instruction limit-code"><span class="h">## Formatting</span>
+<span class="code-line" data-explain="Pick one case style. Say where it applies: buttons, labels, nav, headings."><span class="k">-</span> Use <span class="k">**</span>sentence case<span class="k">**</span> for buttons, labels, and UI headings.</span>
+<span class="code-line" data-explain="Capitalize product names and proper nouns only. Your glossary defines names like auto assist."><span class="k">-</span> Capitalize proper nouns and product names only (see glossary).</span>
+
+<span class="h">## Examples</span>
+<span class="code-line" data-explain="What the model often produces when no rule is set. Every word capped reads like a document, not UI copy.">Bad: Auto Assist · Save Changes</span>
+<span class="code-line" data-explain="Same strings with your rule applied. Only the first word and proper nouns are capped.">Good: Auto assist · Save changes</span></pre>
+      <div class="limit-explain-col">
+        <div class="limit-tip-explain" data-default="Let's unpack it line by line.">Let's unpack it line by line.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide slide-dense slide-instruction slide-limit-chars slide-instruction-explore" data-section="02 Strengths and limits">
+  <div class="eyebrow">1. Consistency and constraints</div>
+  <h2>Character limits</h2>
+  <div class="limit-challenge">
+    <span class="tag bad">Challenge</span>
+    <p>LLMs don't count characters reliably. They predict tokens, not letters.</p>
+  </div>
+  <div class="limit-solution grow">
+    <div class="limit-solution-head"><span class="tag good">Solution</span> Put limits in your instructions, with examples</div>
+    <div class="limit-split">
+<pre class="md-instruction limit-code"><span class="h">## Character limits</span>
+<span class="code-line" data-explain="Name the <strong>max for each UI type</strong>. Toasts, inline errors, and modals often differ, and the model won't guess your product's numbers."><span class="k">-</span> Toasts and inline errors: max <span class="k">**</span>90 characters<span class="k">**</span>, including spaces.</span>
+<span class="code-line" data-explain="<strong>Spell out how to count.</strong> Without it, the model optimizes for readable copy, not an exact character total."><span class="k">-</span> Count every character including spaces.</span>
+
+<span class="h">## Examples</span>
+<span class="code-line" data-explain="Shows what <strong>too long</strong> looks like with a real count (112 chars).">Bad (112 chars): Your upload could not be completed because the file type you selected is not supported by our system.</span>
+<span class="code-line" data-explain="One <strong>good line at or under the limit</strong> teaches length better than &quot;keep it short.&quot; That is <strong>one-shot</strong> prompting: one bad and one good example, not several (few-shot).">Good (54 chars): This file type isn't supported. Upload a PDF or PNG.</span></pre>
+      <div class="limit-explain-col">
+        <div class="limit-tip-explain" data-default="Let's unpack it line by line.">Let's unpack it line by line.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide slide-dense slide-example" data-section="02 Strengths and limits">
+  <div class="eyebrow">2. Finding patterns</div>
+  <h2>Scan many strings at once</h2>
+  <div class="pattern-split grow">
+    <div class="string-sheet">
+      <div class="sheet-bar">Onboarding flow <span>50 strings</span></div>
+      <table class="sheet-grid">
+        <tr><th>#</th><th>String</th></tr>
+        <tr><td>1</td><td>Choose a plan</td></tr>
+        <tr><td>2</td><td>Log in to continue</td></tr>
+        <tr><td>3</td><td>Save Changes</td></tr>
+        <tr><td>4</td><td>Pick a folder</td></tr>
+        <tr><td>5</td><td>Sign In Required</td></tr>
+        <tr><td>6</td><td>Click to choose file</td></tr>
+      </table>
+      <div class="sheet-more">… 44 more rows</div>
+    </div>
+    <div class="pattern-results">
+      <table class="table-audit">
+        <tr><th>Issue</th><th>Count</th></tr>
+        <tr><td>"choose" instead of approved <strong>select</strong></td><td>×6</td></tr>
+        <tr><td><strong>Log in</strong> instead of <strong>Sign in</strong></td><td>×4</td></tr>
+        <tr><td>Title Case button and label text</td><td>×9</td></tr>
+      </table>
+      <div class="callout tip">💡 <strong>Tip:</strong> Biggest time saver before a release or design system audit.</div>
+    </div>
+  </div>
+</section>
+
+<section class="slide slide-dense slide-example" data-section="02 Strengths and limits">
+  <div class="eyebrow">3. Critique</div>
+  <h2>Judgment without a rewrite</h2>
+  <div class="prompt-block">Criticize this approach. What's unclear, off-brand, or risky? Use our voice guide.</div>
+  <div class="critique-split grow">
+    <div class="ui-copy bad">Invalid input.</div>
+    <ul class="clean">
+      <li><strong>Off-brand:</strong> uses "invalid", which your guide avoids</li>
+      <li><strong>Vague:</strong> doesn't say what failed or where</li>
+      <li><strong>No next step:</strong> user doesn't know what to do next</li>
+    </ul>
+  </div>
+</section>
+
+<section class="slide slide-dense slide-example slide-options" data-section="02 Strengths and limits">
+  <div class="eyebrow">4. Providing alternatives</div>
+  <h2>Options with trade-offs</h2>
+  <p class="deck-ask"><strong>Ask:</strong> Make this error softer: "Upload failed. Invalid file type."</p>
+  <div class="option-rows">
+    <div class="option-row">
+      <div class="ui-copy">This file type isn't supported. Upload a PDF or PNG.</div>
+      <p class="trade">Direct and scannable; still factual</p>
+    </div>
+    <div class="option-row">
+      <div class="ui-copy">We can't upload this file type. Try a PDF or PNG.</div>
+      <p class="trade">Softer tone; "we" shares responsibility</p>
+    </div>
+    <div class="option-row">
+      <div class="ui-copy">That file won't work here. Use PDF or PNG instead.</div>
+      <p class="trade">Less formal</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide slide-dense slide-example" data-section="02 Strengths and limits">
+  <div class="eyebrow">4. Providing alternatives</div>
+  <h2>Remix what you like</h2>
+  <p class="deck-sub">Take a bit from one option and another bit from another.</p>
+  <div class="remix-sources">
+    <div class="remix-source">
+      <span class="rn">1</span>
+      <p><span class="hl">This file type isn't supported.</span> Upload a PDF or PNG.</p>
+    </div>
+    <div class="remix-source">
+      <span class="rn">2</span>
+      <p>We can't upload this file type. <span class="hl">Try a PDF or PNG.</span></p>
+    </div>
+  </div>
+  <div class="remix-arrow">↓</div>
+  <p class="remix-label">Final sentence</p>
+  <div class="remix-result">This file type isn't supported. Try a PDF or PNG.</div>
+  <p class="remix-caption">Direct opening from 1, next step from 2. You're in control. <strong>You're the DJ</strong> 💿</p>
+</section>
+
+<section class="slide slide-dense slide-stakeholder" data-section="02 Strengths and limits">
+  <div class="eyebrow">4. Providing alternatives</div>
+  <h2>From stakeholder feedback to a decision</h2>
+  <div class="stakeholder-layout">
+    <div class="stakeholder-split">
+      <div class="figma-mock">
+        <div class="figma-bar">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <span class="file">Upload flow · Frame 24</span>
+        </div>
+        <div class="figma-canvas">
+          <div class="mock-screen">
+            <h4>Upload document</h4>
+            <div class="upload-zone upload-zone-failed">
+              Drag a PDF or PNG here<br>or <strong>Select file</strong>
+              <div class="mock-error"><span class="pin" aria-hidden="true"></span>Upload failed. Invalid file type.</div>
+            </div>
+            <div class="figma-comment">
+              <div class="fc-head">
+                <span class="fc-avatar">PM</span>
+                <div><span class="fc-name">Alex Kim</span> <span class="fc-role">· Product</span></div>
+              </div>
+              <div class="fc-body">Can we soften this error? Feels harsh for someone trying to upload for the first time.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="stakeholder-side">
+        <ol class="stakeholder-steps">
+          <li><span class="sn">1</span><span>Paste the frame screenshotted with the comment</span></li>
+          <li><span class="sn">2</span><span>Ask for 3 copy options that address the feedback</span></li>
+          <li><span class="sn">3</span><span>Review, remix, adapt it and explain your choice</span></li>
+        </ol>
+        <p class="stakeholder-close">Final copy on the frame, then one sentence to the PM.</p>
+        <div class="callout tip">👨‍🍳 <strong>Chef's favorite:</strong> This is how I use it as a UX writer.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide slide-dense slide-llms-overview" data-section="02 Strengths and limits">
+  <h2>What LLMs don't do well</h2>
+  <div class="llms-overview-grid">
+    <div class="card bad"><span class="card-num">1</span><h3>Writing from scratch</h3></div>
+    <div class="card bad"><span class="card-num">2</span><h3>Product context</h3></div>
+    <div class="card bad"><span class="card-num">3</span><h3>Dependencies between products</h3></div>
+    <div class="card bad"><span class="card-num">4</span><h3>Knowing what's clear to real users</h3></div>
+  </div>
+</section>
+
+<section class="slide" data-section="02 Strengths and limits">
+  <h2>Always bring a rough first draft</h2>
+  <div class="cols cols-2 grow">
+    <div class="card bad">
+      <span class="tag bad">No context</span>
+      <div class="label">Prompt</div>
+      <div class="ui-copy" style="font-family:var(--mono);font-size:16px">Write an error message for a failed upload.</div>
+      <div class="label">Output</div>
+      <div class="ui-copy bad">Oops! Something went wrong. Please try again later.</div>
+    </div>
+    <div class="card good">
+      <span class="tag good">Draft and context</span>
+      <div class="label">Prompt</div>
+      <div class="ui-copy" style="font-family:var(--mono);font-size:16px">Draft: "upload failed, file too big". Limit is 25 MB. Inline, under the drop zone. Improve it.</div>
+      <div class="label">Output</div>
+      <div class="ui-copy good">report.pdf is larger than 25 MB. Upload a smaller file or compress it first.</div>
+    </div>
+  </div>
+</section>
+
+<section class="slide slide-dense slide-product-limits" data-section="02 Strengths and limits">
+  <h2>It doesn't know your product</h2>
+  <div class="cols cols-2 grow" style="gap:32px; align-content:start">
+    <div class="limit-example">
+      <div class="ui-copy bad">Don't worry, your changes are saved automatically.</div>
+      <p class="limit-why">Wrong if the product doesn't autosave.</p>
+    </div>
+    <div class="limit-example">
+      <div class="ui-copy bad">Introducing Workflows: automate your daily tasks.</div>
+      <p class="limit-why">Another product in your suite may already use the name Workflows.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide statement" data-section="02 Strengths and limits">
+  <div class="eyebrow">Keep it human</div>
+  <h1>Copy that seems clear to the model can still confuse your users</h1>
+  <p class="lead" style="margin-top:28px">LLMs can critique copy and generate options, but they can't replace usability testing.</p>
+  <p class="lead" style="margin-top:16px">Test copy with real users in the actual flow, including <strong>accessibility</strong>: screen readers, keyboard, and plain language.</p>
+</section>
+
+<section class="slide poll" data-section="02 Strengths and limits">
+  <div class="eyebrow">Reply in the chat</div>
+  <h2>What is the one UX writing task you feel AI could help you with the most?</h2>
+</section>
+
+<!-- ============ 03 INSTRUCTIONS ============ -->
+
+<section class="slide dark divider" data-section="03 Instructions">
+  <h1>Structuring instructions</h1>
+</section>
+
+<section class="slide slide-why-structure" data-section="03 Instructions">
+  <h2>Why structure instructions?</h2>
+  <div class="why-structure-split grow">
+    <div class="why-structure-copy">
+      <p class="why-structure-lede">Content guidelines are moving</p>
+      <div class="why-structure-shift">
+        <div class="why-structure-row">
+          <span class="why-structure-label">Before:</span>
+          <span>Company wiki (Confluence, Zeroheight, Notion...)</span>
+        </div>
+        <div class="why-structure-row why-structure-row-now">
+          <span class="why-structure-label">Now:</span>
+          <span>Markdown (.md) files, <strong>universal for humans and machines</strong></span>
+        </div>
+      </div>
+    </div>
+    <div class="why-structure-sample-wrap">
+      <div class="why-structure-filename">error-messages.md – example structure</div>
+<pre class="md-instruction why-structure-sample"><span class="h"># Error messages</span>
+
+<span class="h">## Task</span>
+Review the message. Suggest up to 3 rewrites.
+
+<span class="h">## Context</span>
+<span class="k">-</span> Where it appears (toast, inline, modal). Defines the length.
+<span class="k">-</span> What went wrong and what the user can do next
+
+<span class="h">## Rules</span>
+<span class="k">-</span> Sentence case. Use "sign in", not "log in".
+<span class="k">-</span> <span class="k">**</span>Never blame the user.<span class="k">**</span>
+<span class="k">-</span> Toasts and inline: max 90 characters.
+
+<span class="h">## Examples</span>
+Bad: "Invalid input."  Good: "Enter a date in the future."
+
+<span class="h">## Output</span>
+Table: Issue | Why it's a problem | Suggested fix</pre>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-section="03 Instructions">
+  <h2>Markdown basics</h2>
+  <table>
+    <tr><th>You type</th><th>You get</th><th>Use it in prompts for</th></tr>
+    <tr><td><code># Heading</code></td><td>Main heading</td><td>Name of the tool or task</td></tr>
+    <tr><td><code>## Section</code></td><td>Subheading</td><td>Sections: Context, Rules, Examples, Output</td></tr>
+    <tr><td><code>- item</code></td><td>Bulleted list</td><td>Rules and constraints</td></tr>
+    <tr><td><code>1. step</code></td><td>Numbered list</td><td>Steps the model must follow in order</td></tr>
+    <tr><td><code>**bold**</code></td><td><strong>Bold</strong></td><td>Rules that must never be broken</td></tr>
+    <tr><td><code>| a | b |</code></td><td>Table</td><td>Terminology lists and output format</td></tr>
+  </table>
+  <div class="callout good">☀️ <strong>Good news:</strong> LLMs can format instructions for you, too. The tool knows what it needs.</div>
+</section>
+
+<section class="slide slide-dense slide-skill-example" data-section="03 Instructions">
+  <h2 style="font-size:38px">Example: an error message review skill</h2>
+<pre class="md-instruction skill-code"><span class="skill-line skill-frontmatter" data-explain="YAML frontmatter: when to load the skill (<strong>name</strong>, <strong>description</strong>). Not 100% universal, but works well across major agent tools (Claude, Cursor, ChatGPT/Codex, etc.)"><span class="c">---</span>
+name: error-message-review
+description: Review and rewrite error messages. Use when someone shares an error, toast, or inline validation.
+<span class="c">---</span></span>
+
+<span class="skill-line" data-explain="Keep it specific to what the skill does."><span class="h"># Error message reviewer</span></span>
+
+<span class="skill-line" data-explain="Section headers mirror the five blocks you teach: task, context, rules, examples, output."><span class="h">## Task</span></span>
+<span class="skill-line" data-explain="One job: <strong>review first</strong>, then suggest rewrites.">Review the error message. Then suggest up to 3 rewrites.</span>
+
+<span class="skill-line" data-explain="Context is where most generic AI copy fails. This section says what to know before judging."><span class="h">## Context</span></span>
+<span class="skill-line" data-explain="Strong instruction: <strong>ask instead of guess</strong> when product facts are missing.">Ask for these if they're missing:</span>
+<span class="skill-line" data-explain="Names the surface so you apply the right length rule in Formatting, not one limit everywhere."><span class="k">-</span> Where it appears (toast, inline, modal). Defines the length.</span>
+<span class="skill-line" data-explain="Best practice for error messages: what went wrong and what to do next."><span class="k">-</span> What caused the error and what the user can do next</span>
+
+<span class="skill-line" data-explain="Rules should be scannable bullets the model can check like an eval."><span class="h">## Rules</span></span>
+<span class="skill-line" data-explain="The core UX writing rule in one line. Easy to score pass or fail on <strong>failure</strong> messages in evals. For <strong>empty fields</strong>, score whether it says what to enter."><span class="k">-</span> Say what happened and what to do next.</span>
+<span class="skill-line" data-explain="Concrete terminology and case beat &quot;follow the brand.&quot; Approved terms are testable."><span class="k">-</span> Use sentence case. Use "select", not "choose". Use "sign in", not "log in".</span>
+<span class="skill-line" data-explain="Non-negotiables in <strong>bold</strong>. Banned words are explicit, not implied."><span class="k">-</span> <span class="k">**</span>Never blame the user.<span class="k">**</span> Avoid "invalid", "illegal", and "failed to".</span>
+
+<span class="skill-line" data-explain="Wikipedia signs-of-AI list for UX. Paste reference-ai-writing-avoid.md for the full hard-ban block."><span class="h">## Avoid AI writing</span></span>
+<span class="skill-line" data-explain="Hard ban: any Wikipedia AI-vocab word or chatbot phrase fails eval."><span class="k">-</span> Hard ban on Wikipedia AI-vocab and chatbot phrases (see reference-ai-writing-avoid.md).</span>
+<span class="skill-line" data-explain="Prefer is/has over copula swaps from the ban list."><span class="k">-</span> Use plain copulas: is, has, lets you.</span>
+<span class="skill-line" data-explain="Full hard-ban list lives in reference-ai-writing-avoid.md."><span class="k">-</span> Full list in reference-ai-writing-avoid.md.</span>
+
+<span class="skill-line" data-explain="Split voice rules from <strong>layout and length</strong> so reviewers know which checklist to use."><span class="h">## Formatting</span></span>
+<span class="skill-line" data-explain="Same limit for both surfaces, spelled out like the character-limit slide. Count includes spaces."><span class="k">-</span> Toasts and inline errors: max <span class="k">**</span>90 characters<span class="k">**</span>, including spaces.</span>
+<span class="skill-line" data-explain="Modals can be longer but still scannable. Stops one limit from being applied everywhere."><span class="k">-</span> Modals: max 2 short sentences or 160 characters, whichever is shorter.</span>
+<span class="skill-line" data-explain="Reinforces how to measure. Models need this repeated for length rules."><span class="k">-</span> Count every character, including spaces and punctuation.</span>
+<span class="skill-line" data-explain="Formatting rule with examples in the voice line above. Proper nouns excepted."><span class="k">-</span> Use sentence case for the full message.</span>
+<span class="skill-line" data-explain="Keeps errors calm and scannable. Matches most product voice guides."><span class="k">-</span> Prefer 1–2 sentences. No bullet lists inside a toast or inline error.</span>
+<span class="skill-line" data-explain="Useful when errors mention file size, counts, or dates."><span class="k">-</span> Use numerals for limits and quantities (e.g. 5 MB, 3 files, 12/31/2026).</span>
+<span class="skill-line" data-explain="Small punctuation rules are easy to eval and easy for the model to miss."><span class="k">-</span> End with a period. No exclamation marks in errors unless the voice guide allows them.</span>
+<span class="skill-line" data-explain="Formatting for eng-facing codes: plain language first, code in parentheses if required."><span class="k">-</span> Do not show a raw error code alone. If required, use plain language first, then the code in parentheses.</span>
+
+<span class="skill-line" data-explain="Pair bad and good so the model sees <strong>shape and tone</strong>, not only rules."><span class="h">## Examples</span></span>
+<span class="skill-line" data-explain="One line contrasts code-like errors with a helpful, specific fix.">Bad: "Invalid input. Error 422."  Good: "Enter a date in the future, like 12/31/2026."</span>
+
+<span class="skill-line" data-explain="Output format turns the skill into a <strong>review artifact</strong> you can share with design or eng."><span class="h">## Output</span></span>
+<span class="skill-line" data-explain="Table columns match how UX writers already review: issue, why it's a problem, fix. Easier to scan than prose.">A table with: Issue | Why it's a problem | Suggested fix</span></pre>
+</section>
+
+
+<section class="slide slide-best-practices" data-section="03 Instructions">
+  <h2>Best practices for writing instructions</h2>
+  <div class="best-practices-stack">
+    <ul class="clean small">
+      <li><strong>Be specific.</strong> Write "60 characters max", not "keep it short".</li>
+      <li><strong>Show good and bad examples.</strong> Examples often work better than more rules.</li>
+    </ul>
+    <div class="callout tip best-practices-tip">💡 <strong>Tip:</strong> <strong>One-shot and few-shot prompting:</strong> one bad/good pair shows the shape (one-shot). Several pairs show a repeatable pattern (few-shot).</div>
+    <ul class="clean small">
+      <li><strong>Say what to do,</strong> not only what to avoid.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="slide slide-best-practices" data-section="03 Instructions">
+  <h2>Best practices for writing instructions</h2>
+  <div class="best-practices-stack">
+    <ul class="clean small">
+      <li><strong>One job per skill.</strong> Split by UI element (errors, empty states, notifications) so the agent loads the right workflow.</li>
+      <li><strong>Share what repeats.</strong> Keep voice, terminology, and banned words in one linked doc. Don't paste the same rules into every skill.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="slide slide-best-practices" data-section="03 Instructions">
+  <h2>Best practices for writing instructions</h2>
+  <div class="best-practices-stack">
+    <ul class="clean small">
+      <li><strong>Ask for missing context.</strong> Tell the model to ask instead of guessing.</li>
+    </ul>
+    <div class="callout tip best-practices-tip">💡 <strong>Tip:</strong> <strong>Iterative refinement:</strong> you don't need every detail in the first message. Tell the model to ask what's missing.</div>
+    <ul class="clean small">
+      <li><strong>Version and share it.</strong> Maintain it like any other design system asset.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="slide slide-same-doc" data-section="03 Instructions">
+  <h2>Reuse the same doc across LLMs</h2>
+  <p class="lead">Write instructions once. Reuse them everywhere you work with AI.</p>
+  <ul class="clean small">
+    <li><strong>Master copy</strong> on the team drive or in a GitHub repo.</li>
+    <li><strong>Attach or paste</strong> that file into each tool. Update the master when something fails review.</li>
+  </ul>
+</section>
+
+<section class="slide slide-dense slide-figma-plugins-docs" data-section="03 Instructions">
+  <figure class="figma-docs-shot grow">
+    <img src="assets/figma-generative-plugins-docs.png" width="1120" height="520" alt="Figma Help: Generate plugins with the Figma agent">
+  </figure>
+  <p class="deck-footnote muted">Source: Figma Help</p>
+</section>
+
+<section class="slide slide-gen-eval" data-section="03 Instructions">
+  <h2>Generative vs evaluative tools</h2>
+  <p class="lead">Generative tools <strong>draft</strong> copy. Evaluative tools <strong>score</strong> copy against your rules.</p>
+  <div class="cols cols-2" style="max-width:920px">
+    <div class="card accent">
+      <span class="tag accent">Generative</span>
+      <h3>Draft and rewrite</h3>
+      <p>ChatGPT, Claude, custom GPTs, skills</p>
+    </div>
+    <div class="card warn">
+      <span class="tag warn">Evaluative</span>
+      <h3>Check against rules</h3>
+      <p>Generative tools + Figma tools and plugins, your eval table</p>
+    </div>
+  </div>
+  <p class="figma-flag">
+    <img class="figma-flag-logo" src="assets/figma-logo.svg" width="28" height="28" alt="">
+    <span><strong>Figma:</strong> Not great for generating copy. Good for evaluating in place, with layout and context.</span>
+  </p>
+</section>
+
+<!-- ============ 04 EVALS ============ -->
+
+<section class="slide dark divider" data-section="04 Evals">
+  <h1>Evals: how to test</h1>
+</section>
+
+<section class="slide slide-what-eval" data-section="04 Evals">
+  <h2>What's an eval?</h2>
+  <p class="eval-plain-def"><strong>What it is:</strong> A <span class="accent-text">repeat test</span> for your AI copy tool. You run the same real UI strings every time and score each output pass or fail against rules you wrote down.</p>
+  <p class="eval-plain-analogy">Like a quiz with a fixed answer key: same questions, same pass/fail bar, every run.</p>
+  <div class="flow">
+    <div class="step"><div class="n">1 · Collect</div><p>~<strong>10–20 real strings</strong> from production (e.g., errors + empty fields)</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">2 · Score</div><p><strong>Pass or fail</strong> against your checklist</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">3 · Improve</div><p><strong>Change one thing</strong> → rerun the full set</p></div>
+  </div>
+</section>
+
+<section class="slide slide-dense slide-eval-sso-example" data-section="04 Evals">
+  <h2>Real-life example: meets one rule, misses another</h2>
+  <p class="deck-sub">Score each rule separately. A rewrite can pass clarity and still fail your glossary.</p>
+  <div class="eval-sso-split grow">
+    <div class="eval-sso-col">
+      <p class="eval-sso-label">Review this copy</p>
+      <p class="eval-sso-original">Use SSO for faster login. Choose your preferred SSO method.</p>
+    </div>
+    <div class="eval-sso-col">
+      <p class="eval-sso-label">Model rewrite</p>
+      <p class="eval-sso-rewrite">&ldquo;Log in faster with Single Sign-On (SSO). Select your preferred SSO method.&rdquo;</p>
+      <p class="eval-sso-note">Passes clarity: expands SSO, action-led, &ldquo;select&rdquo; not &ldquo;choose.&rdquo;</p>
+    </div>
+    <div class="eval-sso-col eval-sso-verdict">
+      <div class="callout warn"><strong>Partial fail:</strong> use <strong>sign in</strong>, not log in</div>
+      <table class="eval-sso-glossary">
+        <tr><th>Do</th><th>Not</th></tr>
+        <tr><td>sign in</td><td>log in</td></tr>
+      </table>
+      <p class="eval-sso-glossary-caption">Glossary rule in your instructions</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide slide-dense slide-update-log-example" data-section="04 Evals">
+  <h2>Real-life example: changelog</h2>
+  <p class="lead">Log failures and turn each one into a rule or example.</p>
+  <div class="update-log-split grow">
+    <div class="update-log-changelog">
+      <div class="update-log-date">Sep 5, 2026 (V2.2)</div>
+      <hr>
+      <ul>
+        <li><strong>Problem:</strong> Skill doesn&rsquo;t understand the difference between create and add.</li>
+        <li><strong>Solution:</strong> Added instructions on asking about create / add</li>
+      </ul>
+      <p class="update-log-caption">Evals flagged mixed Create/Add terms. Compare showed the gap; the changelog records what changed for the team.</p>
+    </div>
+    <div class="update-log-rule">
+      <h3>Create vs. Add Usage</h3>
+      <ul>
+        <li>If copy uses &ldquo;Create&rdquo; or &ldquo;Add,&rdquo; ask what the action is:
+          <ul>
+            <li><strong>Create:</strong> new item.</li>
+            <li><strong>Add:</strong> something that already exists.</li>
+            <li>If unclear, ask before you suggest a term.</li>
+          </ul>
+        </li>
+      </ul>
+      <p class="update-log-truncated" aria-hidden="true">…</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-section="04 Evals">
+  <h2>Example: eval for your inline error tool</h2>
+  <table class="eval-table">
+    <tr><th>Test input</th><th>Type</th><th>Problem + next step<span class="th-note">or what to enter</span></th><th>No "invalid" or "error"</th><th>≤ 90 chars</th><th>Result</th></tr>
+    <tr><td>Invalid input.</td><td class="eval-type">Failure</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="no">Fail</td></tr>
+    <tr><td>Error: file type not supported.</td><td class="eval-type">Failure</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="no">Fail</td></tr>
+    <tr><td>Something went wrong. Try again.</td><td class="eval-type">Failure</td><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">Fail</td></tr>
+    <tr><td>Upload a PDF or PNG file.</td><td class="eval-type">Failure</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">Pass</td></tr>
+    <tr><td>Enter your email.</td><td class="eval-type">Empty field</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">Pass</td></tr>
+  </table>
+</section>
+
+<section class="slide slide-eval-tips" data-section="04 Evals">
+  <h2>Eval tips: human vs automated</h2>
+  <div class="callout tip eval-tips-callout">💡 <strong>Tip:</strong> LLMs can help you with setting up evals. Ask questions to build your eval tool.</div>
+  <div class="cols cols-2 grow" style="gap:28px; max-width:1040px; align-self:center">
+    <div class="card accent"><h3>AI can check rules</h3><p>Case, terms, length, hard-ban word list, fit for the situation</p></div>
+    <div class="card good"><h3>People judge meaning</h3><p>Tone, empathy, and whether failure vs empty field fits the moment</p></div>
+  </div>
+</section>
+
+<!-- ============ 05 COMMON ISSUES ============ -->
+
+<section class="slide dark divider" data-section="05 Common issues">
+  <h1>Common issues when generating copy with LLMs</h1>
+</section>
+
+<section class="slide slide-dense slide-common-issues" data-section="05 Common issues">
+  <h2>Consistency and limits</h2>
+  <table class="table-issues">
+    <tr><th>Issue</th><th>What helps</th></tr>
+    <tr><td><strong>Title Case</strong> by default</td><td>A sentence case rule with examples</td></tr>
+    <tr><td><strong>Terms change</strong> between runs</td><td>A glossary in the instructions</td></tr>
+    <tr><td><strong>Too long:</strong> LLMs count characters poorly</td><td>Max length per surface in rules, bad/good examples with counts, verify with a counter (not the model)</td></tr>
+  </table>
+</section>
+
+<section class="slide slide-dense slide-common-issues" data-section="05 Common issues">
+  <h2>Voice and clarity</h2>
+  <table class="table-issues">
+    <tr><th>Issue</th><th>What helps</th></tr>
+    <tr><td><strong>Over-friendly:</strong> exclamation marks and emoji in errors</td><td>Tone rules for each context</td></tr>
+    <tr><td><strong>Meaning lost</strong> when shortening</td><td>Ask it to list what it removed</td></tr>
+  </table>
+  <h2 style="font-size:34px; margin-top:22px; margin-bottom:14px">Product facts</h2>
+  <table class="table-issues">
+    <tr><th>Issue</th><th>What helps</th></tr>
+    <tr><td><strong>Invented features</strong> or system behavior</td><td>Product facts in the instructions, and ask it to flag assumptions</td></tr>
+  </table>
+  <div class="callout tip">💡 <strong>Tip:</strong> Ask it to list what it removed when shortening, and what it assumes about the product, before it suggests copy.</div>
+</section>
+
+<!-- ============ 06 WORKFLOWS ============ -->
+
+<section class="slide dark divider" data-section="06 Workflows">
+  <h1>AI-powered content design workflows</h1>
+</section>
+
+<section class="slide slide-workflow-cd" data-section="06 Workflows">
+  <h2>Workflow for content designers</h2>
+  <div class="flow">
+    <div class="step step-cd"><div class="n">Build</div><p>Turn guidelines into skills and evaluation tools</p><p class="step-tools">.md files, Claude skills (tailored AI assistants)</p></div>
+    <div class="arrow">→</div>
+    <div class="step step-cd"><div class="n">Draft</div><p>You and designers draft with the tools</p><p class="step-tools">Same tools + Figma plugins</p></div>
+    <div class="arrow">→</div>
+    <div class="step step-cd"><div class="n">Review</div><p>You review the highest-risk copy</p><p class="step-tools">Human (you!)</p></div>
+    <div class="arrow">→</div>
+    <div class="step step-cd"><div class="n">Improve</div><p>Run evals and update instructions</p><p class="step-tools">Evals and rubrics</p></div>
+  </div>
+  <div class="callout"><strong>Your guidelines get applied even if you're not in the room.</strong></div>
+</section>
+
+<section class="slide slide-workflow-split" data-section="06 Workflows">
+  <h2>Workflow for teams with a consulting content designer</h2>
+  <div class="workflow-legend">
+    <span class="wl"><span class="wl-dash" aria-hidden="true"></span><span class="wl-design-label">Design</span></span>
+    <span class="wl"><span class="step-role role-cd role-cd-hatch">CD</span> Content designer</span>
+  </div>
+  <div class="flow">
+    <div class="step step-cd"><div class="step-meta"><span class="step-role role-cd role-cd-hatch">CD</span><span class="step-name">Build</span></div><p>Content designer builds shared instructions and eval tools</p><p class="step-tools">.md files, Claude skills, eval rubrics</p></div>
+    <div class="arrow">→</div>
+    <div class="step step-design"><div class="step-meta"><span class="step-name">Draft</span></div><p>Designers draft everyday copy with the shared tools</p><p class="step-tools">Same tools + Figma plugins</p></div>
+    <div class="arrow">→</div>
+    <div class="step step-both"><div class="step-meta"><span class="step-role role-both">Both</span><span class="step-name">Review</span></div><p>Designers run evals first; <strong>CD reviews high-risk copy</strong></p><p class="step-tools">Eval tool, then human (content designer)</p></div>
+    <div class="arrow">→</div>
+    <div class="step step-cd"><div class="step-meta"><span class="step-role role-cd role-cd-hatch">CD</span><span class="step-name">Improve</span></div><p>CD turns review comments into rules and reruns evals</p><p class="step-tools">Evals and rubrics</p></div>
+  </div>
+  <div class="callout"><strong>Designers own most strings (empowered by AI tools).</strong> The content designer owns the system and the copy that can't afford to be wrong.</div>
+</section>
+
+<section class="slide" data-section="06 Workflows">
+  <h2>Workflow for teams without content designers</h2>
+  <div class="flow">
+    <div class="step"><div class="n">Build</div><p>Create one instruction page for the UI copy you write most</p><p class="step-tools">.md files, one Claude skill or custom GPT</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">Draft</div><p>Designers draft labels, errors, and helper text with the tools</p><p class="step-tools">Same tools + Figma plugins</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">Review</div><p>Peer review with a shared checklist; escalate legal and pricing</p><p class="step-tools">Human reviewers (the team)</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">Improve</div><p>Run evals when instructions change; test copy with users</p><p class="step-tools">Evals and rubrics, usability sessions</p></div>
+  </div>
+  <div class="callout"><strong>Designers own most strings (empowered by AI tools).</strong> Shared instructions, peer review, and evals keep quality high across the team.</div>
+  <div class="callout tip">💡 <strong>Tip:</strong> Have one place to collect feedback on outputs (e.g., a Slack channel).</div>
+</section>
+
+<section class="slide slide-dense slide-review-checklist" data-section="06 Workflows">
+  <h2>Review checklist for any team</h2>
+  <div class="review-checklist-wrap grow">
+<pre class="md-instruction review-checklist-md"><span class="h">## Checklist</span>
+<span class="k">-</span> <span class="k">**</span>Clear:<span class="k">**</span> errors say what went wrong and what to do next; empty fields say what to enter
+<span class="k">-</span> <span class="k">**</span>Accurate:<span class="k">**</span> matches what the product actually does
+<span class="k">-</span> <span class="k">**</span>Consistent:<span class="k">**</span> approved terms, sentence case, same patterns as your glossary
+<span class="k">-</span> <span class="k">**</span>Concise:<span class="k">**</span> fits the space, no filler
+<span class="k">-</span> <span class="k">**</span>Ban-list clean:<span class="k">**</span> none of the words on your hard-ban list
+<span class="k">-</span> <span class="k">**</span>Empathetic:<span class="k">**</span> right tone for the situation, no blame
+<span class="k">-</span> <span class="k">**</span>Accessible:<span class="k">**</span> descriptive links; not color-only or direction-only cues; works with screen readers
+<span class="k">-</span> <span class="k">**</span>Translatable:<span class="k">**</span> no idioms; no strings built from fragments</pre>
+  </div>
+  <div class="callout"><strong>Checklist</strong> = peer review or LLM review, one string at a time.<br><strong>Eval</strong> = rerun the same 10–20 strings after you edit instructions.</div>
+</section>
+
+<!-- ============ 07 PRINCIPLES ============ -->
+
+<section class="slide dark divider" data-section="07 Principles">
+  <h1>Principles and next steps</h1>
+</section>
+
+<section class="slide" data-section="07 Principles">
+  <h2>Principles for using AI responsibly</h2>
+  <div class="cols cols-2 grow" style="gap:24px; max-width:1040px; align-self:center">
+    <div class="card accent"><h3>You decide</h3><p>AI suggests options. You choose and own the copy.</p></div>
+    <div class="card accent"><h3>Use approved tools</h3><p>No confidential designs or customer data in public AI tools.</p></div>
+    <div class="card accent"><h3>Context first</h3><p>Drafts, facts, and limits.</p></div>
+    <div class="card accent"><h3>Test with users</h3><p>Align with stakeholders. Test with real people.</p></div>
+  </div>
+</section>
+
+<section class="slide" data-section="07 Principles">
+  <h2>What to try next week</h2>
+  <div class="flow grow" style="max-height:300px">
+    <div class="step"><div class="n">Step 1</div><h3>Pick 1 UI element</h3><p>Choose the one your team writes most often: errors, empty states, or notifications.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">Step 2</div><h3>Create 1 instruction</h3><p>1 markdown page: task, context, rules, examples, output.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">Step 3</div><h3>Test and share it</h3><p>Run it on 10 real strings, fix what fails, and share it with your team.</p></div>
+  </div>
+</section>
+
+<section class="slide poll" data-section="Q&amp;A">
+  <div class="eyebrow">Reply in the chat</div>
+  <h2>What is your one key takeaway from this masterclass?</h2>
+</section>
+
+<section class="slide title title-outro" data-section="Q&amp;A">
+  <div class="deck-qr-wrap">
+    <img class="deck-qr" src="assets/deck-qr.png" width="220" height="220" alt="QR code: open Kalina Tyrkiel on LinkedIn">
+    <p class="deck-qr-caption">Connect on LinkedIn</p>
+  </div>
+  <h1>Thank you!</h1>
+  <p class="subtitle">Ask questions during the Q&amp;A<br>or scan the code to connect</p>
+  <div class="speaker">
+    <img src="https://public-images.interaction-design.org/masterclasses/speakers/mc-XXX-speaker-image%20(3)-1791832520.jpg?tr=w-332,h-332" alt="Kalina Tyrkiel-Szymańska">
+    <p>Kalina Tyrkiel-Szymańska<span>Senior Content Designer at Zendesk</span></p>
+  </div>
+</section>
+
+</div>
+
+<div id="instruction-tooltip" class="instruction-tooltip" role="tooltip" aria-hidden="true"></div>
+
+<script>
+  const isMobileDeck = new URLSearchParams(location.search).get('mobile') === '1';
+  if (isMobileDeck) {
+    document.body.classList.add('mobile-deck');
+    const mobileNav = document.getElementById('mobile-nav');
+    if (mobileNav) mobileNav.hidden = false;
+    const help = document.getElementById('help');
+    if (help) help.textContent = 'Tap Next or swipe';
+  }
+
+  const stage = document.getElementById('stage');
+  const slides = [...document.querySelectorAll('.slide')];
+  const progress = document.getElementById('progress');
+  const mobileCount = document.getElementById('mobile-count');
+  const mobilePrev = document.getElementById('mobile-prev');
+  const mobileNext = document.getElementById('mobile-next');
+  let current = 0;
+
+  function deckHash(n) {
+    const num = n + 1;
+    return isMobileDeck ? `?mobile=1#${num}` : `#${num}`;
+  }
+
+  slides.forEach((s, i) => {
+    const f = document.createElement('div');
+    f.className = 'slide-footer';
+    f.innerHTML = `<span>${i + 1} / ${slides.length}</span>`;
+    s.appendChild(f);
+  });
+
+  function fit() {
+    if (isMobileDeck) {
+      stage.style.transform = 'none';
+      stage.style.width = '100%';
+      stage.style.height = '100%';
+      stage.style.top = '0';
+      stage.style.left = '0';
+      return;
+    }
+    const scale = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+    stage.style.transform = `translate(-50%, -50%) scale(${scale})`;
+  }
+
+  function updateMobileChrome() {
+    if (!isMobileDeck || !mobileCount) return;
+    mobileCount.textContent = `${current + 1} / ${slides.length}`;
+    if (mobilePrev) mobilePrev.disabled = current === 0;
+    if (mobileNext) mobileNext.disabled = current === slides.length - 1;
+  }
+
+  function show(n) {
+    current = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach((s, i) => {
+      s.classList.toggle('active', i === current);
+      if (i !== current) {
+        s.classList.remove('revealed', 'flow-stage-1', 'flow-stage-2');
+      }
+    });
+    progress.style.width = `${((current + 1) / slides.length) * 100}%`;
+    history.replaceState(null, '', deckHash(current));
+    updateMobileChrome();
+    document.querySelectorAll('.slide-instruction-explore').forEach((s) => {
+      if (s.classList.contains('active')) return;
+      s.querySelectorAll('.code-line').forEach((t) => t.classList.remove('is-active'));
+      const ex = s.querySelector('.limit-tip-explain');
+      if (ex) ex.textContent = ex.dataset.default || ex.textContent;
+    });
+    const skillTip = document.getElementById('instruction-tooltip');
+    if (skillTip) {
+      skillTip.classList.remove('visible');
+      skillTip.setAttribute('aria-hidden', 'true');
+    }
+    document.querySelectorAll('.skill-line.is-active').forEach((l) => l.classList.remove('is-active'));
+  }
+
+  function isRevealSlide(slide) {
+    return slide.classList.contains('compare-reveal') || slide.classList.contains('flow-reveal');
+  }
+
+  function flowRevealStage(slide) {
+    if (slide.classList.contains('flow-stage-2')) return 2;
+    if (slide.classList.contains('flow-stage-1')) return 1;
+    return 0;
+  }
+
+  function setFlowRevealStage(slide, stage) {
+    slide.classList.toggle('flow-stage-1', stage >= 1);
+    slide.classList.toggle('flow-stage-2', stage >= 2);
+  }
+
+  function advanceSlide() {
+    const slide = slides[current];
+    if (slide.classList.contains('flow-reveal')) {
+      const stage = flowRevealStage(slide);
+      if (stage < 2) {
+        setFlowRevealStage(slide, stage + 1);
+        return;
+      }
+    } else if (isRevealSlide(slide) && !slide.classList.contains('revealed')) {
+      slide.classList.add('revealed');
+      return;
+    }
+    show(current + 1);
+  }
+
+  function retreatSlide() {
+    const slide = slides[current];
+    if (slide.classList.contains('flow-reveal')) {
+      const stage = flowRevealStage(slide);
+      if (stage > 0) {
+        setFlowRevealStage(slide, stage - 1);
+        return;
+      }
+    } else if (isRevealSlide(slide) && slide.classList.contains('revealed')) {
+      slide.classList.remove('revealed');
+      return;
+    }
+    show(current - 1);
+  }
+
+  stage.addEventListener('click', (e) => {
+    if (!isRevealSlide(slides[current])) return;
+    advanceSlide();
+  });
+
+  if (mobilePrev) {
+    mobilePrev.addEventListener('click', (e) => {
+      e.stopPropagation();
+      retreatSlide();
+    });
+  }
+  if (mobileNext) {
+    mobileNext.addEventListener('click', (e) => {
+      e.stopPropagation();
+      advanceSlide();
+    });
+  }
+  if (isMobileDeck) {
+    let touchStartX = 0;
+    stage.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+    stage.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].screenX - touchStartX;
+      if (Math.abs(dx) < 56) return;
+      if (dx < 0) advanceSlide();
+      else retreatSlide();
+    }, { passive: true });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); advanceSlide(); }
+    else if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); retreatSlide(); }
+    else if (e.key === 'Home') show(0);
+    else if (e.key === 'End') show(slides.length - 1);
+    else if (e.key.toLowerCase() === 'f') {
+      document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+    }
+  });
+
+  window.addEventListener('resize', fit);
+  fit();
+  show((parseInt(location.hash.slice(1), 10) || 1) - 1);
+
+  function isBadExampleLine(line) {
+    return /^Bad[\s:(]/i.test(line.textContent.trim());
+  }
+
+  function explainForLine(line) {
+    const html = line.getAttribute('data-explain');
+    if (!html) return null;
+    if (!isBadExampleLine(line)) return html;
+    const dotSpace = html.indexOf('. ');
+    return dotSpace === -1 ? html : html.slice(0, dotSpace + 1);
+  }
+
+  (function initInstructionExploreSlides() {
+    document.querySelectorAll('.slide-instruction-explore').forEach((slide) => {
+      const lines = [...slide.querySelectorAll('.limit-code .code-line[data-explain]')];
+      const explainEl = slide.querySelector('.limit-tip-explain');
+      if (!explainEl || !lines.length) return;
+      const defaultText = explainEl.dataset.default || explainEl.textContent;
+
+      function clearLine() {
+        lines.forEach((l) => l.classList.remove('is-active'));
+        explainEl.textContent = defaultText;
+      }
+
+      function setLine(line) {
+        lines.forEach((l) => l.classList.toggle('is-active', l === line));
+        const html = explainForLine(line);
+        if (html) explainEl.innerHTML = html;
+        else explainEl.textContent = defaultText;
+      }
+
+      lines.forEach((line) => line.addEventListener('mouseenter', () => setLine(line)));
+      slide.addEventListener('mouseleave', (e) => {
+        if (!slide.contains(e.relatedTarget)) clearLine();
+      });
+    });
+  })();
+
+  (function initSkillExampleTooltips() {
+    const tip = document.getElementById('instruction-tooltip');
+    if (!tip) return;
+    const lines = [...document.querySelectorAll('.slide-skill-example .skill-line[data-explain]')];
+    let activeLine = null;
+
+    function hideTip() {
+      tip.classList.remove('visible');
+      tip.setAttribute('aria-hidden', 'true');
+      if (activeLine) activeLine.classList.remove('is-active');
+      activeLine = null;
+    }
+
+    function placeTip(line) {
+      const html = explainForLine(line);
+      if (!html) return;
+      tip.innerHTML = html;
+      tip.classList.add('visible');
+      tip.setAttribute('aria-hidden', 'false');
+      const rect = line.getBoundingClientRect();
+      const tipRect = tip.getBoundingClientRect();
+      let left = rect.left;
+      let top = rect.bottom + 10;
+      if (left + tipRect.width > window.innerWidth - 12) left = window.innerWidth - tipRect.width - 12;
+      if (left < 12) left = 12;
+      if (top + tipRect.height > window.innerHeight - 12) top = rect.top - tipRect.height - 10;
+      tip.style.left = `${left}px`;
+      tip.style.top = `${top}px`;
+    }
+
+    function showTip(line) {
+      if (activeLine && activeLine !== line) activeLine.classList.remove('is-active');
+      activeLine = line;
+      line.classList.add('is-active');
+      placeTip(line);
+    }
+
+    lines.forEach((line) => {
+      line.addEventListener('mouseenter', () => showTip(line));
+      line.addEventListener('mouseleave', (e) => {
+        if (tip.contains(e.relatedTarget)) return;
+        hideTip();
+      });
+    });
+
+    window.addEventListener('resize', hideTip);
+  })();
+
+  window.__deckExport = {
+    show,
+    slideCount: () => slides.length,
+    slideAt(i) {
+      const s = slides[i];
+      return {
+        compareReveal: s.classList.contains('compare-reveal'),
+        flowReveal: s.classList.contains('flow-reveal'),
+        title: (s.querySelector('h2, h1') || {}).textContent?.trim() || `Slide ${i + 1}`,
+      };
+    },
+    setCompareRevealed(revealed) {
+      slides[current].classList.toggle('revealed', !!revealed);
+    },
+    setFlowStage(stage) {
+      setFlowRevealStage(slides[current], stage);
+    },
+  };
+</script>
+</body>
+</html>
